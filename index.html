@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graft · QBR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue:wght@200;300;400;700;800&family=Instrument+Serif:ital@0;1&family=Karla:wght@300;400;500;700&display=swap">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+*::selection { background: #bcfb49; color: #0a0a0a; }
+
+:root {
+  --paper-canvas: #fafaf7;
+  --paper-page: #f3f3ee;
+  --paper-panel: #ebebe6;
+  --paper-deep: #e2e2dc;
+  --ink: #0a0a0a;
+  --ink-body: #1f1f1f;
+  --ink-soft: #4a4a4a;
+  --ink-mute: #7a7a7a;
+  --ink-quiet: #a8a8a8;
+  --line: #d4d4cf;
+  --line-soft: #e0e0db;
+  --lime: #bcfb49;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Karla', system-ui, sans-serif;
+  background: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.deck { position: relative; width: 100vw; height: 100vh; cursor: pointer; }
+
+.slide {
+  position: absolute; inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 600ms var(--ease);
+  display: flex; flex-direction: column;
+}
+.slide.active { opacity: 1; pointer-events: auto; z-index: 2; }
+
+.frame {
+  flex: 1;
+  display: flex; flex-direction: column;
+  padding: clamp(48px, 5.5vw, 96px) clamp(56px, 7vw, 120px);
+  position: relative;
+}
+
+.eyebrow {
+  display: flex; align-items: center; gap: 18px;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+.eyebrow::before {
+  content: '';
+  width: 32px; height: 2px;
+  background: var(--lime);
+  display: inline-block;
+}
+
+/* === Foot with navigation === */
+.foot {
+  position: absolute;
+  left: clamp(56px, 7vw, 120px);
+  right: clamp(56px, 7vw, 120px);
+  bottom: clamp(36px, 4vh, 56px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Karla', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.foot .wordmark {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.015em;
+  text-transform: lowercase;
+}
+
+.nav-cluster {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.nav-btn {
+  background: none;
+  border: 1px solid currentColor;
+  width: 32px;
+  height: 32px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: opacity 200ms ease, background 200ms ease, color 200ms ease;
+  opacity: 0.55;
+}
+.nav-btn:hover:not(:disabled) {
+  opacity: 1;
+}
+.nav-btn:disabled {
+  opacity: 0.18;
+  cursor: default;
+}
+.nav-btn span {
+  position: relative;
+  top: -1px;
+}
+.counter {
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  min-width: 52px;
+  text-align: center;
+}
+
+.dark-foot { color: var(--ink-mute); }
+.dark-foot .wordmark { color: #f0f0eb; }
+.dark-foot .wordmark .dot { color: var(--lime); }
+.dark-foot .nav-btn { color: #d0d0d0; }
+.dark-foot .nav-btn:hover:not(:disabled) { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+
+.light-foot { color: var(--ink-mute); }
+.light-foot .wordmark { color: var(--ink); }
+.light-foot .wordmark .dot { color: var(--lime); }
+.light-foot .nav-btn { color: var(--ink-soft); }
+.light-foot .nav-btn:hover:not(:disabled) { background: var(--ink); color: var(--lime); border-color: var(--ink); }
+
+/* === Slide 01 · Cover === */
+.slide-cover {
+  background:
+    radial-gradient(ellipse 60% 40% at 78% 80%, rgba(188, 251, 73, 0.04) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(255, 255, 255, 0.018) 0%, transparent 65%),
+    #060612;
+  color: #f0f0eb;
+}
+.slide-cover .frame {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.cover-mast {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cover-mast .tbscg-mark {
+  width: 84px;
+  height: auto;
+  color: #f0f0eb;
+}
+.cover-mast .mast-line {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+  padding-left: 18px;
+  border-left: 1px solid rgba(168, 168, 168, 0.3);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.cover-main {
+  align-self: center;
+  margin-top: -4vh;
+}
+.cover-title {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(160px, 22vw, 340px);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: #f5f5ef;
+}
+.cover-title .lime-dot {
+  font-weight: 800;
+  color: var(--lime);
+  margin-left: -0.04em;
+}
+.cover-sub {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px, 1.05vw, 16px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+  margin-top: clamp(20px, 2.5vh, 32px);
+  padding-left: 4px;
+}
+.cover-sub .accent { color: var(--lime); }
+
+/* === Slide 02 · Bold Claim === */
+.slide-claim {
+  background:
+    radial-gradient(ellipse 80% 60% at 88% 18%, rgba(188, 251, 73, 0.10) 0%, rgba(188, 251, 73, 0.02) 35%, transparent 65%),
+    linear-gradient(135deg, #050510 0%, #131320 55%, #1c1c2a 100%);
+  color: #f0f0eb;
+}
+.slide-claim .eyebrow { color: var(--lime); margin-bottom: auto; }
+.slide-claim .headline {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(56px, 9.4vw, 148px);
+  line-height: 0.96;
+  letter-spacing: -0.038em;
+  max-width: 16ch;
+  color: #f5f5ef;
+}
+.slide-claim .headline em {
+  font-style: normal;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.slide-claim .subline {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(26px, 3.4vw, 52px);
+  color: var(--ink-quiet);
+  margin-top: clamp(28px, 3vh, 48px);
+  margin-bottom: clamp(80px, 12vh, 140px);
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+}
+.slide-claim .subline .lime-mark { color: var(--lime); }
+
+/* === Slide 03 · Method === */
+.slide-method {
+  background: var(--paper-canvas);
+  color: var(--ink);
+}
+.slide-method .eyebrow { color: var(--ink-soft); }
+.slide-method .headline {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(34px, 4.6vw, 76px);
+  line-height: 1.0;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+  margin-top: clamp(28px, 3.5vh, 48px);
+  max-width: 22ch;
+}
+.slide-method .headline em {
+  font-style: normal;
+  font-weight: 800;
+}
+.slide-method .stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(18px, 2vh, 32px);
+  margin-bottom: 60px;
+  min-height: 0;
+  width: 100%;
+}
+.method-svg {
+  width: 100%;
+  max-width: 1320px;
+  height: 100%;
+  max-height: 100%;
+  display: block;
+}
+.method-svg .stroke { stroke: var(--ink); stroke-width: 1.2; fill: none; }
+.method-svg .stroke-thin { stroke: var(--ink-mute); stroke-width: 0.9; fill: none; }
+.method-svg .center-bg { fill: var(--paper-panel); stroke: var(--ink); stroke-width: 1.4; }
+.method-svg .source-bg { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1.2; }
+.method-svg .target-bg { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1.2; }
+.method-svg .new-site-bg { fill: #fafaf7; stroke: var(--ink); stroke-width: 1.4; }
+.method-svg .header-grey { fill: #c8c8c2; }
+.method-svg .header-dark { fill: var(--ink); }
+.method-svg .row-grey { fill: #c8c8c2; opacity: 0.5; }
+.method-svg .hero-fill { fill: #d4a574; }
+.method-svg .hero-line { stroke: #b88a5e; stroke-width: 0.8; fill: none; }
+.method-svg .placeholder { fill: var(--paper-panel); stroke: var(--ink-mute); stroke-width: 0.7; }
+.method-svg .lime-bar { fill: var(--lime); }
+.method-svg .brand-dot { fill: #b88a5e; }
+.method-svg .label-major {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  fill: var(--ink);
+  letter-spacing: -0.005em;
+}
+.method-svg .label-minor {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  fill: var(--ink-mute);
+}
+.method-svg .label-caption {
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: 11px;
+  fill: var(--ink-soft);
+}
+.method-svg .label-deployed {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: var(--ink-mute);
+}
+.method-svg .label-deployed-list {
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  fill: var(--ink);
+}
+
+.method-svg .anim { opacity: 0; }
+.slide-method.active .anim-source { animation: fadeRise 700ms var(--ease) 300ms forwards; }
+.slide-method.active .anim-arrow1 { animation: fadeIn 600ms var(--ease) 1100ms forwards; }
+.slide-method.active .anim-center { animation: fadeRise 700ms var(--ease) 1700ms forwards; }
+.slide-method.active .anim-lime { animation: fadeIn 700ms var(--ease) 2700ms forwards; }
+.slide-method.active .anim-arrow2 { animation: fadeIn 600ms var(--ease) 3300ms forwards; }
+.slide-method.active .anim-new-site { animation: fadeRise 800ms var(--ease) 3900ms forwards; }
+.slide-method.active .anim-deployed { animation: fadeIn 700ms var(--ease) 4900ms forwards; }
+
+@keyframes fadeRise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* === Slide 04 · Validation === */
+.slide-validation {
+  background: var(--paper-canvas);
+  color: var(--ink);
+}
+.slide-validation .eyebrow { color: var(--ink-soft); }
+.slide-validation .number-block {
+  margin-top: auto;
+  padding-bottom: clamp(28px, 3.5vh, 48px);
+}
+.slide-validation .number {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(88px, 13vw, 220px);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+}
+.slide-validation .number em {
+  font-style: normal;
+  font-weight: 800;
+}
+.slide-validation .number-caption {
+  font-family: 'Karla', sans-serif;
+  font-weight: 300;
+  font-size: clamp(17px, 1.45vw, 21px);
+  color: var(--ink-soft);
+  max-width: 64ch;
+  margin-top: clamp(18px, 2vh, 28px);
+  line-height: 1.55;
+}
+.slide-validation .number-caption strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+.slide-validation .heritage-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: clamp(20px, 2.4vh, 32px);
+  margin-bottom: clamp(20px, 2.4vh, 32px);
+}
+.slide-validation .heritage-num {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 2.6vw, 40px);
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+.slide-validation .heritage-label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.slide-validation .creds-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 2.5vw, 48px);
+  margin-bottom: 84px;
+}
+.slide-validation .cred-label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 8px;
+}
+.slide-validation .cred-value {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 400;
+  font-size: clamp(13px, 1vw, 16px);
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+/* === Slide 05 · Price === */
+.slide-price {
+  background: linear-gradient(135deg, #050510 0%, #131320 55%, #1c1c2a 100%);
+  color: #f0f0eb;
+}
+.slide-price .eyebrow { color: var(--lime); }
+.slide-price .price-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(32px, 3.5vh, 52px);
+  margin-bottom: 60px;
+  min-height: 0;
+  gap: clamp(22px, 2.6vh, 36px);
+}
+.slide-price .plate {
+  position: relative;
+  flex: 1;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.06) 0px,
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: clamp(28px, 3.4vw, 52px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 0;
+}
+
+/* Receipt-style tile */
+.slide-price .tile {
+  background: #f5f5ef;
+  color: var(--ink);
+  padding: clamp(28px, 2.8vw, 44px) clamp(32px, 3.4vw, 52px) clamp(26px, 2.6vw, 40px);
+  width: min(580px, 56%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  position: relative;
+  font-family: 'Karla', sans-serif;
+}
+.slide-price .tile-eyebrow {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: clamp(18px, 2vh, 26px);
+  padding-bottom: clamp(14px, 1.6vh, 20px);
+  border-bottom: 1px solid var(--line);
+}
+.receipt-lines {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.9vh, 12px);
+  margin-bottom: clamp(14px, 1.6vh, 22px);
+}
+.receipt-line {
+  display: flex;
+  align-items: baseline;
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: clamp(13px, 1.05vw, 15.5px);
+  color: var(--ink-body);
+  line-height: 1.3;
+}
+.receipt-line .item { white-space: nowrap; }
+.receipt-line .leader {
+  flex: 1;
+  border-bottom: 1px dotted #b8b8b3;
+  margin: 0 8px;
+  position: relative;
+  top: -3px;
+  min-width: 18px;
+}
+.receipt-line .value {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: clamp(12px, 0.95vw, 14px);
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.receipt-line.credits .value { color: var(--ink); }
+.receipt-line.credits .ast { color: var(--lime); font-weight: 700; margin-right: 4px; background: var(--ink); padding: 1px 5px 0; font-size: 11px; }
+.receipt-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-top: clamp(14px, 1.6vh, 20px);
+  border-top: 1.5px solid var(--ink);
+  margin-top: clamp(4px, 0.5vh, 8px);
+}
+.receipt-total .total-label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.receipt-total .total-value {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 800;
+  font-size: clamp(40px, 4.6vw, 64px);
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+}
+.receipt-footnote {
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: 11.5px;
+  color: var(--ink-mute);
+  margin-top: clamp(10px, 1.2vh, 16px);
+  line-height: 1.5;
+}
+.receipt-footnote .ast { color: var(--lime); font-weight: 700; background: var(--ink); padding: 1px 5px 0; font-size: 10.5px; margin-right: 4px; }
+
+.slide-price .lines-band {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 3vw, 56px);
+  padding: 0 clamp(8px, 1vw, 16px);
+}
+.slide-price .line-item { display: flex; flex-direction: column; gap: 6px; }
+.slide-price .line-label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+.slide-price .line-desc {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 300;
+  font-size: clamp(13px, 0.95vw, 15px);
+  color: var(--ink-mute);
+  line-height: 1.4;
+}
+.slide-price .line-value {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(24px, 2.2vw, 36px);
+  color: #f5f5ef;
+  letter-spacing: -0.025em;
+  margin-top: 6px;
+}
+.slide-price .line-value .unit {
+  font-size: 0.5em;
+  color: var(--ink-mute);
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+/* === Slide 06 · Closer === */
+.slide-closer {
+  background:
+    radial-gradient(ellipse 70% 55% at 78% 78%, rgba(248, 220, 165, 0.55) 0%, rgba(244, 215, 160, 0.18) 35%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 25% 15%, rgba(252, 240, 210, 0.35) 0%, transparent 60%),
+    var(--paper-canvas);
+  color: var(--ink);
+}
+.slide-closer .eyebrow { color: var(--ink-soft); }
+.slide-closer .headline {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(56px, 9.2vw, 142px);
+  line-height: 0.96;
+  letter-spacing: -0.038em;
+  max-width: 14ch;
+  margin-top: auto;
+  color: var(--ink);
+}
+.slide-closer .headline em {
+  font-style: normal;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.slide-closer .cta {
+  margin-top: clamp(36px, 4vh, 56px);
+  margin-bottom: clamp(80px, 12vh, 140px);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.slide-closer .cta-text {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 2.1vw, 30px);
+  color: var(--ink);
+}
+.slide-closer .cta-mark {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--lime);
+  padding: 6px 14px 5px;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 1.5vw, 22px);
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: opacity 200ms linear; }
+  .slide-method.active .anim {
+    animation: fadeIn 250ms linear forwards !important;
+    animation-delay: 0ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ====== Slide 01 · Cover ====== -->
+  <section class="slide slide-cover active" data-slide="0">
+    <div class="frame">
+      <div class="cover-mast">
+        <svg class="tbscg-mark" width="1000" height="603" viewBox="0 0 1000 603" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_2198_32" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="603">
+<path d="M1000 0H0V602.74H1000V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_2198_32)">
+<path d="M987.956 204.747C981.178 201.444 973.616 199.738 965.662 199.738C953.059 199.738 942.303 202.93 933.677 209.26C927.011 214.159 921.522 219.552 917.433 225.222C911.774 220.488 904.044 215.534 894.074 210.03C881.526 203.205 866.514 199.738 849.316 199.738C838.281 199.738 826.63 201.664 814.755 205.352C802.823 209.095 791.677 214.71 781.818 221.974C771.847 229.295 763.556 238.321 757.057 248.834C751.848 257.2 748.488 268.648 747.759 274.207C747.031 279.766 744.847 283.563 743.11 287.801C740.31 294.186 735.996 300.681 730.282 307.011C724.625 313.285 716.726 318.623 706.867 323.027C697.008 327.485 684.125 329.686 668.608 329.686C654.437 329.686 642.841 326.879 634.159 321.375C625.42 315.816 618.474 308.166 613.545 298.589C608.447 288.737 604.862 277.068 602.958 263.859C600.941 250.43 599.933 235.844 599.933 220.599C599.933 193.629 602.23 172.108 606.655 156.697C611.025 141.507 616.682 129.948 623.404 122.518C630.014 115.252 637.24 110.684 644.97 108.868C653.26 106.941 661.382 106.006 669.112 106.006C679.363 106.006 688.495 108.097 696.337 112.28C703.451 116.078 706.867 121.197 706.867 127.911C706.867 132.149 705.636 137.708 703.226 144.423C700.482 152.019 699.137 158.678 699.137 164.182C699.137 172.274 702.947 178.273 710.004 181.685C716.222 184.658 722.888 186.199 729.778 186.199C740.085 186.199 748.152 183.337 753.921 177.667C759.634 172.053 762.604 164.788 762.604 156.092C762.604 144.038 759.467 133.746 753.305 125.269C747.311 117.014 739.637 110.299 730.563 105.125C721.6 100.061 711.573 96.2636 700.762 93.8418C670.962 87.1821 642.841 89.824 617.801 100.006C601.781 106.501 587.61 115.638 575.678 127.141C563.803 138.699 554.223 152.404 547.278 167.925C543.412 176.567 540.667 185.703 538.875 195.225C538.594 196.711 537.811 197.756 537.251 198.197C536.69 198.637 534.17 200.014 531.033 198.418C530.473 198.142 529.8 197.756 528.904 197.371C525.823 196.051 522.463 194.785 518.653 193.408C514.956 192.142 510.419 190.822 505.322 189.556C500 188.234 493.053 187.519 484.708 187.519C472.888 187.519 461.741 189.445 451.547 193.244C441.294 197.041 432.445 202.436 425.051 209.26C417.656 216.085 411.83 224.175 407.574 233.258C403.26 242.395 401.132 252.466 401.132 263.144C401.132 275.584 402.979 285.985 406.733 294.077C410.43 302.167 415.304 308.827 421.241 314.111C427.123 319.229 433.508 323.303 440.286 326.219C446.785 328.971 452.89 331.284 458.492 333.1L501.512 347.74C510.588 350.822 518.597 355.06 525.375 360.344C531.481 365.133 534.562 373.774 534.562 386.158C534.562 400.633 530.473 411.145 522.407 417.31C513.892 423.86 504.425 426.997 493.558 426.997C480.338 426.997 468.855 424.741 459.556 420.392C450.201 415.934 442.136 410.21 435.693 403.164C429.252 396.119 423.93 388.304 420.177 379.884C416.256 371.242 412.951 362.6 410.43 354.125L409.59 351.152H409.366C408.638 349.226 407.91 347.41 407.125 345.593C400.684 330.403 391.889 316.973 380.91 305.634C369.93 294.296 357.159 285.104 342.763 278.225C328.311 271.345 312.626 267.822 296.27 267.822C275.151 267.822 257.842 273.051 244.622 283.289C236.052 289.948 229.105 297.708 223.785 306.46V82.834H125.644V98.5752H168.104C168.104 98.5752 168.441 456.058 168.104 463.268C167.768 470.478 161.326 480.275 155.164 487.486C147.995 495.797 138.864 499.87 127.157 499.87C123.852 499.87 120.491 499.374 117.018 498.384C113.881 497.558 110.912 495.632 108.167 492.77C105.31 489.797 102.958 485.395 101.165 479.781C99.3166 473.89 98.3083 465.966 98.3083 456.333V249.274H142.058V233.533H98.3083V172.989H42.4603V233.533H0V249.274H42.4603V451.434C42.4603 471.634 48.3419 487.541 59.9933 498.768C71.7567 510.107 91.5864 515.666 120.491 515.666C132.086 515.666 141.945 513.74 149.844 510.107C157.125 506.749 163.231 502.347 168.048 497.227V515.666H222.664V482.258C225.801 488.641 230.338 494.916 236.221 500.805C242.214 506.915 249.831 512.199 258.907 516.547C268.093 521.005 279.408 523.152 292.404 523.152C309.097 523.152 325.174 519.574 340.242 512.474C355.142 505.429 368.474 495.797 379.789 483.963C391.104 472.13 400.179 458.26 406.789 442.959C408.301 439.436 410.374 433.162 410.822 432.171C411.27 431.179 412.055 429.859 413.231 428.978C414.407 428.097 415.64 427.767 419.505 427.767C423.09 427.767 427.067 428.538 431.381 429.97C436.197 431.566 441.463 433.326 447.177 435.199C453.003 437.014 459.444 438.775 466.222 440.427C473.337 442.133 481.178 442.959 489.581 442.959C504.033 442.959 517.085 440.647 528.4 436.134C539.659 431.621 549.351 425.566 557.248 418.245C565.203 410.815 571.308 402.064 575.341 392.158C579.375 382.305 581.448 372.178 581.448 361.885C581.448 344.163 575.453 329.686 563.634 318.844C552.263 308.386 537.419 300.075 519.662 294.132L479.33 281.142C463.645 276.244 451.77 270.849 443.871 265.236C436.645 260.007 433.116 252.522 433.116 242.229C433.116 230.396 437.43 221.259 446.225 214.214C455.188 207.114 468.127 203.426 484.652 203.426C493.166 203.426 500.616 204.912 506.834 207.94C512.996 210.911 518.318 215.04 522.463 220.323C526.831 225.827 530.641 232.211 533.778 239.256C536.859 246.247 539.659 253.512 542.181 261.052C543.973 267.216 546.27 273.105 548.957 278.445C557.137 294.462 567.779 307.562 580.719 317.468C593.547 327.321 607.942 334.585 623.46 338.989C638.864 343.447 653.877 345.648 668.216 345.648C687.094 345.648 702.89 342.677 714.99 336.842C726.922 331.063 736.668 324.184 743.838 316.422C746.415 313.615 748.656 310.863 750.729 308.056C754.93 321.651 763.164 333.43 775.488 343.171C772.238 344.712 768.822 346.529 765.181 348.456C758.794 351.923 752.745 356.381 747.144 361.885C741.485 367.444 736.668 373.995 732.915 381.314C728.995 388.91 726.978 397.992 726.978 408.393C726.978 428.538 733.419 443.069 746.19 451.6C755.714 457.985 769.157 461.892 786.522 463.323C783.386 464.864 780.249 466.515 777.168 468.222C769.157 472.736 761.931 478.129 755.601 484.348C749.216 490.623 743.951 497.944 739.918 506.034C735.771 514.345 733.7 523.537 733.7 533.553C733.7 544.011 736.444 553.699 741.766 562.23C747.088 570.651 754.425 577.916 763.725 583.806C772.911 589.585 783.722 594.208 795.989 597.621C808.258 600.922 821.925 602.629 836.489 602.629C852.678 602.629 868.699 599.877 884.159 594.538C899.619 589.199 913.511 581.438 925.386 571.586C937.318 561.734 947.008 549.901 954.234 536.471C961.516 522.877 965.214 507.685 965.214 491.229C965.214 464.095 956.979 443.729 940.79 430.849C924.826 418.19 903.26 411.805 876.708 411.805H789.604C785.01 411.805 780.641 411.475 776.496 410.76C772.574 410.1 768.989 408.999 765.908 407.403C763.108 405.916 760.811 403.826 758.963 400.799C757.17 397.826 756.218 393.973 756.218 389.349C756.218 384.286 757.338 379.773 759.579 375.921C761.875 371.848 764.788 368.325 768.318 365.352C771.903 362.326 775.823 359.793 780.137 357.812C784.057 355.996 787.699 354.289 791.227 352.693C796.381 355.06 803.327 357.922 811.897 360.949C821.868 364.527 833.688 366.344 846.964 366.344C860.24 366.344 872.619 364.362 884.886 360.455C897.155 356.547 908.245 350.933 917.6 343.777C926.955 336.677 934.629 328.256 940.342 318.789C946.225 309.158 949.193 298.479 949.193 286.921C949.193 273.271 946.393 261.658 940.903 252.356C936.59 245.201 933.004 239.752 929.923 235.899C932.164 233.203 934.629 230.781 937.43 228.579C940.511 226.103 943.423 224.837 946.112 224.837C948.353 224.837 949.753 225.552 950.818 227.203C952.611 230.01 954.346 232.982 955.803 236.064C957.596 239.532 959.668 242.834 961.964 245.916C964.99 249.879 969.863 251.916 976.305 251.916C981.627 251.916 986.836 249.989 991.822 246.137C997.031 242.064 999.775 236.064 999.775 228.249C999.775 216.525 995.855 208.6 988.125 204.801L987.789 204.526L987.956 204.747ZM807.585 332.825C803.496 326.99 800.694 319.945 799.126 311.91C797.557 303.542 796.718 293.966 796.718 283.399C796.718 258.851 801.255 241.127 810.105 230.781C818.9 220.433 831.784 215.425 849.429 215.425C860.744 215.425 869.763 217.405 876.204 221.314C882.646 225.167 887.519 230.396 890.656 236.725C893.962 243.33 896.09 250.815 897.155 258.741C898.219 267.052 898.779 275.363 898.779 283.453C898.779 306.295 894.914 323.578 887.408 334.53C880.126 345.153 867.857 350.382 850.045 350.382C839.29 350.382 830.44 348.841 823.605 345.868C816.883 342.896 811.73 338.714 807.697 332.934L807.529 332.768L807.585 332.825ZM224.512 368.71C225.073 358.638 226.081 349.556 227.537 341.851C228.995 334.2 230.842 327.596 233.14 322.092C235.379 316.697 238.46 311.523 242.214 306.736C247.367 300.075 254.089 294.407 262.379 290.003C270.558 285.655 281.201 283.453 294.029 283.453C306.073 283.453 315.931 285.766 323.549 290.444C331.055 295.067 337.105 301.782 341.307 310.423C345.675 319.34 348.812 330.348 350.605 343.062C352.397 355.996 353.349 370.856 353.349 387.148C353.349 405.807 352.789 422.868 351.725 438.06C350.662 452.921 348.029 465.69 343.771 476.093C339.682 486.055 333.521 493.815 325.453 499.155C317.388 504.438 306.129 507.079 291.956 507.079C277.784 507.079 265.741 504.052 257.17 498.053C248.431 491.999 241.541 483.963 236.668 474.441C231.738 464.589 228.378 453.416 226.585 441.252C224.793 428.923 223.841 416.704 223.841 405.036C223.841 391.111 224.121 378.892 224.625 368.655H224.568L224.512 368.71ZM799.799 569.715C793.133 564.871 787.642 558.377 783.33 550.505C779.129 542.636 776.944 532.453 776.944 520.179C776.944 511.318 778.064 503.833 780.249 497.999C782.489 492.11 785.403 486.936 788.988 482.588C792.573 478.238 796.662 474.662 801.255 471.8C805.848 468.937 810.329 466.185 814.867 463.489H873.236C891.721 463.489 906.285 467.507 916.76 475.377C926.842 482.973 931.94 496.403 931.94 515.171C931.94 523.867 929.923 532.399 926.003 540.489C922.082 548.579 916.256 555.9 908.805 562.174C901.3 568.504 892.281 573.623 881.974 577.421C871.667 581.218 860.015 583.145 847.3 583.145C839.234 583.145 830.831 582.099 822.373 580.063C814.138 578.026 806.577 574.504 799.799 569.66V569.715Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M423.195 0H450.194L397.147 52.1226V25.5934C397.147 11.5033 408.854 0 423.195 0ZM385.943 0V47.2241C385.943 57.7916 382.135 66.8733 374.517 74.3586L358.272 90.3201V25.5934C358.272 10.1273 370.707 0 385.943 0ZM347.124 2.69695V85.3666C347.124 95.9342 343.316 105.016 335.698 112.501L319.453 128.463V37.4821C319.453 20.6949 330.599 6.82492 347.124 2.69695ZM280.073 167.156V87.4581C280.073 62.4151 290.94 39.7386 308.25 23.7771V123.564C308.25 134.132 304.44 143.214 296.823 150.699L280.073 167.156ZM433.894 147.232C417.649 164.238 394.57 174.916 369.083 174.916H287.972L304.72 158.459C312.339 150.974 321.581 147.232 332.336 147.232H433.894ZM455.347 109.034C451.146 125.27 437.031 136.223 419.946 136.223H327.351L343.595 120.262C351.214 112.776 360.457 109.034 371.212 109.034H455.347ZM458.092 70.8911C458.092 85.8619 447.786 98.0807 432.044 98.0807H366.17L382.414 82.1192C390.034 74.6338 399.276 70.8911 410.031 70.8911H458.092ZM458.092 7.7606V34.2897C458.092 48.3799 446.386 59.8832 432.044 59.8832H405.046L458.092 7.7606Z" fill="url(#paint0_linear_2198_32)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2198_32" x1="267.694" y1="146.021" x2="469.617" y2="27.3615" gradientUnits="userSpaceOnUse">
+<stop stop-color="#99C649"/>
+<stop offset="0.16" stop-color="#A2D449"/>
+<stop offset="0.45" stop-color="#B0E949"/>
+<stop offset="0.73" stop-color="#B9F649"/>
+<stop offset="1" stop-color="#BCFB49"/>
+</linearGradient>
+</defs>
+</svg>
+        <div class="mast-line">Senior-led enterprise engineering</div>
+      </div>
+      <div class="cover-main">
+        <h1 class="cover-title">graft<span class="lime-dot">.</span></h1>
+        <p class="cover-sub">The migration agent</p>
+      </div>
+      <div></div>
+    </div>
+    <div class="foot dark-foot">
+      <div></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" disabled aria-label="Previous"><span>‹</span></button>
+        <div class="counter">01 / 06</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 02 · Bold Claim ====== -->
+  <section class="slide slide-claim" data-slide="1">
+    <div class="frame">
+      <div class="eyebrow">01 · The Claim</div>
+      <h1 class="headline">Migrated and rebranded in <em>5&nbsp;days</em>.</h1>
+      <p class="subline">Proof in <span class="lime-mark">90 minutes</span>.</p>
+    </div>
+    <div class="foot dark-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">02 / 06</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 03 · The Method ====== -->
+  <section class="slide slide-method" data-slide="2">
+    <div class="frame">
+      <div class="eyebrow">02 · The Method</div>
+      <h1 class="headline">Any source. One <em>interchange</em>. Any CMS.</h1>
+      <div class="stage">
+        <svg class="method-svg" viewBox="0 0 1320 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <!-- ====== SOURCE SITE (left) ====== -->
+          <g class="anim anim-source">
+            <text class="label-minor" x="40" y="60">Your site, today</text>
+            <rect class="source-bg" x="40" y="80" width="300" height="380" />
+            <!-- header bar with dots -->
+            <rect class="header-grey" x="40" y="80" width="300" height="36" />
+            <circle cx="58" cy="98" r="3.5" fill="#f5f5ef" />
+            <circle cx="70" cy="98" r="3.5" fill="#f5f5ef" />
+            <circle cx="82" cy="98" r="3.5" fill="#f5f5ef" />
+            <!-- main content rows -->
+            <rect class="row-grey" x="60" y="138" width="180" height="8" />
+            <rect class="row-grey" x="60" y="156" width="240" height="6" />
+            <rect class="row-grey" x="60" y="170" width="200" height="6" />
+            <rect class="row-grey" x="60" y="184" width="140" height="6" />
+            <!-- three small cards -->
+            <rect class="placeholder" x="60" y="216" width="80" height="60" />
+            <rect class="placeholder" x="150" y="216" width="80" height="60" />
+            <rect class="placeholder" x="240" y="216" width="80" height="60" />
+            <!-- content rows -->
+            <rect class="row-grey" x="60" y="296" width="260" height="6" />
+            <rect class="row-grey" x="60" y="310" width="220" height="6" />
+            <rect class="row-grey" x="60" y="324" width="240" height="6" />
+            <!-- footer row -->
+            <rect class="row-grey" x="60" y="430" width="120" height="5" opacity="0.4" />
+            <rect class="row-grey" x="200" y="430" width="120" height="5" opacity="0.4" />
+            <text class="label-caption" x="40" y="488">2,600 pages · live domain</text>
+          </g>
+
+          <!-- ARROW 1 -->
+          <g class="anim anim-arrow1">
+            <line class="stroke" x1="354" y1="270" x2="438" y2="270" />
+            <polygon points="438,270 429,265 429,275" fill="#0a0a0a" />
+          </g>
+
+          <!-- ====== INTERCHANGE (center) ====== -->
+          <g class="anim anim-center">
+            <text class="label-minor" x="450" y="60">Interchange format</text>
+            <rect class="center-bg" x="450" y="80" width="340" height="380" />
+            <rect x="478" y="118" width="284" height="138" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.2" />
+            <text class="label-major" x="498" y="150">Templates</text>
+            <text class="label-caption" x="498" y="174">Nunjucks · presentation layer</text>
+            <text class="label-caption" x="498" y="192">CMS-agnostic, brand-applied</text>
+            <text class="label-caption" x="498" y="210">Maps to SPA / headless / headed</text>
+            <rect x="478" y="280" width="284" height="138" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.2" />
+            <text class="label-major" x="498" y="312">Content</text>
+            <text class="label-caption" x="498" y="336">JSON · structured records</text>
+            <text class="label-caption" x="498" y="354">Translation-ready</text>
+            <text class="label-caption" x="498" y="372">Direct into headless CMS</text>
+            <text class="label-caption" x="450" y="488">where the rebrand happens</text>
+          </g>
+
+          <!-- LIME ACCENT BAR -->
+          <g class="anim anim-lime">
+            <rect class="lime-bar" x="450" y="80" width="340" height="5" />
+          </g>
+
+          <!-- ARROW 2 -->
+          <g class="anim anim-arrow2">
+            <line class="stroke" x1="804" y1="270" x2="888" y2="270" />
+            <polygon points="888,270 879,265 879,275" fill="#0a0a0a" />
+          </g>
+
+          <!-- ====== NEW SITE (right) ====== -->
+          <g class="anim anim-new-site">
+            <text class="label-minor" x="900" y="60">Your site, rebranded</text>
+            <rect class="new-site-bg" x="900" y="80" width="380" height="380" />
+            <!-- dark header bar with brand accent -->
+            <rect class="header-dark" x="900" y="80" width="380" height="44" />
+            <circle class="brand-dot" cx="922" cy="102" r="6" />
+            <rect x="940" y="98" width="60" height="3" fill="#f5f5ef" opacity="0.8" />
+            <rect x="1180" y="98" width="40" height="3" fill="#f5f5ef" opacity="0.5" />
+            <rect x="1230" y="98" width="40" height="3" fill="#f5f5ef" opacity="0.5" />
+            <!-- hero with warm fill -->
+            <rect class="hero-fill" x="920" y="144" width="340" height="110" />
+            <rect x="940" y="178" width="120" height="10" fill="#0a0a0a" opacity="0.85" />
+            <rect x="940" y="196" width="180" height="6" fill="#0a0a0a" opacity="0.5" />
+            <rect x="940" y="208" width="160" height="6" fill="#0a0a0a" opacity="0.5" />
+            <rect x="940" y="226" width="64" height="14" fill="#0a0a0a" />
+            <!-- two-column content -->
+            <rect x="920" y="274" width="160" height="6" fill="#0a0a0a" opacity="0.7" />
+            <rect x="920" y="288" width="160" height="4" fill="#0a0a0a" opacity="0.35" />
+            <rect x="920" y="298" width="140" height="4" fill="#0a0a0a" opacity="0.35" />
+            <rect x="920" y="308" width="155" height="4" fill="#0a0a0a" opacity="0.35" />
+            <rect x="1100" y="274" width="160" height="6" fill="#0a0a0a" opacity="0.7" />
+            <rect x="1100" y="288" width="160" height="4" fill="#0a0a0a" opacity="0.35" />
+            <rect x="1100" y="298" width="148" height="4" fill="#0a0a0a" opacity="0.35" />
+            <rect x="1100" y="308" width="155" height="4" fill="#0a0a0a" opacity="0.35" />
+            <!-- image grid -->
+            <rect class="placeholder" x="920" y="336" width="106" height="68" />
+            <rect class="placeholder" x="1037" y="336" width="106" height="68" />
+            <rect class="placeholder" x="1154" y="336" width="106" height="68" />
+            <!-- footer band -->
+            <rect x="900" y="430" width="380" height="30" fill="#1f1f1f" />
+            <rect x="920" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
+            <rect x="990" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
+            <rect x="1060" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
+            <text class="label-caption" x="900" y="488">2,600 pages · new brand · live on any CMS</text>
+          </g>
+
+          <!-- DEPLOYED TO caption -->
+          <g class="anim anim-deployed">
+            <line class="stroke-thin" x1="450" y1="510" x2="1280" y2="510" />
+            <text class="label-deployed" x="450" y="528">Deployed to</text>
+            <text class="label-deployed-list" x="600" y="528">Magnolia  ·  Contentful  ·  Contentstack  ·  AEM</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="foot light-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">03 / 06</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 04 · The Proof ====== -->
+  <section class="slide slide-validation" data-slide="3">
+    <div class="frame">
+      <div class="eyebrow">03 · The Proof</div>
+      <div class="number-block">
+        <div class="number"><em>2,600</em> pages. One person.</div>
+        <p class="number-caption">A recent production run. Like-for-like output from a single developer at the controls. Roughly <strong>90% automation</strong>. The remaining 10% is a deliberate human gate at low-confidence component decisions, not a gap.</p>
+      </div>
+      <div class="heritage-kicker">
+        <div class="heritage-num">25 years</div>
+        <div class="heritage-label">of senior-led enterprise engineering practice</div>
+      </div>
+      <div class="creds-band">
+        <div>
+          <div class="cred-label">AWS</div>
+          <div class="cred-value">Advanced Consulting Partner · AdTech &amp; MarTech Competency</div>
+        </div>
+        <div>
+          <div class="cred-label">CMS &amp; DXP</div>
+          <div class="cred-value">Magnolia · Contentful · Contentstack</div>
+        </div>
+        <div>
+          <div class="cred-label">DAM &amp; Commerce</div>
+          <div class="cred-value">Cloudinary · commercetools</div>
+        </div>
+        <div>
+          <div class="cred-label">Practice</div>
+          <div class="cred-value">Financial services, insurance, retail and luxury, manufacturing</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot light-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">04 / 06</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 05 · The Price ====== -->
+  <section class="slide slide-price" data-slide="4">
+    <div class="frame">
+      <div class="eyebrow">04 · The Price</div>
+      <div class="price-stage">
+        <div class="plate">
+          <div class="tile">
+            <div class="tile-eyebrow">Fixed fee · 5-day migration · what you get</div>
+            <div class="receipt-lines">
+              <div class="receipt-line">
+                <span class="item">Site spider, render, asset download</span>
+                <span class="leader"></span>
+                <span class="value">included</span>
+              </div>
+              <div class="receipt-line">
+                <span class="item">AI component detection &amp; mapping</span>
+                <span class="leader"></span>
+                <span class="value">included</span>
+              </div>
+              <div class="receipt-line">
+                <span class="item">Interchange compilation</span>
+                <span class="leader"></span>
+                <span class="value">included</span>
+              </div>
+              <div class="receipt-line">
+                <span class="item">Brand &amp; tone application</span>
+                <span class="leader"></span>
+                <span class="value">included</span>
+              </div>
+              <div class="receipt-line">
+                <span class="item">CMS transcoding to your platform</span>
+                <span class="leader"></span>
+                <span class="value">included</span>
+              </div>
+              <div class="receipt-line credits">
+                <span class="item"><span class="ast">*</span>Agent credits</span>
+                <span class="leader"></span>
+                <span class="value">~£750</span>
+              </div>
+            </div>
+            <div class="receipt-total">
+              <span class="total-label">Total</span>
+              <span class="total-value">£15,000</span>
+            </div>
+            <div class="receipt-footnote"><span class="ast">*</span>Typical site usage. Varies with content volume; passed through at cost.</div>
+          </div>
+        </div>
+        <div class="lines-band">
+          <div class="line-item">
+            <div class="line-label">Optional · Stabilisation</div>
+            <div class="line-desc">30-day post-go-live stabilisation. Senior engineers on warm bench.</div>
+            <div class="line-value">£4,500</div>
+          </div>
+          <div class="line-item">
+            <div class="line-label">Optional · Multi-target</div>
+            <div class="line-desc">Each additional CMS target compiled from the same interchange run.</div>
+            <div class="line-value">£6,000<span class="unit"> / target</span></div>
+          </div>
+          <div class="line-item">
+            <div class="line-label">Optional · Translation</div>
+            <div class="line-desc">Additional language output, translated at the interchange stage.</div>
+            <div class="line-value">£4,500<span class="unit"> / language</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot dark-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">05 / 06</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 06 · Closer ====== -->
+  <section class="slide slide-closer" data-slide="5">
+    <div class="frame">
+      <div class="eyebrow">05</div>
+      <h1 class="headline">Let&rsquo;s get to the <em>real&nbsp;work</em>.</h1>
+      <div class="cta">
+        <div class="cta-text">Pick a site.</div>
+        <div class="cta-mark">90 minutes.</div>
+      </div>
+    </div>
+    <div class="foot light-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">06 / 06</div>
+        <button class="nav-btn next" disabled aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function show(idx) {
+    if (idx < 0 || idx >= slides.length) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+  }
+
+  function next() { show(Math.min(current + 1, slides.length - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  // Wire up nav buttons
+  document.querySelectorAll('.nav-btn.next').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      next();
+    });
+  });
+  document.querySelectorAll('.nav-btn.prev').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      prev();
+    });
+  });
+
+  // Deck click to advance
+  document.getElementById('deck').addEventListener('click', function(e) {
+    next();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault(); next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); prev();
+    } else if (e.key === 'Home') {
+      e.preventDefault(); show(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); show(slides.length - 1);
+    } else if (/^[1-9]$/.test(e.key)) {
+      const target = parseInt(e.key, 10) - 1;
+      if (target < slides.length) show(target);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
