@@ -243,7 +243,71 @@ html, body {
 }
 .slide-claim .subline .lime-mark { color: var(--lime); }
 
-/* === Slide 03 · Method === */
+/* === Slide 03 · The Practice === */
+.slide-practice {
+  background: var(--paper-canvas);
+  color: var(--ink);
+}
+.slide-practice .eyebrow { color: var(--ink-soft); }
+.slide-practice .headline {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(48px, 7.2vw, 116px);
+  line-height: 0.98;
+  letter-spacing: -0.038em;
+  color: var(--ink);
+  margin-top: clamp(40px, 5vh, 72px);
+  max-width: 17ch;
+}
+.slide-practice .headline em {
+  font-style: normal;
+  font-weight: 800;
+}
+.slide-practice .beats {
+  margin-top: auto;
+  margin-bottom: clamp(28px, 4vh, 56px);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--line);
+  padding-top: clamp(24px, 2.8vh, 40px);
+}
+.slide-practice .beat {
+  padding: 0 clamp(20px, 2.2vw, 36px);
+  border-left: 1px solid var(--line);
+}
+.slide-practice .beat:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+.slide-practice .beat-label {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: clamp(14px, 1.6vh, 22px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slide-practice .beat-label .lime-rule {
+  display: inline-block;
+  width: 3px;
+  height: 13px;
+  background: var(--lime);
+}
+.slide-practice .beat-body {
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: clamp(13px, 1vw, 15.5px);
+  line-height: 1.55;
+  color: var(--ink-body);
+  max-width: 34ch;
+}
+
+/* === Slide 04 · Method === */
 .slide-method {
   background: var(--paper-canvas);
   color: var(--ink);
@@ -345,7 +409,58 @@ html, body {
 }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* === Slide 04 · Validation === */
+/* Method · simple/complex toggle */
+.slide-method .stage { position: relative; }
+.slide-method .diagram-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.slide-method .state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+.slide-method .state.active { opacity: 1; pointer-events: auto; }
+.slide-method .state-hint {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 3;
+  user-select: none;
+}
+.method-complex-svg {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  font-family: 'Karla', system-ui, sans-serif;
+}
+.method-complex-svg text { font-family: 'Karla', system-ui, sans-serif; }
+/* After the first toggle, force simple state to its final keyframes (no re-animation) */
+.slide-method.animation-done .anim {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* === Slide 05 · Validation === */
 .slide-validation {
   background: var(--paper-canvas);
   color: var(--ink);
@@ -426,7 +541,7 @@ html, body {
   line-height: 1.4;
 }
 
-/* === Slide 05 · Price === */
+/* === Slide 06 · Price === */
 .slide-price {
   background: linear-gradient(135deg, #050510 0%, #131320 55%, #1c1c2a 100%);
   color: #f0f0eb;
@@ -585,7 +700,7 @@ html, body {
   letter-spacing: 0;
 }
 
-/* === Slide 06 · Closer === */
+/* === Slide 07 · Closer === */
 .slide-closer {
   background:
     radial-gradient(ellipse 70% 55% at 78% 78%, rgba(248, 220, 165, 0.55) 0%, rgba(244, 215, 160, 0.18) 35%, transparent 70%),
@@ -681,7 +796,7 @@ html, body {
       <div></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" disabled aria-label="Previous"><span>‹</span></button>
-        <div class="counter">01 / 06</div>
+        <div class="counter">01 / 07</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -698,18 +813,50 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">02 / 06</div>
+        <div class="counter">02 / 07</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 03 · The Method ====== -->
-  <section class="slide slide-method" data-slide="2">
+  <!-- ====== Slide 03 · The Practice ====== -->
+  <section class="slide slide-practice" data-slide="2">
     <div class="frame">
-      <div class="eyebrow">02 · The Method</div>
+      <div class="eyebrow">02 · The Practice</div>
+      <h1 class="headline">Twenty-five years of practice, made <em>agentic</em>.</h1>
+      <div class="beats">
+        <div class="beat">
+          <div class="beat-label">01 · The Practice</div>
+          <div class="beat-body">Twenty-five years of senior engineering across enterprise CMS, DXP, and DAM platforms. Judgement built up over decades of live migrations, embedded into the agent rather than learned from training data.</div>
+        </div>
+        <div class="beat">
+          <div class="beat-label">02 · The Agent</div>
+          <div class="beat-body">That practice now drives an autonomous loop. AI handles component detection, content extraction, and brand application. A deliberate human gate sits at low-confidence decisions, not a gap in capability.</div>
+        </div>
+        <div class="beat">
+          <div class="beat-label"><span class="lime-rule"></span>03 · The Interchange</div>
+          <div class="beat-body">The architectural unit the agent operates on. A brand-aware, CMS-agnostic representation of your site. Why one source can become any CMS, rebranded.</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot light-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">03 / 07</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 04 · The Method ====== -->
+  <section class="slide slide-method" data-slide="3">
+    <div class="frame">
+      <div class="eyebrow">03 · The Method</div>
       <h1 class="headline">Any source. One <em>interchange</em>. Any CMS.</h1>
       <div class="stage">
+       <div class="diagram-wrap">
+        <div class="state simple-state active" data-state="simple">
         <svg class="method-svg" viewBox="0 0 1320 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
           <!-- ====== SOURCE SITE (left) ====== -->
           <g class="anim anim-source">
@@ -817,22 +964,182 @@ html, body {
             <text class="label-deployed-list" x="600" y="528">Magnolia  ·  Contentful  ·  Contentstack  ·  AEM</text>
           </g>
         </svg>
+        </div>
+        <div class="state complex-state" data-state="complex">
+<svg class="method-complex-svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 680 892" role="img"  xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+<mask id="imagine-text-gaps-bdg1tc" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="892" fill="white"/><rect x="120.93359375" y="12" width="98.1328125" height="19" fill="black" rx="2"/><rect x="502.1796875" y="12" width="75.640625" height="19" fill="black" rx="2"/><rect x="63.76171875" y="45.25" width="66.4765625" height="21.5" fill="black" rx="2"/><rect x="46.125" y="63.5" width="101.75" height="19" fill="black" rx="2"/><rect x="182.98828125" y="45.25" width="104.0234375" height="21.5" fill="black" rx="2"/><rect x="187.65234375" y="63.5" width="94.6953125" height="19" fill="black" rx="2"/><rect x="496.828125" y="45.25" width="86.34375" height="21.5" fill="black" rx="2"/><rect x="492.40234375" y="63.5" width="95.1953125" height="19" fill="black" rx="2"/><rect x="548" y="190" width="75.9921875" height="19" fill="black" rx="2"/><rect x="257.9375" y="127.25" width="84.125" height="21.5" fill="black" rx="2"/><rect x="118.703125" y="147.5" width="362.59375" height="19" fill="black" rx="2"/><rect x="259.39453125" y="217.25" width="81.2109375" height="21.5" fill="black" rx="2"/><rect x="147.73046875" y="237.5" width="304.5390625" height="19" fill="black" rx="2"/><rect x="241.71484375" y="332.25" width="136.5703125" height="21.5" fill="black" rx="2"/><rect x="126.53125" y="353.5" width="366.9375" height="19" fill="black" rx="2"/><rect x="88.0703125" y="371.5" width="443.859375" height="19" fill="black" rx="2"/><rect x="211.5703125" y="453.25" width="176.859375" height="21.5" fill="black" rx="2"/><rect x="143.046875" y="473.5" width="313.90625" height="19" fill="black" rx="2"/><rect x="539.2265625" y="453.25" width="87.546875" height="21.5" fill="black" rx="2"/><rect x="541.421875" y="473.5" width="83.15625" height="19" fill="black" rx="2"/><rect x="220.01953125" y="553.25" width="159.9609375" height="21.5" fill="black" rx="2"/><rect x="96.94921875" y="573.5" width="406.1015625" height="19" fill="black" rx="2"/><rect x="243.36328125" y="643.25" width="113.2734375" height="21.5" fill="black" rx="2"/><rect x="130.984375" y="663.5" width="338.03125" height="19" fill="black" rx="2"/><rect x="86.5859375" y="737.25" width="68.828125" height="21.5" fill="black" rx="2"/><rect x="217.09765625" y="737.25" width="99.8046875" height="21.5" fill="black" rx="2"/><rect x="372.49609375" y="737.25" width="81.0078125" height="21.5" fill="black" rx="2"/><rect x="509.56640625" y="737.25" width="98.8671875" height="21.5" fill="black" rx="2"/><rect x="251.44140625" y="809.25" width="177.1171875" height="21.5" fill="black" rx="2"/><rect x="180.86328125" y="829.5" width="318.2734375" height="19" fill="black" rx="2"/><rect x="54" y="864.5" width="92.640625" height="19" fill="black" rx="2"/><rect x="232" y="864.5" width="174.2578125" height="19" fill="black" rx="2"/><rect x="464" y="864.5" width="75.453125" height="19" fill="black" rx="2"/></mask></defs>
+
+<!-- ── SECTION LABELS ── -->
+<text x="170" y="26" text-anchor="middle" opacity="0.45" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.45;font-size:12px;font-weight:400">Whole-site path</text>
+<text x="540" y="26" text-anchor="middle" opacity="0.45" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.45;font-size:12px;font-weight:400">Direct input</text>
+
+<!-- ── INPUTS ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="40" y="38" width="115" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="97" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Live URL</text>
+  <text x="97" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Any CMS source</text>
+</g>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="170" y="38" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="235" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">SPA / headless</text>
+  <text x="235" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">JSON in source</text>
+</g>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="476" y="38" width="128" height="44" rx="8" stroke-width="0.5" stroke-dasharray="4 3" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;stroke-dasharray:4px, 3px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="540" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Figma / PDF</text>
+  <text x="540" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Design-to-page</text>
+</g>
+
+<!-- ── INPUT → MIRROR: L-paths merging to junction, then single arrow ── -->
+<path d="M97,82 L97,100 L300,100" fill="none" stroke="var(--t)" stroke-width="0.5" opacity="0.5" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<path d="M235,82 L235,100 L300,100" fill="none" stroke="var(--t)" stroke-width="0.5" opacity="0.5" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<circle cx="300" cy="100" r="2.5" fill="var(--t)" opacity="0.3" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:0.3;font-size:16px;font-weight:400"/>
+<line x1="300" y1="100" x2="300" y2="118" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── FIGMA BYPASS: dashed vertical to IF top ── -->
+<line x1="540" y1="82" x2="540" y2="320" fill="none" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#arrow)" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:4px, 3px;opacity:1;font-size:16px;font-weight:400"/>
+<text x="552" y="204" opacity="0.5" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.5;font-size:12px;font-weight:400">Skips mirror</text>
+
+<!-- ── STAGE 1: MIRROR ── x=90 w=420 center=300 -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="90" y="118" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="300" y="138" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">01 — Mirror</text>
+  <text x="300" y="157" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Playwright renders full site offline. Assets downloaded to DAM.</text>
+</g>
+
+<!-- ── MIRROR → PARSE ── -->
+<line x1="300" y1="170" x2="300" y2="208" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── STAGE 2: PARSE ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="90" y="208" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="300" y="228" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">02 — Parse</text>
+  <text x="300" y="247" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">HTML → Nunjucks templates + JSON content blocks.</text>
+</g>
+
+<!-- ── PARSE → IF ── -->
+<line x1="300" y1="260" x2="300" y2="320" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── INTERCHANGE FORMAT — architectural centrepiece ── x=40 w=600 -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="40" y="320" width="600" height="84" rx="10" stroke-width="1" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="310" y="343" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Interchange format</text>
+  <text x="310" y="363" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Nunjucks templates + JSON content — CMS-agnostic by design</text>
+  <text x="310" y="381" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Both input paths converge here. All pipeline stages operate within this format.</text>
+</g>
+
+<!-- ── IF → DETECT ── -->
+<line x1="300" y1="404" x2="300" y2="444" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── STAGE 3: DETECT ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="90" y="444" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="300" y="464" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">03 — Detect components</text>
+  <text x="300" y="483" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Visual + markup analysis. Confidence scored per page.</text>
+</g>
+
+<!-- ── HUMAN GATE sidecar ── x=526 w=114 -->
+<line x1="510" y1="470" x2="524" y2="470" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="3 2" marker-end="url(#arrow)" style="fill:rgb(0, 0, 0);stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:3px, 2px;opacity:1;font-size:16px;font-weight:400"/>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="526" y="444" width="114" height="52" rx="8" stroke-width="0.5" style="fill:#e2e2dc;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <rect x="530" y="435" width="6" height="6" fill="#bcfb49"/>
+  <text x="583" y="464" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Human gate</text>
+  <text x="583" y="483" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Dev confirms</text>
+</g>
+<!-- checkpoint return: down → left → joins main flow -->
+<path d="M583,496 L583,522 L300,522" fill="none" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="3 2" style="fill:none;stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:3px, 2px;opacity:1;font-size:16px;font-weight:400"/>
+
+<!-- ── DETECT → SWAP (main flow, checkpoint return joins at y=522) ── -->
+<line x1="300" y1="496" x2="300" y2="544" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<circle cx="300" cy="522" r="2.5" fill="var(--t)" opacity="0.3" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:0.3;font-size:16px;font-weight:400"/>
+
+<!-- ── STAGE 4: SWAP + STITCH ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="90" y="544" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="300" y="564" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">04 — Swap out + stitch</text>
+  <text x="300" y="583" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Site-wide propagation. Variant deduplication across component library.</text>
+</g>
+
+<!-- ── SWAP → TRANSCODE ── -->
+<line x1="300" y1="596" x2="300" y2="634" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── STAGE 5: TRANSCODE ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="90" y="634" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="300" y="654" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">05 — Transcode</text>
+  <text x="300" y="673" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Interchange compiled to target CMS via API or MCP server.</text>
+</g>
+
+<!-- ── FAN: Transcode → 4 outputs ── shared stem then branch at y=706 -->
+<line x1="300" y1="686" x2="300" y2="706" stroke="var(--t)" stroke-width="0.5" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.4;font-size:16px;font-weight:400"/>
+<path d="M300,706 L121,706 L121,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<path d="M300,706 L267,706 L267,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<path d="M300,706 L413,706 L413,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<path d="M300,706 L559,706 L559,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── OUTPUT BOXES ── x: 56 202 348 494, w=130, y=726 h=44 -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="56" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="121" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Magnolia</text>
+</g>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="202" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="267" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Contentstack</text>
+</g>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="348" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="413" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Contentful</text>
+</g>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="494" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="559" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">AEM + others</text>
+</g>
+
+<!-- ── OUTPUTS → FINISHED SITE ── -->
+<line x1="121" y1="770" x2="121" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<line x1="267" y1="770" x2="267" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<line x1="413" y1="770" x2="413" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+<line x1="559" y1="770" x2="559" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+
+<!-- ── FINISHED SITE ── x=56 w=568 center=340 -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
+  <rect x="56" y="800" width="568" height="52" rx="10" stroke-width="1" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"/>
+  <text x="340" y="820" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Live site — fully managed</text>
+  <text x="340" y="839" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Content in CMS · Components mapped · Assets in DAM</text>
+</g>
+
+<!-- ── LEGEND ── -->
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="40" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
+<text x="58" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Pipeline stages</text>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="218" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
+<text x="236" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Interchange format + outputs</text>
+<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="450" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#e2e2dc;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
+<text x="468" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Human gate</text>
+
+</svg>
+        </div>
+        <div class="state-hint">Press 'd' for detail</div>
+       </div>
       </div>
     </div>
     <div class="foot light-foot">
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">03 / 06</div>
+        <div class="counter">04 / 07</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 04 · The Proof ====== -->
-  <section class="slide slide-validation" data-slide="3">
+  <!-- ====== Slide 05 · The Proof ====== -->
+  <section class="slide slide-validation" data-slide="4">
     <div class="frame">
-      <div class="eyebrow">03 · The Proof</div>
+      <div class="eyebrow">04 · The Proof</div>
       <div class="number-block">
         <div class="number"><em>2,600</em> pages. One person.</div>
         <p class="number-caption">A recent production run. Like-for-like output from a single developer at the controls. Roughly <strong>90% automation</strong>. The remaining 10% is a deliberate human gate at low-confidence component decisions, not a gap.</p>
@@ -864,16 +1171,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">04 / 06</div>
+        <div class="counter">05 / 07</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 05 · The Price ====== -->
-  <section class="slide slide-price" data-slide="4">
+  <!-- ====== Slide 06 · The Price ====== -->
+  <section class="slide slide-price" data-slide="5">
     <div class="frame">
-      <div class="eyebrow">04 · The Price</div>
+      <div class="eyebrow">05 · The Price</div>
       <div class="price-stage">
         <div class="plate">
           <div class="tile">
@@ -940,16 +1247,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">05 / 06</div>
+        <div class="counter">06 / 07</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 06 · Closer ====== -->
-  <section class="slide slide-closer" data-slide="5">
+  <!-- ====== Slide 07 · Closer ====== -->
+  <section class="slide slide-closer" data-slide="6">
     <div class="frame">
-      <div class="eyebrow">05</div>
+      <div class="eyebrow">06</div>
       <h1 class="headline">Let&rsquo;s get to the <em>real&nbsp;work</em>.</h1>
       <div class="cta">
         <div class="cta-text">Pick a site.</div>
@@ -960,7 +1267,7 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">06 / 06</div>
+        <div class="counter">07 / 07</div>
         <button class="nav-btn next" disabled aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -971,19 +1278,40 @@ html, body {
 <script>
 (function() {
   const slides = document.querySelectorAll('.slide');
+  const methodSlide = document.querySelector('.slide-method');
   let current = 0;
+  let methodComplex = false;
+
+  function applyMethodState() {
+    if (!methodSlide) return;
+    methodSlide.querySelectorAll('.state').forEach(s => {
+      s.classList.toggle('active', s.dataset.state === (methodComplex ? 'complex' : 'simple'));
+    });
+    const hint = methodSlide.querySelector('.state-hint');
+    if (hint) hint.textContent = methodComplex ? "Press 'd' for simple view" : "Press 'd' for detail";
+  }
+  function toggleMethod() {
+    methodComplex = !methodComplex;
+    if (methodSlide) methodSlide.classList.add('animation-done');
+    applyMethodState();
+  }
+  function resetMethod() {
+    methodComplex = false;
+    if (methodSlide) methodSlide.classList.remove('animation-done');
+    applyMethodState();
+  }
 
   function show(idx) {
     if (idx < 0 || idx >= slides.length) return;
     slides[current].classList.remove('active');
     current = idx;
     slides[current].classList.add('active');
+    resetMethod();
   }
 
   function next() { show(Math.min(current + 1, slides.length - 1)); }
   function prev() { show(Math.max(current - 1, 0)); }
 
-  // Wire up nav buttons
   document.querySelectorAll('.nav-btn.next').forEach(btn => {
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -997,10 +1325,20 @@ html, body {
     });
   });
 
-  // Deck click to advance
   document.getElementById('deck').addEventListener('click', function(e) {
     next();
   });
+
+  if (methodSlide) {
+    const diagramWrap = methodSlide.querySelector('.diagram-wrap');
+    if (diagramWrap) {
+      diagramWrap.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleMethod();
+      });
+    }
+    applyMethodState();
+  }
 
   document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
@@ -1011,6 +1349,11 @@ html, body {
       e.preventDefault(); show(0);
     } else if (e.key === 'End') {
       e.preventDefault(); show(slides.length - 1);
+    } else if (e.key === 'd' || e.key === 'D') {
+      if (methodSlide && methodSlide.classList.contains('active')) {
+        e.preventDefault();
+        toggleMethod();
+      }
     } else if (/^[1-9]$/.test(e.key)) {
       const target = parseInt(e.key, 10) - 1;
       if (target < slides.length) show(target);
