@@ -377,7 +377,7 @@ html, body {
 .method-svg .label-minor {
   font-family: 'Karla', sans-serif;
   font-weight: 700;
-  font-size: 10px;
+  font-size: 14px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   fill: var(--ink-mute);
@@ -407,7 +407,9 @@ html, body {
 .slide-method.active .anim-source { animation: fadeRise 700ms var(--ease) 300ms forwards; }
 .slide-method.active .anim-arrow1 { animation: fadeIn 600ms var(--ease) 1100ms forwards; }
 .slide-method.active .anim-center { animation: fadeRise 700ms var(--ease) 1700ms forwards; }
-.slide-method.active .anim-lime { animation: fadeIn 700ms var(--ease) 2700ms forwards; }
+.slide-method.active .anim-brand-panel { animation: fadeRise 700ms var(--ease) 2000ms forwards; }
+.slide-method.active .anim-brand-arrow { animation: fadeIn 500ms var(--ease) 2500ms forwards; }
+.slide-method.active .anim-lime { animation: fadeIn 700ms var(--ease) 2900ms forwards; }
 .slide-method.active .anim-arrow2 { animation: fadeIn 600ms var(--ease) 3300ms forwards; }
 .slide-method.active .anim-new-site { animation: fadeRise 800ms var(--ease) 3900ms forwards; }
 .slide-method.active .anim-deployed { animation: fadeIn 700ms var(--ease) 4900ms forwards; }
@@ -907,7 +909,7 @@ html, body {
       <div class="stage">
        <div class="diagram-wrap">
         <div class="state simple-state active" data-state="simple">
-        <svg class="method-svg" viewBox="0 0 1320 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <svg class="method-svg" viewBox="0 -100 1320 640" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
           <!-- ====== SOURCE SITE (left) ====== -->
           <g class="anim anim-source">
             <text class="label-minor" x="40" y="60">Your site, today</text>
@@ -957,6 +959,23 @@ html, body {
             <text class="label-caption" x="498" y="354">Translation-ready</text>
             <text class="label-caption" x="498" y="372">Direct into headless CMS</text>
             <text class="label-caption" x="450" y="488">where the rebrand happens</text>
+          </g>
+
+          <!-- ====== BRAND ASSETS (top) ====== -->
+          <g class="anim anim-brand-panel">
+            <rect x="484" y="-50" width="272" height="80" fill="#f3f3ee" stroke="#0a0a0a" stroke-width="1" />
+            <text class="label-minor" x="500" y="-28">Brand assets</text>
+            <rect x="564" y="-14" width="22" height="22" fill="#d4865a" />
+            <rect x="594" y="-14" width="22" height="22" fill="#a85a2e" />
+            <rect x="624" y="-14" width="22" height="22" fill="#2a2018" />
+            <rect x="654" y="-14" width="22" height="22" fill="#e8d6c4" />
+            <text class="label-caption" x="620" y="24" text-anchor="middle">Tone of voice · Design tokens · Components</text>
+          </g>
+
+          <!-- BRAND → INTERCHANGE ARROW -->
+          <g class="anim anim-brand-arrow">
+            <line class="stroke" x1="620" y1="30" x2="620" y2="78" />
+            <polygon points="620,80 615,71 625,71" fill="#0a0a0a" />
           </g>
 
           <!-- LIME ACCENT BAR -->
