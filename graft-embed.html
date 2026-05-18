@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAFT — CMS Migration Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@200;300;700;800&family=Karla:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07071a;
+  --surface:#0d0d28;
+  --surface-2:#12122f;
+  --surface-3:#181838;
+  --border:rgba(188,251,73,0.18);
+  --border-md:rgba(188,251,73,0.35);
+  --border-bright:rgba(188,251,73,0.6);
+  --accent:#bcfb49;
+  --accent-dim:rgba(188,251,73,0.16);
+  --accent-glow:rgba(188,251,73,0.08);
+  --text:#f0ede8;
+  --text-2:#c8c3bb;
+  --text-3:#8f8a84;
+  --violet:#7234d0;
+  --violet-dim:rgba(114,52,208,0.3);
+  --red:#f87171;
+  --red-dim:rgba(248,113,113,0.2);
+  --amber:#fbbf24;
+  --amber-dim:rgba(251,191,36,0.2);
+  --green:#4ade80;
+  --green-dim:rgba(74,222,128,0.18);
+  --sidebar:56px;
+  --font-head:'Epilogue',sans-serif;
+  --font-body:'Karla',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:var(--font-body);background:none;border:none;color:var(--text);outline:none}
+input::placeholder{color:var(--text-3)}
+
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:8px;flex-shrink:0;z-index:10}
+.sidebar-logo{width:32px;height:32px;margin-bottom:16px;position:relative}
+.sidebar-logo svg{width:100%;height:100%}
+.nav-item{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.15s,color 0.15s;color:#8a8580;position:relative}
+.nav-item:hover{background:var(--accent-dim);color:var(--text-2)}
+.nav-item.active{background:var(--accent-dim);color:var(--accent)}
+.nav-item.active::before{content:'';position:absolute;left:-1px;top:50%;transform:translateY(-50%);width:2px;height:20px;background:var(--accent);border-radius:0 2px 2px 0}
+.nav-spacer{flex:1}
+.nav-item svg{width:18px;height:18px}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* TOPBAR */
+.topbar{height:52px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0;background:var(--surface)}
+.topbar-title{font-family:var(--font-head);font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:#c8c3bb}
+.topbar-pill{font-size:11px;font-family:var(--font-mono);background:var(--accent-dim);color:var(--accent);padding:2px 8px;border-radius:4px;border:1px solid var(--border-md)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.topbar-btn{height:30px;padding:0 14px;border-radius:6px;border:1px solid var(--border-md);font-size:12px;color:#c8c3bb;transition:all 0.15s}
+.topbar-btn:hover{border-color:var(--border-bright);color:var(--text);background:var(--accent-glow)}
+.topbar-btn.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+.topbar-btn.primary:hover{background:#d4ff5c}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-track{background:transparent}
+.content::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:2px}
+
+/* VIEW */
+.view{display:none}
+.view.active{display:block}
+
+/* PIPELINE VIEW */
+.url-bar{background:var(--surface-2);border:1px solid var(--border-md);border-radius:10px;display:flex;align-items:center;padding:0 16px;height:52px;gap:12px;margin-bottom:24px;transition:border-color 0.2s}
+.url-bar:focus-within{border-color:var(--border-bright)}
+.url-bar-icon{color:#8a8580}
+.url-bar input{flex:1;font-size:14px}
+.url-bar-mode{display:flex;align-items:center;gap:4px;border-left:1px solid var(--border);padding-left:12px;margin-left:4px}
+.mode-btn{height:26px;padding:0 10px;border-radius:5px;font-size:11px;font-family:var(--font-mono);color:#9e9893;transition:all 0.15s}
+.mode-btn.active{background:var(--accent-dim);color:var(--accent);border:1px solid var(--border-md)}
+.run-btn{height:36px;padding:0 20px;background:var(--accent);color:#000;border-radius:7px;font-weight:700;font-size:13px;font-family:var(--font-body);white-space:nowrap;transition:all 0.15s;flex-shrink:0}
+.run-btn:hover{background:#d4ff5c;transform:translateY(-1px)}
+.run-btn:disabled{background:var(--accent-dim);color:var(--text-3);transform:none;cursor:not-allowed}
+.run-btn.running{background:var(--red-dim);color:var(--red);border:1px solid var(--red);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+
+/* PIPELINE STAGES */
+.stages{display:flex;align-items:center;gap:0;margin-bottom:24px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0 4px;height:52px}
+.stage{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;height:100%;border-radius:8px;transition:background 0.2s}
+.stage.pending .stage-num{color:var(--text-3);border-color:var(--border)}
+.stage.pending .stage-label{color:#9e9893}
+.stage.active{background:var(--accent-dim)}
+.stage.active .stage-num{color:var(--accent);border-color:var(--accent)}
+.stage.active .stage-label{color:var(--text)}
+.stage.done .stage-num{background:var(--accent);color:#000;border-color:var(--accent)}
+.stage.done .stage-label{color:#c8c3bb}
+.stage.error .stage-num{border-color:var(--red);color:var(--red)}
+.stage.error .stage-label{color:var(--red)}
+.stage-num{width:22px;height:22px;border-radius:50%;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--font-mono);font-weight:500;flex-shrink:0;transition:all 0.3s}
+.stage-label{font-size:11px;font-family:var(--font-mono);white-space:nowrap}
+.stage-connector{width:24px;height:1px;background:var(--border);flex-shrink:0}
+.stage.active .stage-num svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* PIPELINE GRID */
+.pipeline-grid{display:grid;grid-template-columns:1fr 280px;gap:16px;height:calc(100vh - 280px);min-height:420px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;overflow:hidden}
+.panel-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.panel-title{font-family:var(--font-mono);font-size:11px;color:#c8c3bb;text-transform:uppercase;letter-spacing:0.06em}
+.panel-badge{margin-left:auto;font-size:10px;font-family:var(--font-mono);padding:2px 6px;border-radius:3px}
+.panel-badge.green{background:var(--green-dim);color:var(--green)}
+.panel-badge.amber{background:var(--amber-dim);color:var(--amber)}
+.panel-badge.muted{background:var(--surface-3);color:var(--text-3)}
+
+/* LOG */
+.log-body{flex:1;overflow-y:auto;padding:12px 16px;font-family:var(--font-mono);font-size:12px;line-height:1.8}
+.log-body::-webkit-scrollbar{width:3px}
+.log-body::-webkit-scrollbar-thumb{background:var(--border)}
+.log-line{display:flex;gap:10px;margin-bottom:2px}
+.log-ts{color:#9e9893;flex-shrink:0;user-select:none}
+.log-type{flex-shrink:0;width:50px}
+.log-type.info{color:#9e9893}
+.log-type.ok{color:var(--green)}
+.log-type.warn{color:var(--amber)}
+.log-type.err{color:var(--red)}
+.log-type.sys{color:var(--violet)}
+.log-msg{color:#d4cfc8}
+.log-msg .hl{color:var(--accent)}
+.log-cursor{display:inline-block;width:7px;height:13px;background:var(--accent);vertical-align:middle;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* COMPONENTS */
+.comp-body{flex:1;overflow-y:auto;padding:8px}
+.comp-body::-webkit-scrollbar{width:3px}
+.comp-body::-webkit-scrollbar-thumb{background:var(--border)}
+.comp-item{padding:10px 12px;border-radius:7px;border:1px solid var(--border);background:var(--surface-2);margin-bottom:6px;transition:border-color 0.2s;cursor:default}
+.comp-item:hover{border-color:var(--border-md)}
+.comp-item.new{border-color:var(--accent);background:var(--accent-glow);animation:compIn 0.4s ease}
+@keyframes compIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.comp-name{font-size:12px;font-family:var(--font-mono);color:var(--text);margin-bottom:4px}
+.comp-meta{display:flex;gap:8px}
+.comp-tag{font-size:10px;padding:1px 6px;border-radius:3px;background:var(--surface-3);color:#a8a39d}
+.comp-tag.managed{background:var(--green-dim);color:var(--green)}
+.comp-tag.unmanaged{background:var(--amber-dim);color:var(--amber)}
+.comp-tag.new-tag{background:var(--accent-dim);color:var(--accent)}
+
+/* CHECKPOINT */
+.checkpoint{background:var(--surface-2);border:1px solid var(--amber);border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start}
+.checkpoint-icon{width:20px;height:20px;color:var(--amber);flex-shrink:0;margin-top:2px}
+.checkpoint-title{font-family:var(--font-mono);font-size:12px;color:var(--amber);margin-bottom:4px}
+.checkpoint-msg{font-size:13px;color:var(--text-2);line-height:1.5}
+.checkpoint-actions{display:flex;gap:8px;margin-top:12px}
+.chk-btn{height:28px;padding:0 14px;border-radius:5px;font-size:12px;transition:all 0.15s}
+.chk-btn.confirm{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber)}
+.chk-btn.confirm:hover{background:var(--amber);color:#000}
+.chk-btn.skip{background:transparent;color:var(--text-3);border:1px solid var(--border)}
+.chk-btn.skip:hover{color:var(--text-2);border-color:var(--border-md)}
+
+/* TRANSCODE ROW */
+.transcode-bar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-top:16px}
+.transcode-label{font-size:12px;font-family:var(--font-mono);color:#c8c3bb;flex-shrink:0}
+.cms-select{height:32px;padding:0 10px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:6px;color:var(--text);font-family:var(--font-mono);font-size:12px;appearance:none;cursor:pointer;min-width:140px}
+.cms-select option{background:var(--surface-2)}
+.transcode-spacer{flex:1}
+.export-btn{height:32px;padding:0 16px;background:var(--accent);color:#000;border-radius:6px;font-weight:700;font-size:12px;transition:all 0.15s}
+.export-btn:hover{background:#d4ff5c}
+.export-btn:disabled{background:var(--accent-dim);color:var(--text-3);cursor:not-allowed}
+
+/* ANALYTICS VIEW */
+.analytics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px}
+.stat-label{font-size:11px;font-family:var(--font-mono);color:#9e9893;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.stat-value{font-family:var(--font-head);font-weight:700;font-size:32px;color:var(--text);line-height:1}
+.stat-value span{font-size:16px;color:var(--accent)}
+.stat-delta{font-size:11px;color:var(--green);margin-top:6px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.chart-title{font-family:var(--font-mono);font-size:11px;color:#c8c3bb;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:20px}
+.bar-chart{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:12px}
+.bar-name{font-size:12px;color:#c8c3bb;width:80px;flex-shrink:0;font-family:var(--font-mono)}
+.bar-track{flex:1;height:6px;background:var(--surface-3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;background:var(--accent);transition:width 1s ease}
+.bar-val{font-size:11px;color:#9e9893;font-family:var(--font-mono);width:30px;text-align:right}
+.donut-wrap{display:flex;align-items:center;gap:24px}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-2)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cms-coverage{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cms-chip{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.cms-chip-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.cms-chip-dot.partial{background:var(--amber)}
+.cms-chip-dot.pending{background:var(--surface-3);border:1px solid var(--border-md)}
+.cms-chip-name{font-size:12px;font-family:var(--font-mono);color:#c8c3bb}
+.cms-chip-status{margin-left:auto;font-size:10px;color:#9e9893}
+
+/* HISTORY VIEW */
+.history-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.search-input{height:36px;padding:0 12px 0 36px;background:var(--surface);border:1px solid var(--border-md);border-radius:7px;font-size:13px;flex:1;position:relative}
+.search-wrap{position:relative;flex:1}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.filter-btn{height:36px;padding:0 14px;background:var(--surface);border:1px solid var(--border-md);border-radius:7px;font-size:12px;font-family:var(--font-mono);color:#c8c3bb}
+.history-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.history-table th{padding:10px 16px;text-align:left;font-size:11px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:#9e9893;border-bottom:1px solid var(--border);font-weight:400}
+.history-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;color:#c8c3bb}
+.history-table tr:last-child td{border-bottom:none}
+.history-table tr:hover td{background:var(--accent-glow)}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:4px;font-size:11px;font-family:var(--font-mono)}
+.status-badge.done{background:var(--green-dim);color:var(--green)}
+.status-badge.running{background:var(--amber-dim);color:var(--amber)}
+.status-badge.error{background:var(--red-dim);color:var(--red)}
+.status-badge.pending{background:var(--surface-3);color:var(--text-3)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.table-url{font-family:var(--font-mono);font-size:12px;color:var(--text)}
+.table-ts{font-family:var(--font-mono);font-size:11px;color:var(--text-3)}
+.expand-btn{width:24px;height:24px;border-radius:4px;background:var(--surface-2);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;color:var(--text-3);cursor:pointer;transition:all 0.15s}
+.expand-btn:hover{border-color:var(--border-md);color:var(--text-2)}
+.row-detail{background:var(--surface-2);border-bottom:1px solid var(--border)}
+.row-detail td{padding:12px 16px}
+.inline-log{font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text-3);max-height:120px;overflow-y:auto}
+.inline-log::-webkit-scrollbar{width:2px}
+.inline-log::-webkit-scrollbar-thumb{background:var(--border)}
+
+/* BRANDS VIEW */
+.brands-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.brands-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.brand-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden;cursor:pointer;transition:border-color 0.15s}
+.brand-card:hover{border-color:var(--border-md)}
+.brand-card.active-brand{border-color:var(--accent)}
+.brand-card-stripe{display:none}
+.brand-card-banner{height:128px;background-color:#1a1a2e;background-size:cover;background-position:center;position:relative}
+.brand-card-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(13,13,40,0.35));pointer-events:none}
+.brand-card-logo-plate{position:absolute;left:16px;bottom:-22px;width:72px;height:72px;border-radius:14px;background:#f5f2ec;display:flex;align-items:center;justify-content:center;padding:10px;box-shadow:0 6px 16px rgba(0,0,0,0.35),0 0 0 1px rgba(255,255,255,0.06);z-index:2}
+.brand-card-logo-plate img{max-width:100%;max-height:100%;object-fit:contain}
+.brand-card-banner.empty{background:var(--surface-2);background-image:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(245,158,11,0.04) 8px,rgba(245,158,11,0.04) 16px);display:flex;align-items:center;justify-content:flex-end;padding:0 18px}
+.brand-card-banner.empty::after{display:none}
+.brand-card-banner.empty .empty-banner-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#f59e0b;display:flex;align-items:center;gap:6px}
+.brand-card-logo-plate.empty{background:var(--surface-3);border:1px dashed var(--border-md);box-shadow:none;color:var(--text-3)}
+.brand-card-body{padding:34px 18px 16px}
+.brand-card-name{font-family:var(--font-head);font-weight:700;font-size:15px;color:var(--text);margin-bottom:2px}
+.brand-card-org{font-size:11px;font-family:var(--font-mono);color:#9e9893;margin-bottom:14px}
+.brand-assets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.brand-asset-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);display:flex;align-items:center;gap:5px}
+.brand-asset-tag.has{background:var(--green-dim);color:#4ade80}
+.brand-asset-tag.missing{background:var(--surface-3);color:#9e9893;border:1px dashed var(--border)}
+.brand-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.brand-card-updated{font-size:10px;font-family:var(--font-mono);color:#9e9893}
+.brand-edit-btn{height:24px;padding:0 10px;border-radius:5px;border:1px solid var(--border-md);font-size:11px;font-family:var(--font-mono);color:#c8c3bb;transition:all 0.15s}
+.brand-edit-btn:hover{border-color:var(--border-bright);color:var(--text)}
+.brand-add-card{background:transparent;border:1px dashed var(--border-md);border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:32px;cursor:pointer;transition:all 0.15s;min-height:180px}
+.brand-add-card:hover{border-color:var(--border-bright);background:var(--accent-glow)}
+.brand-add-icon{width:36px;height:36px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.brand-add-label{font-size:12px;font-family:var(--font-mono);color:#9e9893}
+.brand-detail{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:20px;margin-bottom:16px}
+.brand-detail-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.brand-detail-swatch{width:40px;height:40px;border-radius:9px;flex-shrink:0}
+.brand-detail-name{font-family:var(--font-head);font-weight:700;font-size:17px;color:var(--text)}
+.brand-detail-meta{font-size:12px;font-family:var(--font-mono);color:#9e9893}
+.asset-list{display:flex;flex-direction:column;gap:0}
+.asset-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.asset-row:last-child{border-bottom:none}
+.asset-icon{width:30px;height:30px;border-radius:6px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.asset-name{font-size:13px;color:var(--text);flex:1}
+.asset-meta{font-size:11px;color:#9e9893;font-family:var(--font-mono)}
+.asset-status{font-size:10px;font-family:var(--font-mono);padding:2px 7px;border-radius:3px;flex-shrink:0}
+.asset-status.ok{background:var(--green-dim);color:#4ade80}
+.asset-status.missing{background:var(--surface-3);color:#9e9893;border:1px dashed var(--border)}
+.asset-actions{display:flex;gap:6px}
+.color-swatches{display:flex;gap:8px;margin-top:4px}
+.color-swatch{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);cursor:pointer;position:relative}
+.color-swatch-label{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-family:var(--font-mono);color:#9e9893;white-space:nowrap}
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.settings-card.full{grid-column:1/-1}
+.settings-h{font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px}
+.settings-sub{font-size:12px;color:#a8a39d;margin-bottom:20px;line-height:1.5}
+.field{margin-bottom:16px}
+.field-label{font-size:11px;font-family:var(--font-mono);color:#9e9893;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;display:block}
+.field-input{width:100%;height:36px;padding:0 12px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:6px;font-size:13px;color:var(--text);transition:border-color 0.15s}
+.field-input:focus{border-color:var(--border-bright);outline:none}
+.field-select{width:100%;height:36px;padding:0 12px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:6px;font-size:13px;color:var(--text);appearance:none}
+.field-select option{background:var(--surface-2)}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-name{font-size:13px;color:#c8c3bb}
+.toggle-desc{font-size:11px;color:#a8a39d;margin-top:2px}
+.toggle{width:36px;height:20px;border-radius:10px;background:var(--surface-3);border:1px solid var(--border-md);position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:var(--text-3);top:2px;left:2px;transition:transform 0.2s,background 0.2s}
+.toggle.on::after{transform:translateX(16px);background:#000}
+.tov-file{background:var(--surface-2);border:1px solid var(--border);border-radius:7px;padding:12px 14px;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.tov-icon{width:30px;height:30px;background:var(--accent-dim);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tov-name{font-size:13px;color:#f0ede8}
+.tov-size{font-size:11px;color:#a8a39d}
+.tov-actions{margin-left:auto;display:flex;gap:6px}
+.tov-btn{height:26px;padding:0 10px;border-radius:5px;font-size:11px;font-family:var(--font-mono);border:1px solid var(--border-md);color:var(--text-3);transition:all 0.15s}
+.tov-btn:hover{border-color:var(--border-bright);color:var(--text-2)}
+.tov-btn.active-tov{background:var(--accent-dim);color:var(--accent);border-color:var(--border-md)}
+.upload-zone{border:1px dashed var(--border-md);border-radius:8px;padding:20px;text-align:center;color:var(--text-3);font-size:12px;cursor:pointer;transition:all 0.15s}
+.upload-zone:hover{border-color:var(--border-bright);color:var(--text-2);background:var(--accent-glow)}
+
+/* USER VIEW */
+.user-layout{display:grid;grid-template-columns:300px 1fr;gap:16px}
+.user-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center}
+.avatar{width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:24px;color:var(--accent);margin:0 auto 16px}
+.user-name{font-family:var(--font-head);font-weight:700;font-size:18px;margin-bottom:4px}
+.user-role{font-size:12px;color:#a8a39d;margin-bottom:16px}
+.user-org{font-size:13px;color:var(--accent);font-family:var(--font-mono)}
+.user-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:20px}
+.user-stat{background:var(--surface-2);padding:12px;text-align:center}
+.user-stat-val{font-family:var(--font-head);font-weight:700;font-size:20px;color:var(--accent)}
+.user-stat-label{font-size:10px;color:#9e9893;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}
+.user-info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.info-section{margin-bottom:24px}
+.info-section-title{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#9e9893;margin-bottom:12px}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.info-row:last-child{border-bottom:none}
+.info-key{font-size:12px;color:#a8a39d}
+.info-val{font-size:13px;color:var(--text);font-family:var(--font-mono)}
+.api-key{font-family:var(--font-mono);font-size:12px;background:var(--surface-2);border:1px solid var(--border-md);padding:8px 12px;border-radius:6px;color:var(--text-2);display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+.api-key-val{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* TBSCG footer mark */
+.powered{position:fixed;bottom:16px;right:16px;font-family:var(--font-mono);font-size:10px;color:#8a8580;letter-spacing:0.06em;display:flex;align-items:center;gap:6px;z-index:100}
+.powered .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* HOME VIEW */
+.home-hero{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;padding:28px 32px;background:var(--surface);border:1px solid var(--border);border-radius:12px;position:relative;overflow:hidden}
+.home-hero::after{content:'GRAFT';position:absolute;right:32px;bottom:-20px;font-family:var(--font-head);font-weight:800;font-size:120px;color:rgba(188,251,73,0.04);letter-spacing:-4px;pointer-events:none;user-select:none;line-height:1}
+.home-greeting{font-family:var(--font-head);font-weight:200;font-size:28px;color:var(--text);margin-bottom:4px}
+.home-greeting strong{font-weight:800;color:var(--accent)}
+.home-sub{font-size:13px;color:#9e9893;font-family:var(--font-mono)}
+.home-cta{height:42px;padding:0 24px;background:var(--accent);color:#000;border-radius:8px;font-weight:700;font-size:14px;font-family:var(--font-body);transition:all 0.15s;flex-shrink:0;margin-top:4px}
+.home-cta:hover{background:#d4ff5c;transform:translateY(-1px)}
+.home-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.home-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;cursor:default;transition:border-color 0.15s}
+.home-stat:hover{border-color:var(--border-md)}
+.home-stat-label{font-size:11px;font-family:var(--font-mono);color:#9e9893;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.home-stat-val{font-family:var(--font-head);font-weight:700;font-size:30px;color:var(--text);line-height:1}
+.home-stat-val em{font-style:normal;font-size:15px;color:var(--accent)}
+.home-stat-delta{font-size:11px;color:#4ade80;margin-top:6px}
+.home-grid{display:grid;grid-template-columns:1fr 340px;gap:16px}
+.home-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.home-panel-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.home-panel-title{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#c8c3bb}
+.home-panel-link{font-size:11px;font-family:var(--font-mono);color:var(--accent);cursor:pointer}
+.home-panel-link:hover{text-decoration:underline}
+.active-migration{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.active-migration:last-child{border-bottom:none}
+.active-dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;animation:pulse-dot 1.5s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.active-url{font-family:var(--font-mono);font-size:13px;color:var(--text);flex:1}
+.active-stage{font-size:11px;font-family:var(--font-mono);color:#9e9893}
+.active-go{height:26px;padding:0 12px;border-radius:5px;border:1px solid var(--border-md);font-size:11px;font-family:var(--font-mono);color:#c8c3bb;transition:all 0.15s;flex-shrink:0}
+.active-go:hover{border-color:var(--border-bright);color:var(--text)}
+.recent-item{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background 0.1s}
+.recent-item:hover{background:var(--accent-glow)}
+.recent-item:last-child{border-bottom:none}
+.recent-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.recent-icon.done{background:var(--green-dim)}
+.recent-icon.error{background:var(--red-dim)}
+.recent-icon.running{background:var(--amber-dim)}
+.recent-url{font-family:var(--font-mono);font-size:12px;color:var(--text);margin-bottom:2px}
+.recent-meta{font-size:11px;color:#9e9893}
+.recent-ts{font-size:11px;font-family:var(--font-mono);color:#9e9893;margin-left:auto;flex-shrink:0}
+.quick-actions{display:flex;flex-direction:column;gap:0}
+.quick-action{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;transition:background 0.15s}
+.quick-action:hover{background:var(--accent-glow)}
+.quick-action:last-child{border-bottom:none}
+.qa-icon{width:32px;height:32px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent)}
+.qa-title{font-size:13px;color:var(--text)}
+.qa-sub{font-size:11px;color:#9e9893;margin-top:1px}
+.qa-arrow{margin-left:auto;color:#9e9893;font-size:14px}
+.team-row{padding:10px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.team-row:last-child{border-bottom:none}
+.team-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#000;flex-shrink:0}
+.team-name{font-size:12px;color:var(--text)}
+.team-role{font-size:11px;color:#9e9893}
+.team-online{width:7px;height:7px;border-radius:50%;background:#4ade80;margin-left:auto}
+.team-offline{width:7px;height:7px;border-radius:50%;background:var(--surface-3);border:1px solid var(--border-md);margin-left:auto}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(4,4,18,0.85);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{width:640px;max-width:calc(100vw - 48px);background:var(--surface);border:1px solid var(--border-md);border-radius:14px;display:flex;flex-direction:column;max-height:calc(100vh - 80px);transform:translateY(12px);transition:transform 0.2s}
+.modal-overlay.open .modal{transform:none}
+.modal-header{padding:20px 24px 0;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-family:var(--font-head);font-weight:700;font-size:18px;color:var(--text)}
+.modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;color:#9e9893;transition:all 0.15s;cursor:pointer}
+.modal-close:hover{border-color:var(--border-bright);color:var(--text)}
+.modal-stepper{padding:24px 24px 0;flex-shrink:0}
+.stepper-track{display:flex;align-items:center;gap:0;margin-bottom:0}
+.step-node{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;position:relative}
+.step-node:not(:last-child)::after{content:'';position:absolute;top:13px;left:calc(50% + 14px);right:calc(-50% + 14px);height:1px;background:var(--border);transition:background 0.3s}
+.step-node.done:not(:last-child)::after{background:var(--accent)}
+.step-circle{width:28px;height:28px;border-radius:50%;border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--font-mono);color:#9e9893;background:var(--surface-2);transition:all 0.25s;z-index:1}
+.step-node.active .step-circle{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.step-node.done .step-circle{border-color:var(--accent);background:var(--accent);color:#000}
+.step-label{font-size:10px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;color:#9e9893;transition:color 0.2s}
+.step-node.active .step-label{color:var(--accent)}
+.step-node.done .step-label{color:#c8c3bb}
+.modal-divider{height:1px;background:var(--border);margin:20px 0 0}
+.modal-body{padding:24px;overflow-y:auto;flex:1}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--border-md)}
+.modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-footer-left{font-size:12px;font-family:var(--font-mono);color:#9e9893}
+.modal-footer-right{display:flex;gap:10px}
+.modal-btn{height:36px;padding:0 20px;border-radius:7px;font-size:13px;font-weight:400;transition:all 0.15s}
+.modal-btn.ghost{border:1px solid var(--border-md);color:#c8c3bb}
+.modal-btn.ghost:hover{border-color:var(--border-bright);color:var(--text)}
+.modal-btn.next{background:var(--accent);color:#000;font-weight:700}
+.modal-btn.next:hover{background:#d4ff5c}
+.modal-btn.next:disabled{background:var(--accent-dim);color:#9e9893;cursor:not-allowed}
+.modal-btn.launch{background:var(--accent);color:#000;font-weight:700;padding:0 28px}
+.modal-btn.launch:hover{background:#d4ff5c;transform:translateY(-1px)}
+
+/* STEP CONTENT */
+.step-section{margin-bottom:24px}
+.step-section:last-child{margin-bottom:0}
+.step-section-label{font-size:11px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:#9e9893;margin-bottom:12px;display:block}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mode-card{padding:16px;border-radius:9px;border:1px solid var(--border-md);background:var(--surface-2);cursor:pointer;transition:all 0.15s;position:relative}
+.mode-card:hover{border-color:var(--border-bright)}
+.mode-card.selected{border-color:var(--accent);background:var(--accent-dim)}
+.mode-card-icon{width:32px;height:32px;border-radius:7px;background:var(--surface-3);display:flex;align-items:center;justify-content:center;margin-bottom:10px;color:var(--accent)}
+.mode-card.selected .mode-card-icon{background:var(--accent);color:#000}
+.mode-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:var(--font-head)}
+.mode-card-desc{font-size:12px;color:#a8a39d;line-height:1.5}
+.mode-card .check{position:absolute;top:12px;right:12px;width:18px;height:18px;border-radius:50%;border:1px solid var(--border-md);display:flex;align-items:center;justify-content:center}
+.mode-card.selected .check{background:var(--accent);border-color:var(--accent)}
+.modal-url-bar{background:var(--surface-2);border:1px solid var(--border-md);border-radius:8px;display:flex;align-items:center;padding:0 14px;height:46px;gap:10px;transition:border-color 0.2s;width:100%}
+.modal-url-bar:focus-within{border-color:var(--border-bright)}
+.modal-url-bar input{flex:1;font-size:14px;color:var(--text)}
+.cms-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cms-card{padding:12px 14px;border-radius:8px;border:1px solid var(--border-md);background:var(--surface-2);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:10px}
+.cms-card:hover{border-color:var(--border-bright)}
+.cms-card.selected{border-color:var(--accent);background:var(--accent-dim)}
+.cms-card-dot{width:8px;height:8px;border-radius:50%;background:var(--border-md);flex-shrink:0;transition:background 0.15s}
+.cms-card.selected .cms-card-dot{background:var(--accent)}
+.cms-card-name{font-size:12px;font-family:var(--font-mono);color:var(--text)}
+.cms-card.selected .cms-card-name{color:var(--accent)}
+.modal-select{width:100%;height:40px;padding:0 14px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:8px;font-size:13px;color:var(--text);appearance:none;font-family:var(--font-body);transition:border-color 0.15s}
+.modal-select:focus{border-color:var(--border-bright);outline:none}
+.modal-select option{background:var(--surface-2)}
+.modal-input{width:100%;height:40px;padding:0 14px;background:var(--surface-2);border:1px solid var(--border-md);border-radius:8px;font-size:13px;color:var(--text);font-family:var(--font-body);transition:border-color 0.15s}
+.modal-input:focus{border-color:var(--border-bright);outline:none}
+.modal-input::placeholder{color:#9e9893}
+.toggle-row-modal{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.toggle-row-modal:last-child{border-bottom:none}
+.review-block{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:16px 18px;margin-bottom:12px}
+.review-block-title{font-size:11px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:#9e9893;margin-bottom:12px}
+.review-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+.review-row:last-child{border-bottom:none}
+.review-key{font-size:12px;color:#a8a39d}
+.review-val{font-size:12px;font-family:var(--font-mono);color:var(--text)}
+.review-val.accent{color:var(--accent)}
+.launch-note{background:var(--accent-dim);border:1px solid var(--border-md);border-radius:8px;padding:12px 16px;font-size:12px;color:#c8c3bb;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.launch-note-icon{color:var(--accent);flex-shrink:0;margin-top:1px}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo" title="GRAFT">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="30" height="30" rx="7" fill="rgba(188,251,73,0.08)" stroke="rgba(188,251,73,0.3)" stroke-width="1"/>
+        <path d="M16 7 L16 25 M10 13 L16 7 L22 13" stroke="#bcfb49" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 25 L16 19 L22 25" stroke="rgba(188,251,73,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="nav-item active" data-view="home" title="Home" onclick="switchView('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    </div>
+    <div class="nav-item" data-view="pipeline" title="Pipeline" onclick="switchView('pipeline')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12h4m4 0h4m4 0h4M6 12V7m0 5v5M18 12V7m0 5v5M10 12V9m0 3v3M14 12V9m0 3v3"/></svg>
+    </div>
+    <div class="nav-item" data-view="analytics" title="Analytics" onclick="switchView('analytics')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16l4-4 4 4 4-6"/></svg>
+    </div>
+    <div class="nav-item" data-view="history" title="History & Logs" onclick="switchView('history')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
+    </div>
+    <div class="nav-item" data-view="brands" title="Brands" onclick="switchView('brands')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <div class="nav-item" data-view="settings" title="Settings" onclick="switchView('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </div>
+    <div class="nav-spacer"></div>
+    <div class="nav-item" data-view="user" title="Account" onclick="switchView('user')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar" id="topbar">
+      <span class="topbar-title" id="topbar-title">Pipeline</span>
+      <span class="topbar-pill" id="topbar-pill">READY</span>
+      <div class="topbar-right">
+        <button class="topbar-btn primary" id="topbar-cta" onclick="">Run</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- HOME VIEW -->
+      <div class="view active" id="view-home">
+        <div class="home-hero">
+          <div>
+            <div class="home-greeting">Good morning, <strong>Alec.</strong></div>
+            <div class="home-sub">TBSCG · Enterprise · 6 team members active</div>
+          </div>
+          <button class="home-cta" onclick="openModal()">+ New Migration</button>
+        </div>
+
+        <div class="home-stats">
+          <div class="home-stat">
+            <div class="home-stat-label">Migrations run</div>
+            <div class="home-stat-val">47<em> total</em></div>
+            <div class="home-stat-delta">↑ 12 this month</div>
+          </div>
+          <div class="home-stat">
+            <div class="home-stat-label">Hours saved</div>
+            <div class="home-stat-val">1,240<em>h</em></div>
+            <div class="home-stat-delta">↑ 18% vs last quarter</div>
+          </div>
+          <div class="home-stat">
+            <div class="home-stat-label">Components detected</div>
+            <div class="home-stat-val">3,891</div>
+            <div class="home-stat-delta">avg 82 per run</div>
+          </div>
+          <div class="home-stat">
+            <div class="home-stat-label">CMS types covered</div>
+            <div class="home-stat-val">8<em> / 12</em></div>
+            <div class="home-stat-delta">AEM next on roadmap</div>
+          </div>
+        </div>
+
+        <div class="home-grid">
+          <div>
+            <div class="home-panel" style="margin-bottom:16px">
+              <div class="home-panel-head">
+                <span class="home-panel-title">Active now</span>
+                <span style="font-size:11px;font-family:var(--font-mono);background:var(--amber-dim);color:var(--amber);padding:2px 7px;border-radius:3px">1 running</span>
+              </div>
+              <div class="active-migration">
+                <div class="active-dot"></div>
+                <div style="flex:1">
+                  <div class="active-url">westernasset.com</div>
+                  <div class="active-stage">Stage 3 · Detecting components · 84 pages</div>
+                </div>
+                <button class="active-go" onclick="switchView('pipeline')">View →</button>
+              </div>
+            </div>
+
+            <div class="home-panel">
+              <div class="home-panel-head">
+                <span class="home-panel-title">Recent migrations</span>
+                <span class="home-panel-link" onclick="switchView('history')">View all →</span>
+              </div>
+              <div class="recent-item" onclick="switchView('history')">
+                <div class="recent-icon done">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                  <div class="recent-url">clarionpartners.com</div>
+                  <div class="recent-meta">Full · SharePoint → Magnolia · 41 pages · 5 components</div>
+                </div>
+                <div class="recent-ts">Today 08:47</div>
+              </div>
+              <div class="recent-item" onclick="switchView('history')">
+                <div class="recent-icon done">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                  <div class="recent-url">pandoferries.com</div>
+                  <div class="recent-meta">Full · Unknown → Contentstack · 22 pages · 4 components</div>
+                </div>
+                <div class="recent-ts">13 Apr</div>
+              </div>
+              <div class="recent-item" onclick="switchView('history')">
+                <div class="recent-icon error">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <div>
+                  <div class="recent-url">nwl.co.uk</div>
+                  <div class="recent-meta" style="color:var(--red)">Error · Rate limit · Manual override required</div>
+                </div>
+                <div class="recent-ts">11 Apr</div>
+              </div>
+              <div class="recent-item" onclick="switchView('history')">
+                <div class="recent-icon error">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <div>
+                  <div class="recent-url">hartford.com</div>
+                  <div class="recent-meta" style="color:var(--red)">Error · Bot detection triggered · Aborted</div>
+                </div>
+                <div class="recent-ts">10 Apr</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="home-panel">
+              <div class="home-panel-head"><span class="home-panel-title">Quick actions</span></div>
+              <div class="quick-actions">
+                <div class="quick-action" onclick="switchView('pipeline')">
+                  <div class="qa-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12h4m4 0h4m4 0h4M6 12V7m0 5v5M18 12V7m0 5v5M10 12V9m0 3v3M14 12V9m0 3v3"/></svg>
+                  </div>
+                  <div><div class="qa-title">Open pipeline</div><div class="qa-sub">Resume or monitor active migration</div></div>
+                  <span class="qa-arrow">›</span>
+                </div>
+                <div class="quick-action" onclick="switchView('brands')">
+                  <div class="qa-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+                  </div>
+                  <div><div class="qa-title">Manage brands</div><div class="qa-sub">Guidelines, tone of voice, assets</div></div>
+                  <span class="qa-arrow">›</span>
+                </div>
+                <div class="quick-action" onclick="switchView('analytics')">
+                  <div class="qa-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 16l4-4 4 4 4-6"/></svg>
+                  </div>
+                  <div><div class="qa-title">View analytics</div><div class="qa-sub">Usage, savings, CMS coverage</div></div>
+                  <span class="qa-arrow">›</span>
+                </div>
+                <div class="quick-action" onclick="switchView('settings')">
+                  <div class="qa-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                  </div>
+                  <div><div class="qa-title">Settings</div><div class="qa-sub">Spider, CMS targets, defaults</div></div>
+                  <span class="qa-arrow">›</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="home-panel">
+              <div class="home-panel-head"><span class="home-panel-title">Team</span></div>
+              <div class="team-row">
+                <div class="team-avatar" style="background:var(--accent)">AB</div>
+                <div style="flex:1">
+                  <div class="team-name">Alec Bennett</div>
+                  <div class="team-role">CTO · Admin · Last migration: <span style="color:#c8c3bb">westernasset.com</span></div>
+                </div>
+                <div style="text-align:right"><div class="team-online" style="margin:0 0 4px auto"></div><div style="font-size:10px;color:#4ade80;font-family:var(--font-mono)">Now</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-avatar" style="background:#7234d0;color:#fff">MP</div>
+                <div style="flex:1">
+                  <div class="team-name">Matthew Powell</div>
+                  <div class="team-role">Managing Partner · Last migration: <span style="color:#c8c3bb">clarionpartners.com</span></div>
+                </div>
+                <div style="text-align:right"><div class="team-online" style="margin:0 0 4px auto"></div><div style="font-size:10px;color:#4ade80;font-family:var(--font-mono)">Now</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-avatar" style="background:#e879a0;color:#fff">JA</div>
+                <div style="flex:1">
+                  <div class="team-name">James Andrews</div>
+                  <div class="team-role">Head of Delivery · Last migration: <span style="color:#c8c3bb">pandoferries.com</span></div>
+                </div>
+                <div style="text-align:right"><div class="team-offline" style="margin:0 0 4px auto"></div><div style="font-size:10px;color:#9e9893;font-family:var(--font-mono)">3h ago</div></div>
+              </div>
+              <div class="team-row">
+                <div class="team-avatar" style="background:#60a5fa;color:#000">RK</div>
+                <div style="flex:1">
+                  <div class="team-name">Richard K.</div>
+                  <div class="team-role">Alliances Lead · No migrations yet</div>
+                </div>
+                <div style="text-align:right"><div class="team-online" style="margin:0 0 4px auto"></div><div style="font-size:10px;color:#4ade80;font-family:var(--font-mono)">Now</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIPELINE VIEW -->
+      <div class="view" id="view-pipeline">
+
+        <div class="url-bar">
+          <svg class="url-bar-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="url-input" placeholder="https://example.com — paste target URL" value="https://westernasset.com">
+          <div class="url-bar-mode">
+            <button class="mode-btn active" id="mode-full" onclick="setMode('full')">FULL</button>
+            <button class="mode-btn" id="mode-case" onclick="setMode('case')">CASE STUDY</button>
+          </div>
+          <button class="run-btn" id="run-btn" onclick="startPipeline()">▶ Run Migration</button>
+        </div>
+
+        <div class="stages" id="stages">
+          <div class="stage pending" id="stage-0">
+            <div class="stage-num">1</div>
+            <span class="stage-label">Mirror</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage pending" id="stage-1">
+            <div class="stage-num">2</div>
+            <span class="stage-label">Parse</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage pending" id="stage-2">
+            <div class="stage-num">3</div>
+            <span class="stage-label">Detect</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage pending" id="stage-3">
+            <div class="stage-num">4</div>
+            <span class="stage-label">Swap</span>
+          </div>
+          <div class="stage-connector"></div>
+          <div class="stage pending" id="stage-4">
+            <div class="stage-num">5</div>
+            <span class="stage-label">Transcode</span>
+          </div>
+        </div>
+
+        <div id="checkpoint-area"></div>
+
+        <div class="pipeline-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(188,251,73,0.15)"/><rect x="1" y="5.5" width="10" height="1" fill="#bcfb49"/></svg>
+              <span class="panel-title">Output Log</span>
+              <span class="panel-badge muted" id="log-status">Idle</span>
+            </div>
+            <div class="log-body" id="log-body">
+              <div class="log-line">
+                <span class="log-ts">00:00:00</span>
+                <span class="log-type sys">GRAFT</span>
+                <span class="log-msg">v0.9.1 — CMS Migration Engine initialised</span>
+              </div>
+              <div class="log-line">
+                <span class="log-ts">00:00:00</span>
+                <span class="log-type info">INFO</span>
+                <span class="log-msg">Interchange format: <span class="hl">nunjucks/json</span></span>
+              </div>
+              <div class="log-line">
+                <span class="log-ts">00:00:00</span>
+                <span class="log-type info">INFO</span>
+                <span class="log-msg">Awaiting target URL<span class="log-cursor"></span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect width="12" height="12" rx="2" fill="rgba(188,251,73,0.15)"/><circle cx="6" cy="6" r="3" fill="#bcfb49"/></svg>
+              <span class="panel-title">Component Library</span>
+              <span class="panel-badge muted" id="comp-count">0 detected</span>
+            </div>
+            <div class="comp-body" id="comp-body">
+              <div style="padding:24px 12px;text-align:center;color:var(--text-3);font-size:12px;font-family:var(--font-mono)">
+                Components will appear<br>as detection runs
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transcode-bar">
+          <span class="transcode-label">Target CMS</span>
+          <select class="cms-select" id="cms-target">
+            <option value="magnolia">Magnolia CMS</option>
+            <option value="contentstack">Contentstack</option>
+            <option value="contentful">Contentful</option>
+            <option value="aem">Adobe Experience Manager</option>
+            <option value="static">Static (HTML/JSON)</option>
+          </select>
+          <span style="font-size:11px;color:var(--text-3);font-family:var(--font-mono)">Tone of voice</span>
+          <select class="cms-select" id="tov-target" style="min-width:160px">
+            <option>TBSCG Standard</option>
+            <option>Franklin Templeton</option>
+            <option>Western Asset</option>
+          </select>
+          <div class="transcode-spacer"></div>
+          <span id="summary-text" style="font-size:12px;color:var(--text-3);font-family:var(--font-mono)">—</span>
+          <button class="export-btn" id="export-btn" disabled>Export to CMS</button>
+        </div>
+
+      </div>
+
+      <!-- ANALYTICS VIEW -->
+      <div class="view" id="view-analytics">
+        <div class="analytics-grid">
+          <div class="stat-card">
+            <div class="stat-label">Migrations Complete</div>
+            <div class="stat-value">47<span> total</span></div>
+            <div class="stat-delta">↑ 12 this month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Est. Hours Saved</div>
+            <div class="stat-value">1,240<span>h</span></div>
+            <div class="stat-delta">↑ 18% vs last quarter</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Components Detected</div>
+            <div class="stat-value">3,891<span></span></div>
+            <div class="stat-delta">avg 82 per migration</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">CMS Types Covered</div>
+            <div class="stat-value">8<span> / 12</span></div>
+            <div class="stat-delta">AEM next on roadmap</div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="chart-card">
+            <div class="chart-title">Migrations by CMS target</div>
+            <div class="bar-chart">
+              <div class="bar-row"><span class="bar-name">Magnolia</span><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div><span class="bar-val">22</span></div>
+              <div class="bar-row"><span class="bar-name">Contentstack</span><div class="bar-track"><div class="bar-fill" style="width:56%"></div></div><span class="bar-val">14</span></div>
+              <div class="bar-row"><span class="bar-name">Contentful</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="bar-val">7</span></div>
+              <div class="bar-row"><span class="bar-name">Static</span><div class="bar-track"><div class="bar-fill" style="width:16%"></div></div><span class="bar-val">4</span></div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title">Source CMS coverage</div>
+            <div class="cms-coverage">
+              <div class="cms-chip"><span class="cms-chip-dot"></span><span class="cms-chip-name">WordPress</span><span class="cms-chip-status">Live</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot"></span><span class="cms-chip-name">Magnolia</span><span class="cms-chip-status">Live</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot"></span><span class="cms-chip-name">TeamSite</span><span class="cms-chip-status">Live</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot"></span><span class="cms-chip-name">Contentstack</span><span class="cms-chip-status">Live</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot partial"></span><span class="cms-chip-name">SharePoint</span><span class="cms-chip-status">Beta</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot partial"></span><span class="cms-chip-name">Sitecore</span><span class="cms-chip-status">Beta</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot pending"></span><span class="cms-chip-name">AEM</span><span class="cms-chip-status">Planned</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot pending"></span><span class="cms-chip-name">Drupal</span><span class="cms-chip-status">Planned</span></div>
+              <div class="cms-chip"><span class="cms-chip-dot pending"></span><span class="cms-chip-name">Umbraco</span><span class="cms-chip-status">Planned</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card" style="margin-top:0">
+          <div class="chart-title">Monthly activity — migrations run</div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:80px;padding-top:8px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="flex:1;width:100%;background:var(--surface-3);border-radius:3px 3px 0 0;height:30%" id="bar-oct"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Oct</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;height:45%"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Nov</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;height:55%"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Dec</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;height:40%"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Jan</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;height:70%"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Feb</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent-dim);border-radius:3px 3px 0 0;height:85%"></div><span style="font-size:10px;color:var(--text-3);font-family:var(--font-mono)">Mar</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;background:var(--accent);border-radius:3px 3px 0 0;height:100%"></div><span style="font-size:10px;color:var(--accent);font-family:var(--font-mono)">Apr</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY VIEW -->
+      <div class="view" id="view-history">
+        <div class="history-toolbar">
+          <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" class="search-input" placeholder="Search migrations...">
+          </div>
+          <button class="filter-btn">All Status ▾</button>
+          <button class="filter-btn">All CMS ▾</button>
+          <button class="filter-btn">Last 30 days ▾</button>
+        </div>
+        <table class="history-table" id="history-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>URL</th>
+              <th>Mode</th>
+              <th>Target CMS</th>
+              <th>Pages</th>
+              <th>Components</th>
+              <th>Status</th>
+              <th>Duration</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- BRANDS VIEW -->
+      <div class="view" id="view-brands">
+        <div class="brands-toolbar">
+          <div class="search-wrap" style="flex:1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" class="search-input" placeholder="Search brands...">
+          </div>
+          <button class="topbar-btn primary" onclick="">+ Add Brand</button>
+        </div>
+
+        <div class="brands-grid">
+
+          <div class="brand-card active-brand">
+            <div class="brand-card-banner" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80&fit=crop')">
+              <div class="brand-card-logo-plate"><img src="assets/tbscg-logo.png" alt="TBSCG"></div>
+            </div>
+            <div class="brand-card-body">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div class="brand-card-name">TBSCG</div>
+                  <div class="brand-card-org">The Banyan Solutions Consulting Group</div>
+                </div>
+                <span style="font-size:10px;font-family:var(--font-mono);background:var(--accent-dim);color:var(--accent);padding:2px 7px;border-radius:3px">Default</span>
+              </div>
+              <div class="brand-assets">
+                <span class="brand-asset-tag has">✓ Logo</span>
+                <span class="brand-asset-tag has">✓ Guidelines</span>
+                <span class="brand-asset-tag has">✓ Tone of voice</span>
+                <span class="brand-asset-tag has">✓ Colours</span>
+                <span class="brand-asset-tag has">✓ Typography</span>
+              </div>
+              <div class="color-swatches" style="margin-bottom:14px">
+                <div class="color-swatch" style="background:#bcfb49"><span class="color-swatch-label">Primary</span></div>
+                <div class="color-swatch" style="background:#0a0a1d;border-color:var(--border-md)"><span class="color-swatch-label">Dark</span></div>
+                <div class="color-swatch" style="background:#7234d0"><span class="color-swatch-label">Violet</span></div>
+                <div class="color-swatch" style="background:#f6f6f6"><span class="color-swatch-label">Grey</span></div>
+              </div>
+              <div class="brand-card-footer">
+                <span class="brand-card-updated">Updated 2 days ago</span>
+                <button class="brand-edit-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="brand-card-banner" style="background-image:url('https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80&fit=crop')">
+              <div class="brand-card-logo-plate"><img src="https://img.logo.dev/franklintempleton.com?token=pk_X-1ZO13GSgeOoUrIuJ6GMQ&size=240&format=png" alt="Franklin Templeton"></div>
+            </div>
+            <div class="brand-card-body">
+              <div class="brand-card-name">Franklin Templeton</div>
+              <div class="brand-card-org">Franklin Templeton Investments</div>
+              <div class="brand-assets">
+                <span class="brand-asset-tag has">✓ Logo</span>
+                <span class="brand-asset-tag has">✓ Guidelines</span>
+                <span class="brand-asset-tag has">✓ Tone of voice</span>
+                <span class="brand-asset-tag has">✓ Colours</span>
+                <span class="brand-asset-tag missing">– Typography</span>
+              </div>
+              <div class="color-swatches" style="margin-bottom:14px">
+                <div class="color-swatch" style="background:#d4a843"><span class="color-swatch-label">Primary</span></div>
+                <div class="color-swatch" style="background:#1a1a2e;border-color:var(--border-md)"><span class="color-swatch-label">Dark</span></div>
+                <div class="color-swatch" style="background:#f5f0e8"><span class="color-swatch-label">Light</span></div>
+              </div>
+              <div class="brand-card-footer">
+                <span class="brand-card-updated">Updated 5 days ago</span>
+                <button class="brand-edit-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="brand-card-banner" style="background-image:url('https://images.unsplash.com/photo-1486825586573-7131f7991bdd?w=800&q=80&fit=crop')">
+              <div class="brand-card-logo-plate"><img src="https://img.logo.dev/westernasset.com?token=pk_X-1ZO13GSgeOoUrIuJ6GMQ&size=240&format=png" alt="Western Asset"></div>
+            </div>
+            <div class="brand-card-body">
+              <div class="brand-card-name">Western Asset</div>
+              <div class="brand-card-org">Western Asset Management</div>
+              <div class="brand-assets">
+                <span class="brand-asset-tag has">✓ Logo</span>
+                <span class="brand-asset-tag missing">– Guidelines</span>
+                <span class="brand-asset-tag has">✓ Tone of voice</span>
+                <span class="brand-asset-tag has">✓ Colours</span>
+                <span class="brand-asset-tag missing">– Typography</span>
+              </div>
+              <div class="color-swatches" style="margin-bottom:14px">
+                <div class="color-swatch" style="background:#2563eb"><span class="color-swatch-label">Primary</span></div>
+                <div class="color-swatch" style="background:#1e3a5f;border-color:var(--border-md)"><span class="color-swatch-label">Dark</span></div>
+                <div class="color-swatch" style="background:#e8f0fa"><span class="color-swatch-label">Light</span></div>
+              </div>
+              <div class="brand-card-footer">
+                <span class="brand-card-updated">Updated today</span>
+                <button class="brand-edit-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="brand-card-banner" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80&fit=crop')">
+              <div class="brand-card-logo-plate"><img src="https://img.logo.dev/clarionpartners.com?token=pk_X-1ZO13GSgeOoUrIuJ6GMQ&size=240&format=png" alt="Clarion Partners"></div>
+            </div>
+            <div class="brand-card-body">
+              <div class="brand-card-name">Clarion Partners</div>
+              <div class="brand-card-org">Clarion Partners LLC</div>
+              <div class="brand-assets">
+                <span class="brand-asset-tag has">✓ Logo</span>
+                <span class="brand-asset-tag missing">– Guidelines</span>
+                <span class="brand-asset-tag missing">– Tone of voice</span>
+                <span class="brand-asset-tag has">✓ Colours</span>
+                <span class="brand-asset-tag missing">– Typography</span>
+              </div>
+              <div class="color-swatches" style="margin-bottom:14px">
+                <div class="color-swatch" style="background:#16a34a"><span class="color-swatch-label">Primary</span></div>
+                <div class="color-swatch" style="background:#14532d;border-color:var(--border-md)"><span class="color-swatch-label">Dark</span></div>
+              </div>
+              <div class="brand-card-footer">
+                <span class="brand-card-updated">Added 13 Apr</span>
+                <button class="brand-edit-btn">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="brand-card-banner empty">
+              <div class="brand-card-logo-plate empty">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>
+              </div>
+              <span class="empty-banner-label">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+                Brand assets missing
+              </span>
+            </div>
+            <div class="brand-card-body">
+              <div class="brand-card-name">Lexington Partners</div>
+              <div class="brand-card-org">Lexington Partners LP</div>
+              <div class="brand-assets">
+                <span class="brand-asset-tag missing">– Logo</span>
+                <span class="brand-asset-tag missing">– Guidelines</span>
+                <span class="brand-asset-tag missing">– Tone of voice</span>
+                <span class="brand-asset-tag missing">– Colours</span>
+                <span class="brand-asset-tag missing">– Typography</span>
+              </div>
+              <div style="font-size:11px;color:var(--amber);font-family:var(--font-mono);padding:8px 0 14px">⚠ Brand incomplete — assets needed before migration</div>
+              <div class="brand-card-footer">
+                <span class="brand-card-updated">Added 10 Apr</span>
+                <button class="brand-edit-btn" style="color:var(--amber);border-color:var(--amber)">Add assets</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-add-card">
+            <div class="brand-add-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <div class="brand-add-label">Add new brand</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS VIEW -->
+      <div class="view" id="view-settings">
+        <div class="settings-grid">
+          <div class="settings-card">
+            <div class="settings-h">Spider configuration</div>
+            <div class="settings-sub">Controls how GRAFT crawls target sites. Stealth mode mimics a real browser to avoid detection.</div>
+            <div class="field">
+              <label class="field-label">User agent</label>
+              <input class="field-input" type="text" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/120">
+            </div>
+            <div class="field">
+              <label class="field-label">Request delay (ms)</label>
+              <input class="field-input" type="text" value="800–1400 (randomised)">
+            </div>
+            <div class="field">
+              <label class="field-label">Max concurrent pages</label>
+              <select class="field-select"><option>3</option><option>5</option><option>10</option></select>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Stealth mode</div><div class="toggle-desc">Playwright fingerprint masking</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Respect robots.txt</div><div class="toggle-desc">Skip disallowed paths</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Deep crawl assets</div><div class="toggle-desc">Download images to DAM</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-h">Tone of voice library</div>
+            <div class="settings-sub">Upload brand guidelines or tone documents. GRAFT applies these when rewriting content for your target structure.</div>
+            <div class="tov-file">
+              <div class="tov-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bcfb49" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+              <div><div class="tov-name">TBSCG_ToneOfVoice_v3.pdf</div><div class="tov-size">284 KB · Active</div></div>
+              <div class="tov-actions"><button class="tov-btn active-tov">Active</button><button class="tov-btn">Remove</button></div>
+            </div>
+            <div class="tov-file">
+              <div class="tov-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bcfb49" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+              <div><div class="tov-name">FranklinTempleton_Brand.pdf</div><div class="tov-size">1.1 MB</div></div>
+              <div class="tov-actions"><button class="tov-btn">Set active</button><button class="tov-btn">Remove</button></div>
+            </div>
+            <div class="upload-zone" onclick="">
+              + Upload tone of voice document
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-h">Component detection</div>
+            <div class="settings-sub">Controls how GRAFT identifies and classifies page components. Visual + markup analysis.</div>
+            <div class="field">
+              <label class="field-label">Detection strategy</label>
+              <select class="field-select"><option>Visual + Markup (recommended)</option><option>Markup only</option><option>Visual only</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Confidence threshold</label>
+              <input class="field-input" type="text" value="0.72 (auto-prompt below this)">
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Build by exception</div><div class="toggle-desc">Leave one-off components as static source</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Human checkpoints</div><div class="toggle-desc">Pause for review on low-confidence pages</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Pattern learning</div><div class="toggle-desc">Improve detection across sessions</div></div>
+              <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-h">CMS targets</div>
+            <div class="settings-sub">Configure connection details for each CMS GRAFT can output to. Credentials are stored encrypted.</div>
+            <div class="field">
+              <label class="field-label">Default target</label>
+              <select class="field-select"><option>Magnolia CMS</option><option>Contentstack</option><option>Contentful</option></select>
+            </div>
+            <div class="field">
+              <label class="field-label">Magnolia endpoint</label>
+              <input class="field-input" type="text" value="https://cms.tbscg.internal/author">
+            </div>
+            <div class="field">
+              <label class="field-label">Interchange format</label>
+              <select class="field-select"><option>Nunjucks + JSON (default)</option><option>Handlebars + JSON</option><option>HTML + JSON</option></select>
+            </div>
+            <div class="toggle-row">
+              <div><div class="toggle-name">Auto-export on completion</div><div class="toggle-desc">Push directly to CMS without manual confirm</div></div>
+              <div class="toggle" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USER VIEW -->
+      <div class="view" id="view-user">
+        <div class="user-layout">
+          <div>
+            <div class="user-card">
+              <div class="avatar">AB</div>
+              <div class="user-name">Alec Bennett</div>
+              <div class="user-role">Chief Technology Officer</div>
+              <div class="user-org">TBSCG</div>
+              <div class="user-stats">
+                <div class="user-stat"><div class="user-stat-val">47</div><div class="user-stat-label">Migrations</div></div>
+                <div class="user-stat"><div class="user-stat-val">8</div><div class="user-stat-label">CMS types</div></div>
+                <div class="user-stat"><div class="user-stat-val">3,891</div><div class="user-stat-label">Components</div></div>
+                <div class="user-stat"><div class="user-stat-val">1.2k</div><div class="user-stat-label">Hours saved</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="user-info-card">
+            <div class="info-section">
+              <div class="info-section-title">Account</div>
+              <div class="info-row"><span class="info-key">Email</span><span class="info-val">a.bennett@tbscg.com</span></div>
+              <div class="info-row"><span class="info-key">Role</span><span class="info-val">Admin</span></div>
+              <div class="info-row"><span class="info-key">Plan</span><span class="info-val">Enterprise</span></div>
+              <div class="info-row"><span class="info-key">Team</span><span class="info-val">TBSCG — 6 members</span></div>
+            </div>
+            <div class="info-section">
+              <div class="info-section-title">API Access</div>
+              <div style="font-size:12px;color:var(--text-3);margin-bottom:8px">Use the GRAFT API to trigger migrations from your CI/CD pipeline or internal tooling.</div>
+              <div class="api-key">
+                <span class="api-key-val">gft_live_••••••••••••••••••••••••••••••••••••</span>
+                <button class="tov-btn" style="flex-shrink:0">Reveal</button>
+                <button class="tov-btn" style="flex-shrink:0">Rotate</button>
+              </div>
+            </div>
+            <div class="info-section">
+              <div class="info-section-title">Notifications</div>
+              <div class="toggle-row">
+                <div><div class="toggle-name">Migration complete</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="toggle-row">
+                <div><div class="toggle-name">Human checkpoint required</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="toggle-row">
+                <div><div class="toggle-name">Error alerts</div></div>
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+              </div>
+              <div class="toggle-row" style="border:none">
+                <div><div class="toggle-name">Weekly digest</div></div>
+                <div class="toggle" onclick="this.classList.toggle('on')"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="powered"><div class="dot"></div>TBSCG · GRAFT v0.9.1</div>
+
+<!-- NEW MIGRATION MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Migration</div>
+      <button class="modal-close" onclick="closeModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-stepper">
+      <div class="stepper-track">
+        <div class="step-node active" id="sn-0"><div class="step-circle" id="sc-0">1</div><span class="step-label">Target</span></div>
+        <div class="step-node" id="sn-1"><div class="step-circle" id="sc-1">2</div><span class="step-label">Access</span></div>
+        <div class="step-node" id="sn-2"><div class="step-circle" id="sc-2">3</div><span class="step-label">Output</span></div>
+        <div class="step-node" id="sn-3"><div class="step-circle" id="sc-3">4</div><span class="step-label">Review</span></div>
+      </div>
+      <div class="modal-divider"></div>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- STEP 1: TARGET -->
+      <div class="modal-step" id="mstep-0">
+        <div class="step-section">
+          <span class="step-section-label">Target URL</span>
+          <div class="modal-url-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9e9893" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="modal-url" placeholder="https://example.com" value="">
+          </div>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Scope</span>
+          <div class="mode-cards">
+            <div class="mode-card selected" id="mcard-site" onclick="selectScope('site')">
+              <div class="mode-card-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </div>
+              <div class="mode-card-title">Whole site</div>
+              <div class="mode-card-desc">Spider the entire domain. Mirror all pages, detect and build component library, map to target CMS. Human checkpoints at low-confidence stages.</div>
+              <div class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </div>
+            <div class="mode-card" id="mcard-page" onclick="selectScope('page')">
+              <div class="mode-card-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+              </div>
+              <div class="mode-card-title">Single page</div>
+              <div class="mode-card-desc">Import and restructure one page. Applies tone of voice and maps content to a specific page type template before loading to CMS.</div>
+              <div class="check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </div>
+          </div>
+        </div>
+        <div class="step-section" id="pagetype-section" style="display:none">
+          <span class="step-section-label">Page type <span style="color:#9e9893;text-transform:none;letter-spacing:0;font-size:11px">— how should this page be restructured?</span></span>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px" id="pagetype-grid">
+            <div class="cms-card selected" id="pt-casestudy" onclick="selectPageType('casestudy')"><div class="cms-card-dot"></div><span class="cms-card-name">Case study</span></div>
+            <div class="cms-card" id="pt-news" onclick="selectPageType('news')"><div class="cms-card-dot"></div><span class="cms-card-name">News article</span></div>
+            <div class="cms-card" id="pt-product" onclick="selectPageType('product')"><div class="cms-card-dot"></div><span class="cms-card-name">Product page</span></div>
+            <div class="cms-card" id="pt-landing" onclick="selectPageType('landing')"><div class="cms-card-dot"></div><span class="cms-card-name">Landing page</span></div>
+            <div class="cms-card" id="pt-blog" onclick="selectPageType('blog')"><div class="cms-card-dot"></div><span class="cms-card-name">Blog post</span></div>
+            <div class="cms-card" id="pt-press" onclick="selectPageType('press')"><div class="cms-card-dot"></div><span class="cms-card-name">Press release</span></div>
+            <div class="cms-card" id="pt-bio" onclick="selectPageType('bio')"><div class="cms-card-dot"></div><span class="cms-card-name">Team bio</span></div>
+            <div class="cms-card" id="pt-event" onclick="selectPageType('event')"><div class="cms-card-dot"></div><span class="cms-card-name">Event / webinar</span></div>
+            <div class="cms-card" id="pt-custom" onclick="selectPageType('custom')" style="border-style:dashed"><div class="cms-card-dot" style="background:transparent;border:1px solid var(--border-md)"></div><span class="cms-card-name" style="color:#9e9893">Custom…</span></div>
+          </div>
+          <div id="pagetype-hint" style="margin-top:10px;font-size:11px;font-family:var(--font-mono);color:#9e9893;padding:8px 10px;background:var(--surface-2);border-radius:6px;border-left:2px solid var(--accent)">
+            Case study — content will be restructured into challenge / solution / outcome format using the selected tone of voice.
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: ACCESS -->
+      <div class="modal-step" id="mstep-1" style="display:none">
+        <div class="step-section">
+          <span class="step-section-label">Spider configuration</span>
+          <div class="field" style="margin-bottom:12px">
+            <label class="field-label" style="display:block;margin-bottom:6px">Stealth profile</label>
+            <select class="modal-select">
+              <option>Standard (Edge/Win — recommended)</option>
+              <option>Aggressive (rotate agents per page)</option>
+              <option>Minimal (no masking)</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:12px">
+            <label class="field-label" style="display:block;margin-bottom:6px">Request delay</label>
+            <select class="modal-select">
+              <option>800–1400ms randomised (recommended)</option>
+              <option>400–800ms</option>
+              <option>1500–3000ms (cautious)</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Access credentials <span style="color:#9e9893;text-transform:none;letter-spacing:0;font-size:11px">— optional, for authenticated pages</span></span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <label class="field-label" style="display:block;margin-bottom:6px">Username / token</label>
+              <input class="modal-input" type="text" placeholder="user@domain.com">
+            </div>
+            <div>
+              <label class="field-label" style="display:block;margin-bottom:6px">Password / API key</label>
+              <input class="modal-input" type="password" placeholder="••••••••••••">
+            </div>
+          </div>
+          <div>
+            <label class="field-label" style="display:block;margin-bottom:6px">Bypass header <span style="color:#9e9893;text-transform:none;letter-spacing:0">— e.g. X-Bypass-Token</span></label>
+            <input class="modal-input" type="text" placeholder="Header name : value">
+          </div>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Crawl limits</span>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Respect robots.txt</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Download assets to DAM</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Follow external links</div></div>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: OUTPUT -->
+      <div class="modal-step" id="mstep-2" style="display:none">
+        <div class="step-section">
+          <span class="step-section-label">Target CMS</span>
+          <div class="cms-cards">
+            <div class="cms-card selected" id="cms-magnolia" onclick="selectCms('magnolia')"><div class="cms-card-dot"></div><span class="cms-card-name">Magnolia</span></div>
+            <div class="cms-card" id="cms-contentstack" onclick="selectCms('contentstack')"><div class="cms-card-dot"></div><span class="cms-card-name">Contentstack</span></div>
+            <div class="cms-card" id="cms-contentful" onclick="selectCms('contentful')"><div class="cms-card-dot"></div><span class="cms-card-name">Contentful</span></div>
+            <div class="cms-card" id="cms-aem" onclick="selectCms('aem')"><div class="cms-card-dot"></div><span class="cms-card-name">AEM</span></div>
+            <div class="cms-card" id="cms-static" onclick="selectCms('static')"><div class="cms-card-dot"></div><span class="cms-card-name">Static JSON</span></div>
+            <div class="cms-card" id="cms-other" onclick="selectCms('other')" style="border-style:dashed"><div class="cms-card-dot" style="background:transparent;border:1px solid var(--border-md)"></div><span class="cms-card-name" style="color:#9e9893">Other…</span></div>
+          </div>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Tone of voice</span>
+          <select class="modal-select" id="modal-tov">
+            <option>TBSCG Standard</option>
+            <option>Franklin Templeton</option>
+            <option>Western Asset</option>
+            <option>None — preserve original</option>
+          </select>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Interchange format</span>
+          <select class="modal-select">
+            <option>Nunjucks + JSON (recommended)</option>
+            <option>Handlebars + JSON</option>
+            <option>HTML + JSON (static fallback)</option>
+          </select>
+        </div>
+        <div class="step-section">
+          <span class="step-section-label">Detection options</span>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Human checkpoints on low confidence</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Build by exception</div></div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row-modal">
+            <div><div class="toggle-name" style="font-size:13px;color:#c8c3bb">Auto-export on completion</div></div>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: REVIEW -->
+      <div class="modal-step" id="mstep-3" style="display:none">
+        <div class="review-block">
+          <div class="review-block-title">Target</div>
+          <div class="review-row"><span class="review-key">URL</span><span class="review-val accent" id="rv-url">—</span></div>
+          <div class="review-row"><span class="review-key">Mode</span><span class="review-val" id="rv-mode">—</span></div>
+        </div>
+        <div class="review-block">
+          <div class="review-block-title">Access</div>
+          <div class="review-row"><span class="review-key">Stealth profile</span><span class="review-val">Standard (Edge/Win)</span></div>
+          <div class="review-row"><span class="review-key">Request delay</span><span class="review-val">800–1400ms randomised</span></div>
+          <div class="review-row"><span class="review-key">Credentials</span><span class="review-val">None</span></div>
+        </div>
+        <div class="review-block">
+          <div class="review-block-title">Output</div>
+          <div class="review-row"><span class="review-key">Target CMS</span><span class="review-val" id="rv-cms">Magnolia</span></div>
+          <div class="review-row"><span class="review-key">Tone of voice</span><span class="review-val" id="rv-tov">TBSCG Standard</span></div>
+          <div class="review-row"><span class="review-key">Interchange format</span><span class="review-val">Nunjucks + JSON</span></div>
+          <div class="review-row"><span class="review-key">Human checkpoints</span><span class="review-val">Enabled</span></div>
+        </div>
+        <div class="launch-note">
+          <svg class="launch-note-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+          <span>GRAFT will open the Pipeline view and begin the migration immediately. You can monitor progress, respond to human checkpoints, and export to your CMS when complete.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <span class="modal-footer-left" id="modal-step-label">Step 1 of 4</span>
+      <div class="modal-footer-right">
+        <button class="modal-btn ghost" id="modal-back" onclick="modalBack()" style="display:none">← Back</button>
+        <button class="modal-btn ghost" onclick="closeModal()">Cancel</button>
+        <button class="modal-btn next" id="modal-next" onclick="modalNext()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOPBAR_META = {
+  home:{title:'Home',pill:'TBSCG',cta:'+ New Migration',ctaFn:'openModal'},
+  pipeline:{title:'Pipeline',pill:'READY',cta:'▶ Run',ctaFn:'startPipeline'},
+  analytics:{title:'Analytics',pill:'LIVE',cta:'Export report',ctaFn:''},
+  history:{title:'History & Logs',pill:'47 runs',cta:'+ New Migration',ctaFn:'openModal'},
+  brands:{title:'Brands',pill:'5 brands',cta:'+ Add Brand',ctaFn:''},
+  settings:{title:'Settings',pill:'CONFIGURED',cta:'Save changes',ctaFn:''},
+  user:{title:'Account',pill:'ENTERPRISE',cta:'Edit profile',ctaFn:''}
+};
+
+function switchView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelector('[data-view='+name+']').classList.add('active');
+  const m = TOPBAR_META[name];
+  document.getElementById('topbar-title').textContent = m.title;
+  document.getElementById('topbar-pill').textContent = m.pill;
+  const cta = document.getElementById('topbar-cta');
+  cta.textContent = m.cta;
+  cta.onclick = m.ctaFn ? window[m.ctaFn] : null;
+}
+
+// MODAL STATE
+let modalStep = 0;
+let modalScope = 'site';
+let modalPageType = 'casestudy';
+let modalCms = 'magnolia';
+
+const PAGE_TYPE_HINTS = {
+  casestudy:'Case study — restructured into challenge / solution / outcome format using the selected tone of voice.',
+  news:'News article — headline, standfirst, body, and quote blocks preserved; byline and date extracted as structured fields.',
+  product:'Product page — name, description, specs, and pricing mapped to structured content type fields.',
+  landing:'Landing page — hero, CTA blocks, and feature sections detected and mapped to component library.',
+  blog:'Blog post — title, author, publish date, body, and tags extracted as structured article fields.',
+  press:'Press release — headline, dateline, body, boilerplate, and contact details mapped to PR template.',
+  bio:'Team bio — name, title, headshot, and bio text extracted; links to social profiles as structured fields.',
+  event:'Event / webinar — name, date, location, description, and registration URL as structured event fields.',
+  custom:'Custom — no template applied. Content will be extracted into JSON fields; you define the structure.'
+};
+
+function openModal() {
+  modalStep = 0;
+  modalScope = 'site';
+  modalPageType = 'casestudy';
+  modalCms = 'magnolia';
+  document.getElementById('modal-url').value = '';
+  document.querySelectorAll('.modal-step').forEach((s,i) => s.style.display = i===0 ? 'block' : 'none');
+  document.querySelectorAll('.step-node').forEach((n,i) => { n.classList.remove('active','done'); if(i===0) n.classList.add('active'); });
+  ['sc-0','sc-1','sc-2','sc-3'].forEach((id,i) => { document.getElementById(id).textContent = i+1; });
+  document.getElementById('mcard-site').classList.add('selected');
+  document.getElementById('mcard-page').classList.remove('selected');
+  document.getElementById('pagetype-section').style.display = 'none';
+  document.querySelectorAll('#cms-magnolia, #cms-contentstack, #cms-contentful, #cms-aem, #cms-static, #cms-other').forEach(c => c.classList.remove('selected'));
+  document.getElementById('cms-magnolia').classList.add('selected');
+  document.querySelectorAll('#pagetype-grid .cms-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('pt-casestudy').classList.add('selected');
+  document.getElementById('pagetype-hint').textContent = PAGE_TYPE_HINTS.casestudy;
+  updateModalFooter();
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function handleOverlayClick(e) {
+  if(e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+function selectScope(s) {
+  modalScope = s;
+  document.getElementById('mcard-site').classList.toggle('selected', s==='site');
+  document.getElementById('mcard-page').classList.toggle('selected', s==='page');
+  document.getElementById('pagetype-section').style.display = s==='page' ? 'block' : 'none';
+}
+
+function selectPageType(t) {
+  modalPageType = t;
+  document.querySelectorAll('#pagetype-grid .cms-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('pt-'+t).classList.add('selected');
+  document.getElementById('pagetype-hint').textContent = PAGE_TYPE_HINTS[t] || '';
+}
+
+function selectCms(c) {
+  modalCms = c;
+  ['magnolia','contentstack','contentful','aem','static','other'].forEach(id => {
+    const el = document.getElementById('cms-'+id);
+    if(el) el.classList.remove('selected');
+  });
+  document.getElementById('cms-'+c).classList.add('selected');
+}
+
+function updateModalFooter() {
+  document.getElementById('modal-step-label').textContent = 'Step '+(modalStep+1)+' of 4';
+  const back = document.getElementById('modal-back');
+  const next = document.getElementById('modal-next');
+  back.style.display = modalStep > 0 ? 'inline-flex' : 'none';
+  if(modalStep === 3) {
+    next.textContent = 'Launch Migration';
+    next.className = 'modal-btn launch';
+    next.onclick = launchMigration;
+  } else {
+    next.textContent = 'Next →';
+    next.className = 'modal-btn next';
+    next.onclick = modalNext;
+  }
+}
+
+function updateStepperUI() {
+  for(let i=0;i<4;i++) {
+    const node = document.getElementById('sn-'+i);
+    const circ = document.getElementById('sc-'+i);
+    node.classList.remove('active','done');
+    if(i < modalStep) {
+      node.classList.add('done');
+      circ.innerHTML = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+    } else if(i === modalStep) {
+      node.classList.add('active');
+      circ.textContent = i+1;
+    } else {
+      circ.textContent = i+1;
+    }
+  }
+}
+
+function modalNext() {
+  if(modalStep < 3) {
+    document.getElementById('mstep-'+modalStep).style.display = 'none';
+    modalStep++;
+    document.getElementById('mstep-'+modalStep).style.display = 'block';
+    if(modalStep === 3) populateReview();
+    updateStepperUI();
+    updateModalFooter();
+  }
+}
+
+function modalBack() {
+  if(modalStep > 0) {
+    document.getElementById('mstep-'+modalStep).style.display = 'none';
+    modalStep--;
+    document.getElementById('mstep-'+modalStep).style.display = 'block';
+    updateStepperUI();
+    updateModalFooter();
+  }
+}
+
+function populateReview() {
+  const url = document.getElementById('modal-url').value || 'https://example.com';
+  const scopeLabel = modalScope === 'site' ? 'Whole site' : 'Single page';
+  const ptLabels = {casestudy:'Case study',news:'News article',product:'Product page',landing:'Landing page',blog:'Blog post',press:'Press release',bio:'Team bio',event:'Event / webinar',custom:'Custom'};
+  const cmsLabels = {magnolia:'Magnolia CMS',contentstack:'Contentstack',contentful:'Contentful',aem:'Adobe Experience Manager',static:'Static JSON',other:'Custom'};
+  const tov = document.getElementById('modal-tov').value;
+  document.getElementById('rv-url').textContent = url;
+  document.getElementById('rv-mode').textContent = modalScope === 'page' ? scopeLabel + ' — ' + (ptLabels[modalPageType]||modalPageType) : scopeLabel;
+  document.getElementById('rv-cms').textContent = cmsLabels[modalCms]||modalCms;
+  document.getElementById('rv-tov').textContent = tov;
+}
+
+function launchMigration() {
+  const url = document.getElementById('modal-url').value || 'https://example.com';
+  closeModal();
+  document.getElementById('url-input').value = url;
+  switchView('pipeline');
+  setTimeout(() => startPipeline(), 400);
+}
+
+let mode = 'full';
+function setMode(m) {
+  mode = m;
+  document.getElementById('mode-full').classList.toggle('active', m==='full');
+  document.getElementById('mode-case').classList.toggle('active', m==='case');
+}
+
+const STAGE_NAMES = ['Mirror','Parse','Detect','Swap','Transcode'];
+const STAGE_ICONS = {
+  pending: n => n,
+  active: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>`,
+  done: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`
+};
+
+const LOGS = [
+  [ // Mirror
+    ['sys','GRAFT','Initialising migration — target: <span class="hl">%URL%</span>'],
+    ['info','INFO','Launching Playwright with stealth profile (Edge/Win)'],
+    ['ok','OK','Browser agent accepted — no bot detection triggered'],
+    ['info','INFO','Spidering site... discovering internal links'],
+    ['ok','OK','Page discovered: /about'],
+    ['ok','OK','Page discovered: /capabilities'],
+    ['ok','OK','Page discovered: /case-studies/western-asset'],
+    ['info','INFO','Downloading assets — 0 / 142 images'],
+    ['ok','OK','Mirror complete — <span class="hl">84 pages</span>, 142 assets cached'],
+  ],
+  [ // Parse
+    ['info','INFO','Parsing HTML — splitting content from markup'],
+    ['ok','OK','Content blocks extracted as JSON'],
+    ['ok','OK','Templates converted to <span class="hl">nunjucks</span> interchange format'],
+    ['info','INFO','Content and appearance separated — site is now CMS-ready'],
+    ['ok','OK','Parse complete — <span class="hl">84 pages</span> in interchange format'],
+  ],
+  [ // Detect
+    ['info','INFO','Detecting components — strategy: visual + markup'],
+    ['ok','OK','Hero component detected — 22 instances'],
+    ['ok','OK','Navigation detected — 1 unique, 84 instances'],
+    ['ok','OK','Article card detected — 14 instances'],
+    ['ok','OK','CTA block detected — 31 instances'],
+    ['warn','WARN','Low confidence: "PageNamesContent" block — <span class="hl">human checkpoint required</span>'],
+    ['ok','OK','FAQ container detected — 8 instances'],
+    ['ok','OK','Footer detected — 1 unique, 84 instances'],
+    ['ok','OK','Detection complete — <span class="hl">7 components</span> identified'],
+  ],
+  [ // Swap
+    ['info','INFO','Swap-out: replacing static instances with CMS references'],
+    ['ok','OK','Hero → swapped across 22 pages'],
+    ['ok','OK','Article card → swapped across 14 pages'],
+    ['ok','OK','CTA block → swapped across 31 pages'],
+    ['ok','OK','Navigation, Footer → propagated site-wide'],
+    ['ok','OK','Stitching: deduplicating component variants'],
+    ['ok','OK','Swap complete — <span class="hl">84 pages</span> fully component-managed'],
+  ],
+  [ // Transcode
+    ['info','INFO','Transcoding to target CMS: <span class="hl">Magnolia</span>'],
+    ['ok','OK','Mapping interchange fields → Magnolia content types'],
+    ['ok','OK','Rich text fields detected and converted'],
+    ['ok','OK','Image references mapped to DAM paths'],
+    ['ok','OK','Transcoding complete — export ready'],
+    ['sys','GRAFT','<span class="hl">Migration complete.</span> 84 pages · 7 components · 1,240px visual parity'],
+  ]
+];
+
+const COMPONENTS = [
+  {name:'Navigation',managed:true,count:84},
+  {name:'Hero',managed:true,count:22},
+  {name:'Article Card',managed:true,count:14},
+  {name:'CTA Block',managed:true,count:31},
+  {name:'FAQ Container',managed:true,count:8},
+  {name:'Footer',managed:true,count:84},
+];
+
+const CHECKPOINT_DATA = {
+  title:'Human checkpoint required',
+  msg:'Stage 3 — Component detection is below confidence threshold (0.61) for "PageNamesContent" block.\n\nGRAFT has identified 3 candidate components on this page. Please confirm the component list before continuing.',
+  stage: 2
+};
+
+let running=false, pipelineTimer=null, stageIdx=-1, logIdx=0, compIdx=0;
+
+function ts() {
+  const n=new Date();
+  return [n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+}
+
+function addLog(type, tag, msg, url) {
+  const lb = document.getElementById('log-body');
+  const el = document.createElement('div');
+  el.className='log-line';
+  el.innerHTML=`<span class="log-ts">${ts()}</span><span class="log-type ${type}">${tag}</span><span class="log-msg">${msg.replace('%URL%',url||document.getElementById('url-input').value)}</span>`;
+  lb.appendChild(el);
+  lb.scrollTop=lb.scrollHeight;
+}
+
+function setStage(i, state) {
+  const s = document.getElementById('stage-'+i);
+  s.className='stage '+state;
+  const num = s.querySelector('.stage-num');
+  if(state==='active'){
+    num.innerHTML=STAGE_ICONS.active;
+  } else if(state==='done'){
+    num.innerHTML=STAGE_ICONS.done;
+  } else if(state==='error'){
+    num.textContent='!';
+  } else {
+    num.textContent=i+1;
+  }
+}
+
+function addComponent(c, isNew) {
+  const cb = document.getElementById('comp-body');
+  if(compIdx===0) cb.innerHTML='';
+  const el=document.createElement('div');
+  el.className='comp-item'+(isNew?' new':'');
+  el.innerHTML=`<div class="comp-name">${c.name}</div><div class="comp-meta"><span class="comp-tag ${c.managed?'managed':'unmanaged'}">${c.managed?'managed':'static'}</span><span class="comp-tag">${c.count}x</span>${isNew?'<span class="comp-tag new-tag">new</span>':''}</div>`;
+  cb.appendChild(el);
+  compIdx++;
+  document.getElementById('comp-count').textContent=compIdx+' detected';
+  document.getElementById('comp-count').className='panel-badge green';
+  setTimeout(()=>el.classList.remove('new'),600);
+}
+
+function showCheckpoint(cb) {
+  const area = document.getElementById('checkpoint-area');
+  area.innerHTML=`<div class="checkpoint">
+    <svg class="checkpoint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+    <div>
+      <div class="checkpoint-title">Human checkpoint — Stage 3: Component Detection</div>
+      <div class="checkpoint-msg">Confidence score <strong style="color:var(--amber)">0.61</strong> is below threshold for "PageNamesContent" block on <span style="font-family:var(--font-mono);color:var(--text)">/capabilities</span>.<br><br>GRAFT has identified <strong style="color:var(--text)">3 candidate components</strong>. Confirm to proceed with auto-mapping, or override manually.</div>
+      <div class="checkpoint-actions">
+        <button class="chk-btn confirm" onclick="resolveCheckpoint()">Confirm & continue</button>
+        <button class="chk-btn skip" onclick="resolveCheckpoint()">Override manually</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function resolveCheckpoint() {
+  document.getElementById('checkpoint-area').innerHTML='';
+  document.getElementById('run-btn').disabled=false;
+  document.getElementById('run-btn').textContent='▶ Continue';
+  addLog('ok','OK','Checkpoint confirmed — continuing component detection');
+  setTimeout(()=>continueAfterCheckpoint(), 400);
+}
+
+let afterCheckpoint = null;
+function continueAfterCheckpoint() {
+  if(afterCheckpoint) afterCheckpoint();
+}
+
+function runLogs(stageI, url, onDone) {
+  const lines = LOGS[stageI];
+  let i=0;
+  const t = setInterval(()=>{
+    if(i>=lines.length){clearInterval(t);if(onDone)onDone();return;}
+    const [type,tag,msg] = lines[i++];
+    addLog(type,tag,msg,url);
+  }, 320);
+}
+
+function startPipeline() {
+  if(running) return;
+  running=true;
+  const url = document.getElementById('url-input').value||'https://example.com';
+  const btn = document.getElementById('run-btn');
+  btn.disabled=true;
+  btn.textContent='Running…';
+  document.getElementById('comp-count').textContent='0 detected';
+  document.getElementById('comp-count').className='panel-badge muted';
+  document.getElementById('comp-body').innerHTML='<div style="padding:24px 12px;text-align:center;color:var(--text-3);font-size:12px;font-family:var(--font-mono)">Detecting components…</div>';
+  document.getElementById('log-status').textContent='Running';
+  document.getElementById('log-status').className='panel-badge amber';
+  document.getElementById('summary-text').textContent='Migration in progress…';
+  document.getElementById('export-btn').disabled=true;
+  document.getElementById('checkpoint-area').innerHTML='';
+  compIdx=0;
+  document.getElementById('topbar-pill').textContent='RUNNING';
+
+  for(let i=0;i<5;i++) setStage(i,'pending');
+
+  const stages = [
+    (next) => { setStage(0,'active'); runLogs(0,url,()=>{ setStage(0,'done'); next(); }); },
+    (next) => { setStage(1,'active'); runLogs(1,url,()=>{ setStage(1,'done'); next(); }); },
+    (next) => {
+      setStage(2,'active');
+      const logsUntilCheckpoint = LOGS[2].slice(0,5);
+      const logsAfter = LOGS[2].slice(5);
+      let i=0;
+      const t=setInterval(()=>{
+        if(i>=logsUntilCheckpoint.length){
+          clearInterval(t);
+          // Add components found so far
+          [COMPONENTS[0],COMPONENTS[1],COMPONENTS[2],COMPONENTS[3]].forEach((c,ci)=>setTimeout(()=>addComponent(c,true),ci*150));
+          // Show checkpoint
+          setTimeout(()=>{
+            showCheckpoint();
+            document.getElementById('run-btn').disabled=true;
+            afterCheckpoint = () => {
+              let j=0;
+              const t2=setInterval(()=>{
+                if(j>=logsAfter.length){clearInterval(t2);
+                  [COMPONENTS[4],COMPONENTS[5]].forEach((c,ci)=>setTimeout(()=>addComponent(c,true),ci*200));
+                  setTimeout(()=>{ setStage(2,'done'); next(); }, 400);
+                  return;
+                }
+                const [type,tag,msg]=logsAfter[j++];
+                addLog(type,tag,msg,url);
+              },320);
+            };
+          },400);
+          return;
+        }
+        const [type,tag,msg]=logsUntilCheckpoint[i++];
+        addLog(type,tag,msg,url);
+      },320);
+    },
+    (next) => { setStage(3,'active'); runLogs(3,url,()=>{ setStage(3,'done'); next(); }); },
+    (next) => {
+      setStage(4,'active');
+      runLogs(4,url,()=>{
+        setStage(4,'done');
+        document.getElementById('log-status').textContent='Complete';
+        document.getElementById('log-status').className='panel-badge green';
+        document.getElementById('summary-text').textContent='84 pages · 7 components';
+        document.getElementById('export-btn').disabled=false;
+        document.getElementById('run-btn').disabled=false;
+        document.getElementById('run-btn').textContent='▶ Run Again';
+        document.getElementById('topbar-pill').textContent='COMPLETE';
+        running=false;
+        next();
+      });
+    }
+  ];
+
+  let si=0;
+  function runNext() {
+    if(si>=stages.length) return;
+    stages[si++](runNext);
+  }
+  runNext();
+}
+
+// HISTORY DATA
+const HISTORY = [
+  {url:'westernasset.com',mode:'Full',cms:'TeamSite → Magnolia',pages:84,comps:7,status:'done',dur:'4m 12s',ts:'Today, 09:14',log:['Spidering site — 84 pages discovered','Mirror complete','Parse complete — 84 pages in interchange format','7 components identified','Swap complete','Transcoded to Magnolia — export ready']},
+  {url:'clarionpartners.com',mode:'Full',cms:'SharePoint → Magnolia',pages:41,comps:5,status:'done',dur:'2m 58s',ts:'Today, 08:47',log:['Mirror complete — 41 pages','Stealth mode engaged — bot detection bypassed','5 components identified','Complete']},
+  {url:'pandoferries.com',mode:'Full',cms:'Unknown → Contentstack',pages:22,comps:4,status:'done',dur:'3m 01s',ts:'13 Apr, 16:22',log:['Site mirrored — 22 pages','Manual prompt used — homepage: 5 components','Detection complete','Transcoded to Contentstack']},
+  {url:'tbscg.com/news/picasso',mode:'Case Study',cms:'→ Magnolia',pages:1,comps:1,status:'done',dur:'0m 18s',ts:'12 Apr, 14:05',log:['Single page case study','Tone of voice: TBSCG Standard applied','Content restructured — problem/solution format','Loaded to CMS dam']},
+  {url:'nwl.co.uk',mode:'Full',cms:'WordPress → Magnolia',pages:130,comps:11,status:'error',dur:'8m 44s',ts:'11 Apr, 10:30',log:['Mirror complete — 130 pages','WordPress fractional components detected','Pattern detection: news article structured content found','ERR: Rate limit hit on /data-feeds — manual override required']},
+  {url:'hartford.com',mode:'Full',cms:'CMS unknown → Magnolia',pages:0,comps:0,status:'error',dur:'0m 04s',ts:'10 Apr, 15:12',log:['ERR: Bot detection triggered on page 4 — site blocked Playwright','ERR: All stealth bypass attempts failed','Aborted — manual access required']},
+];
+
+function buildHistory() {
+  const tb = document.getElementById('history-tbody');
+  HISTORY.forEach((r,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><button class="expand-btn" onclick="toggleDetail(${i})">+</button></td>
+      <td class="table-url">${r.url}</td>
+      <td><span class="panel-badge muted" style="font-size:10px">${r.mode}</span></td>
+      <td style="font-size:12px;font-family:var(--font-mono);color:var(--text-3)">${r.cms}</td>
+      <td style="font-family:var(--font-mono)">${r.pages||'—'}</td>
+      <td style="font-family:var(--font-mono)">${r.comps||'—'}</td>
+      <td><span class="status-badge ${r.status}"><span class="status-dot"></span>${r.status}</span></td>
+      <td class="table-ts">${r.dur}</td>
+      <td class="table-ts">${r.ts}</td>`;
+    tb.appendChild(tr);
+    const detail=document.createElement('tr');
+    detail.className='row-detail';
+    detail.id='detail-'+i;
+    detail.style.display='none';
+    detail.innerHTML=`<td colspan="9"><div class="inline-log">${r.log.map(l=>`<div>> ${l}</div>`).join('')}</div></td>`;
+    tb.appendChild(detail);
+  });
+}
+buildHistory();
+
+function toggleDetail(i) {
+  const d=document.getElementById('detail-'+i);
+  d.style.display=d.style.display==='none'?'table-row':'none';
+}
+</script>
+
+<style>
+@keyframes demo-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+.demo-pulse { animation: demo-pulse 1.6s ease-in-out infinite; }
+
+.recent-item.demo-new {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+.recent-item.demo-new.demo-new-in { opacity: 1; transform: translateY(0); }
+
+#view-brands.demo-brands-enter .brand-card {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: demo-card-in 380ms ease-out forwards;
+}
+#view-brands.demo-brands-enter .brand-card:nth-child(1) { animation-delay: 0ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(2) { animation-delay: 60ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(3) { animation-delay: 120ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(4) { animation-delay: 180ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(5) { animation-delay: 240ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(6) { animation-delay: 300ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(7) { animation-delay: 360ms; }
+#view-brands.demo-brands-enter .brand-card:nth-child(8) { animation-delay: 420ms; }
+@keyframes demo-card-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+<script>
+(function() {
+  function findStatVal(label) {
+    const stats = document.querySelectorAll('.home-stat');
+    for (const stat of stats) {
+      const labelEl = stat.querySelector('.home-stat-label');
+      if (labelEl && labelEl.textContent.trim() === label) {
+        return stat.querySelector('.home-stat-val');
+      }
+    }
+    return null;
+  }
+  function findRunningBadge() {
+    const heads = document.querySelectorAll('.home-panel-head');
+    for (const head of heads) {
+      const title = head.querySelector('.home-panel-title');
+      if (title && title.textContent.includes('Active now')) {
+        const spans = head.querySelectorAll('span');
+        for (const s of spans) {
+          if (/running/i.test(s.textContent)) return s;
+        }
+      }
+    }
+    return null;
+  }
+  function findRecentContainer() {
+    const heads = document.querySelectorAll('.home-panel-head');
+    for (const head of heads) {
+      const title = head.querySelector('.home-panel-title');
+      if (title && title.textContent.trim() === 'Recent migrations') {
+        return head.parentElement;
+      }
+    }
+    return null;
+  }
+
+  // Sync topbar with the (already-active) home view
+  if (typeof switchView === 'function') switchView('home');
+
+  const componentsVal = findStatVal('Components detected');
+  const activeStage   = document.querySelector('.active-stage');
+  const runningBadge  = findRunningBadge();
+  const recentPanel   = findRecentContainer();
+
+  function setPages(n) {
+    if (activeStage) activeStage.textContent = 'Stage 3 \u00b7 Detecting components \u00b7 ' + n + ' pages';
+  }
+  function setComponents(n) {
+    if (componentsVal) componentsVal.textContent = n.toLocaleString();
+  }
+
+  // t=1.5s: pulse on "1 running" badge
+  setTimeout(() => { if (runningBadge) runningBadge.classList.add('demo-pulse'); }, 1500);
+
+  // Pages ticker. t=3s sequence starts; intervals 1.4, 1.1, 1.7, 0.9s
+  setTimeout(() => setPages(85), 3000 + 1400);
+  setTimeout(() => setPages(86), 3000 + 1400 + 1100);
+  setTimeout(() => setPages(87), 3000 + 1400 + 1100 + 1700);
+  setTimeout(() => setPages(88), 3000 + 1400 + 1100 + 1700 + 900);
+
+  // Components ticker. t=9s start; 3,892 / 3,894 / 3,896 over 3s
+  setTimeout(() => setComponents(3892), 9000 + 1000);
+  setTimeout(() => setComponents(3894), 9000 + 2000);
+  setTimeout(() => setComponents(3896), 9000 + 3000);
+
+  // t=12s: new completed migration row at top of Recent migrations
+  setTimeout(() => {
+    if (!recentPanel) return;
+    const html = '<div class="recent-item demo-new" onclick="switchView(\'history\')">'
+      + '<div class="recent-icon done"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>'
+      + '<div><div class="recent-url">raymondjames.com</div>'
+      + '<div class="recent-meta">Full \u00b7 WordPress \u2192 Magnolia \u00b7 31 pages \u00b7 4 components</div></div>'
+      + '<div class="recent-ts">Today 09:12</div></div>';
+    const head = recentPanel.querySelector('.home-panel-head');
+    if (head) head.insertAdjacentHTML('afterend', html);
+    requestAnimationFrame(() => {
+      const el = recentPanel.querySelector('.demo-new');
+      if (el) el.classList.add('demo-new-in');
+    });
+  }, 12000);
+
+  // t=15s: switch to brands view with staggered card entry
+  setTimeout(() => {
+    if (typeof switchView !== 'function') return;
+    const view = document.getElementById('view-brands');
+    if (view) {
+      view.classList.remove('demo-brands-enter');
+      void view.offsetWidth;
+      view.classList.add('demo-brands-enter');
+    }
+    switchView('brands');
+  }, 15000);
+})();
+</script>
+
+</body>
+</html>

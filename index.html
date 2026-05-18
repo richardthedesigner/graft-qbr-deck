@@ -306,11 +306,15 @@ html, body {
   width: 142%;
   min-width: 900px;
 }
-.slide-practice .practice-dashboard img {
+.slide-practice .practice-dashboard iframe {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 1440 / 900;
+  border: 0;
   border-radius: 4px;
+  overflow: hidden;
+  pointer-events: none;
+  background: #0f0f0f;
   box-shadow:
     0 32px 70px rgba(0, 0, 0, 0.18),
     0 8px 18px rgba(0, 0, 0, 0.08);
@@ -533,12 +537,12 @@ html, body {
 .slide-validation .eyebrow { color: var(--ink-soft); }
 .slide-validation .number-block {
   margin-top: auto;
-  padding-bottom: clamp(28px, 3.5vh, 48px);
+  padding-bottom: clamp(20px, 2.5vh, 36px);
 }
 .slide-validation .number {
   font-family: 'Epilogue', sans-serif;
   font-weight: 200;
-  font-size: clamp(88px, 13vw, 220px);
+  font-size: clamp(72px, 10vw, 168px);
   line-height: 1.0;
   letter-spacing: -0.045em;
   color: var(--ink);
@@ -565,8 +569,8 @@ html, body {
   align-items: baseline;
   gap: 14px;
   border-top: 1px solid var(--line);
-  padding-top: clamp(20px, 2.4vh, 32px);
-  margin-bottom: clamp(20px, 2.4vh, 32px);
+  padding-top: clamp(16px, 2vh, 26px);
+  margin-bottom: clamp(16px, 2vh, 26px);
 }
 .slide-validation .heritage-num {
   font-family: 'Epilogue', sans-serif;
@@ -907,7 +911,7 @@ html, body {
       </div>
       <div class="practice-image">
         <div class="practice-dashboard">
-          <img src="practice-dashboard.jpg" alt="Graft dashboard">
+          <iframe class="practice-iframe" src="graft-embed.html" scrolling="no" loading="eager" title="Graft dashboard"></iframe>
         </div>
       </div>
     </div>
@@ -1203,7 +1207,7 @@ html, body {
     <div class="frame">
       <div class="eyebrow">04 · The Proof</div>
       <div class="number-block">
-        <div class="number"><em>2,600</em> pages. One person.</div>
+        <div class="number"><em>2,600</em> pages.<br>One person.</div>
         <p class="number-caption">A recent production run. Like-for-like output from a single developer at the controls. Roughly <strong>90% automation</strong>. The remaining 10% is a deliberate human gate at low-confidence component decisions, not a gap.</p>
       </div>
       <div class="heritage-kicker">
@@ -1341,8 +1345,18 @@ html, body {
 (function() {
   const slides = document.querySelectorAll('.slide');
   const methodSlide = document.querySelector('.slide-method');
+  const practiceSlide = document.querySelector('.slide-practice');
   let current = 0;
   let methodComplex = false;
+
+  function restartPracticeDemo() {
+    if (!practiceSlide) return;
+    const iframe = practiceSlide.querySelector('.practice-iframe');
+    if (!iframe) return;
+    const base = iframe.getAttribute('data-base') || iframe.getAttribute('src').split('?')[0];
+    iframe.setAttribute('data-base', base);
+    iframe.src = base + '?t=' + Date.now();
+  }
 
   function applyMethodState() {
     if (!methodSlide) return;
@@ -1369,6 +1383,7 @@ html, body {
     current = idx;
     slides[current].classList.add('active');
     resetMethod();
+    if (slides[current] === practiceSlide) restartPracticeDemo();
   }
 
   function next() { show(Math.min(current + 1, slides.length - 1)); }
