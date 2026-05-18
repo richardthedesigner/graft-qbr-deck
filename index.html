@@ -243,68 +243,77 @@ html, body {
 }
 .slide-claim .subline .lime-mark { color: var(--lime); }
 
-/* === Slide 03 · The Practice === */
+/* === Slide 03 · The Practice (IP) === */
 .slide-practice {
   background: var(--paper-canvas);
   color: var(--ink);
+  overflow: hidden;
+}
+.slide-practice .practice-hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(340px, 580px) 1fr;
+  gap: clamp(40px, 4vw, 80px);
+  padding: clamp(56px, 5vw, 88px) 0 clamp(96px, 11vh, 140px) clamp(56px, 7vw, 120px);
+  align-items: center;
+  min-height: 0;
+}
+.slide-practice .practice-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(26px, 3vh, 38px);
+  z-index: 2;
 }
 .slide-practice .eyebrow { color: var(--ink-soft); }
-.slide-practice .headline {
+.slide-practice .practice-headline {
   font-family: 'Epilogue', sans-serif;
   font-weight: 200;
-  font-size: clamp(48px, 7.2vw, 116px);
-  line-height: 0.98;
-  letter-spacing: -0.038em;
+  font-size: clamp(40px, 3.9vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.034em;
   color: var(--ink);
-  margin-top: clamp(40px, 5vh, 72px);
-  max-width: 17ch;
 }
-.slide-practice .headline em {
+.slide-practice .practice-headline em {
   font-style: normal;
   font-weight: 800;
 }
-.slide-practice .beats {
-  margin-top: auto;
-  margin-bottom: clamp(28px, 4vh, 56px);
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0;
-  border-top: 1px solid var(--line);
-  padding-top: clamp(24px, 2.8vh, 40px);
+.slide-practice .practice-kick {
+  display: block;
+  margin-top: clamp(8px, 1vh, 14px);
 }
-.slide-practice .beat {
-  padding: 0 clamp(20px, 2.2vw, 36px);
-  border-left: 1px solid var(--line);
-}
-.slide-practice .beat:first-child {
-  padding-left: 0;
-  border-left: none;
-}
-.slide-practice .beat-label {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  margin-bottom: clamp(14px, 1.6vh, 22px);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.slide-practice .beat-label .lime-rule {
-  display: inline-block;
-  width: 3px;
-  height: 13px;
-  background: var(--lime);
-}
-.slide-practice .beat-body {
+.slide-practice .practice-body {
   font-family: 'Karla', sans-serif;
   font-weight: 400;
-  font-size: clamp(13px, 1vw, 15.5px);
+  font-size: clamp(15.5px, 1.1vw, 17.5px);
   line-height: 1.55;
   color: var(--ink-body);
-  max-width: 34ch;
+  max-width: 38ch;
+}
+.slide-practice .practice-body strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+.slide-practice .practice-image {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 0;
+}
+.slide-practice .practice-dashboard {
+  position: relative;
+  width: 142%;
+  min-width: 900px;
+}
+.slide-practice .practice-dashboard img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow:
+    0 32px 70px rgba(0, 0, 0, 0.18),
+    0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 /* === Slide 04 · Method === */
@@ -819,23 +828,22 @@ html, body {
     </div>
   </section>
 
-  <!-- ====== Slide 03 · The Practice ====== -->
+  <!-- ====== Slide 03 · The Practice (IP) ====== -->
   <section class="slide slide-practice" data-slide="2">
-    <div class="frame">
-      <div class="eyebrow">02 · The Practice</div>
-      <h1 class="headline">Twenty-five years of practice, made <em>agentic</em>.</h1>
-      <div class="beats">
-        <div class="beat">
-          <div class="beat-label">01 · The Practice</div>
-          <div class="beat-body">Twenty-five years of senior engineering across enterprise CMS, DXP, and DAM platforms. Judgement built up over decades of live migrations, embedded into the agent rather than learned from training data.</div>
-        </div>
-        <div class="beat">
-          <div class="beat-label">02 · The Agent</div>
-          <div class="beat-body">That practice now drives an autonomous loop. AI handles component detection, content extraction, and brand application. A deliberate human gate sits at low-confidence decisions, not a gap in capability.</div>
-        </div>
-        <div class="beat">
-          <div class="beat-label"><span class="lime-rule"></span>03 · The Interchange</div>
-          <div class="beat-body">The architectural unit the agent operates on. A brand-aware, CMS-agnostic representation of your site. Why one source can become any CMS, rebranded.</div>
+    <div class="practice-hero">
+      <div class="practice-text">
+        <div class="eyebrow">02 · The IP</div>
+        <h1 class="practice-headline">
+          Absorb.<br>
+          Reduce.<br>
+          Rebuild.
+          <span class="practice-kick">Now <em>agentic</em>.</span>
+        </h1>
+        <p class="practice-body">Every site reduces to one universal form. We call it <strong>the interchange</strong>. From there, any CMS, any brand applied.</p>
+      </div>
+      <div class="practice-image">
+        <div class="practice-dashboard">
+          <img src="practice-dashboard.jpg" alt="Graft dashboard">
         </div>
       </div>
     </div>
