@@ -456,12 +456,54 @@ html, body {
   user-select: none;
 }
 .method-complex-svg {
-  max-width: 100%;
+  width: 100%;
+  max-width: 1520px;
+  height: auto;
   max-height: 100%;
   display: block;
   font-family: 'Karla', system-ui, sans-serif;
 }
 .method-complex-svg text { font-family: 'Karla', system-ui, sans-serif; }
+.method-complex-svg .box,
+.method-complex-svg .box-input,
+.method-complex-svg .box-output { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1; }
+.method-complex-svg .box-input-alt { fill: var(--paper-page); stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 4 3; }
+.method-complex-svg .interchange-bg { fill: var(--paper-panel); stroke: var(--ink); stroke-width: 1.4; }
+.method-complex-svg .interchange-bar { fill: var(--lime); }
+.method-complex-svg .gate-bg { fill: var(--paper-canvas); stroke: var(--ink); stroke-width: 1.2; }
+.method-complex-svg .connector { stroke: var(--ink); stroke-width: 1.1; fill: none; stroke-linecap: square; stroke-linejoin: miter; }
+.method-complex-svg .connector-soft { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
+.method-complex-svg .connector-dashed { stroke: var(--ink-soft); stroke-width: 1; fill: none; stroke-dasharray: 4 3; stroke-linejoin: miter; }
+.method-complex-svg .arrowhead { fill: var(--ink); }
+.method-complex-svg .arrowhead-soft { fill: var(--ink-soft); }
+.method-complex-svg .label-section {
+  font-weight: 700; font-size: 9.5px; letter-spacing: 0.26em;
+  text-transform: uppercase; fill: var(--ink-mute);
+}
+.method-complex-svg .label-stage {
+  font-weight: 700; font-size: 10.5px; letter-spacing: 0.20em;
+  text-transform: uppercase; fill: var(--ink);
+}
+.method-complex-svg .label-stage .num { fill: var(--ink-quiet); }
+.method-complex-svg .label-desc { font-weight: 400; font-size: 10px; fill: var(--ink-soft); }
+.method-complex-svg .label-io { font-weight: 500; font-size: 11.5px; fill: var(--ink); }
+.method-complex-svg .label-io-desc { font-weight: 400; font-size: 9.5px; fill: var(--ink-mute); }
+.method-complex-svg .label-interchange {
+  font-weight: 700; font-size: 14.5px; letter-spacing: 0.24em;
+  text-transform: uppercase; fill: var(--ink);
+}
+.method-complex-svg .label-interchange-desc { font-weight: 400; font-size: 11.5px; fill: var(--ink-body); }
+.method-complex-svg .label-interchange-note { font-weight: 400; font-size: 10px; font-style: italic; fill: var(--ink-mute); }
+.method-complex-svg .label-gate {
+  font-weight: 700; font-size: 9.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; fill: var(--ink);
+}
+.method-complex-svg .label-gate-desc { font-weight: 400; font-size: 9.5px; fill: var(--ink-soft); }
+.method-complex-svg .label-annotation { font-weight: 400; font-size: 10px; font-style: italic; fill: var(--ink-mute); }
+.method-complex-svg .label-legend {
+  font-weight: 700; font-size: 9.5px; letter-spacing: 0.22em;
+  text-transform: uppercase; fill: var(--ink-mute);
+}
 /* After the first toggle, force simple state to its final keyframes (no re-animation) */
 .slide-method.animation-done .anim {
   opacity: 1 !important;
@@ -974,161 +1016,145 @@ html, body {
         </svg>
         </div>
         <div class="state complex-state" data-state="complex">
-<svg class="method-complex-svg" preserveAspectRatio="xMidYMid meet" viewBox="0 0 680 892" role="img"  xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </marker>
-<mask id="imagine-text-gaps-bdg1tc" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="680" height="892" fill="white"/><rect x="120.93359375" y="12" width="98.1328125" height="19" fill="black" rx="2"/><rect x="502.1796875" y="12" width="75.640625" height="19" fill="black" rx="2"/><rect x="63.76171875" y="45.25" width="66.4765625" height="21.5" fill="black" rx="2"/><rect x="46.125" y="63.5" width="101.75" height="19" fill="black" rx="2"/><rect x="182.98828125" y="45.25" width="104.0234375" height="21.5" fill="black" rx="2"/><rect x="187.65234375" y="63.5" width="94.6953125" height="19" fill="black" rx="2"/><rect x="496.828125" y="45.25" width="86.34375" height="21.5" fill="black" rx="2"/><rect x="492.40234375" y="63.5" width="95.1953125" height="19" fill="black" rx="2"/><rect x="548" y="190" width="75.9921875" height="19" fill="black" rx="2"/><rect x="257.9375" y="127.25" width="84.125" height="21.5" fill="black" rx="2"/><rect x="118.703125" y="147.5" width="362.59375" height="19" fill="black" rx="2"/><rect x="259.39453125" y="217.25" width="81.2109375" height="21.5" fill="black" rx="2"/><rect x="147.73046875" y="237.5" width="304.5390625" height="19" fill="black" rx="2"/><rect x="241.71484375" y="332.25" width="136.5703125" height="21.5" fill="black" rx="2"/><rect x="126.53125" y="353.5" width="366.9375" height="19" fill="black" rx="2"/><rect x="88.0703125" y="371.5" width="443.859375" height="19" fill="black" rx="2"/><rect x="211.5703125" y="453.25" width="176.859375" height="21.5" fill="black" rx="2"/><rect x="143.046875" y="473.5" width="313.90625" height="19" fill="black" rx="2"/><rect x="539.2265625" y="453.25" width="87.546875" height="21.5" fill="black" rx="2"/><rect x="541.421875" y="473.5" width="83.15625" height="19" fill="black" rx="2"/><rect x="220.01953125" y="553.25" width="159.9609375" height="21.5" fill="black" rx="2"/><rect x="96.94921875" y="573.5" width="406.1015625" height="19" fill="black" rx="2"/><rect x="243.36328125" y="643.25" width="113.2734375" height="21.5" fill="black" rx="2"/><rect x="130.984375" y="663.5" width="338.03125" height="19" fill="black" rx="2"/><rect x="86.5859375" y="737.25" width="68.828125" height="21.5" fill="black" rx="2"/><rect x="217.09765625" y="737.25" width="99.8046875" height="21.5" fill="black" rx="2"/><rect x="372.49609375" y="737.25" width="81.0078125" height="21.5" fill="black" rx="2"/><rect x="509.56640625" y="737.25" width="98.8671875" height="21.5" fill="black" rx="2"/><rect x="251.44140625" y="809.25" width="177.1171875" height="21.5" fill="black" rx="2"/><rect x="180.86328125" y="829.5" width="318.2734375" height="19" fill="black" rx="2"/><rect x="54" y="864.5" width="92.640625" height="19" fill="black" rx="2"/><rect x="232" y="864.5" width="174.2578125" height="19" fill="black" rx="2"/><rect x="464" y="864.5" width="75.453125" height="19" fill="black" rx="2"/></mask></defs>
+<svg class="method-complex-svg" viewBox="0 0 1600 500" xmlns="http://www.w3.org/2000/svg">
 
-<!-- ── SECTION LABELS ── -->
-<text x="170" y="26" text-anchor="middle" opacity="0.45" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.45;font-size:12px;font-weight:400">Whole-site path</text>
-<text x="540" y="26" text-anchor="middle" opacity="0.45" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.45;font-size:12px;font-weight:400">Direct input</text>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" class="arrowhead"/>
+        </marker>
+        <marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" class="arrowhead-soft"/>
+        </marker>
+      </defs>
 
-<!-- ── INPUTS ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="40" y="38" width="115" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="97" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Live URL</text>
-  <text x="97" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Any CMS source</text>
-</g>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="170" y="38" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="235" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">SPA / headless</text>
-  <text x="235" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">JSON in source</text>
-</g>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="476" y="38" width="128" height="44" rx="8" stroke-width="0.5" stroke-dasharray="4 3" style="fill:#ebebe6;stroke:#7a7a7a;stroke-width:0.5px;stroke-dasharray:4px, 3px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="540" y="56" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Figma / PDF</text>
-  <text x="540" y="73" text-anchor="middle" dominant-baseline="central" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Design-to-page</text>
-</g>
+      <!-- ====== TOP SECTION LABELS ====== -->
+      <text class="label-section" x="40" y="50">Inputs</text>
+      <text class="label-section" x="570" y="50">The shared format</text>
+      <text class="label-section" x="1410" y="50">CMS outputs</text>
 
-<!-- ── INPUT → MIRROR: L-paths merging to junction, then single arrow ── -->
-<path d="M97,82 L97,100 L300,100" fill="none" stroke="var(--t)" stroke-width="0.5" opacity="0.5" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<path d="M235,82 L235,100 L300,100" fill="none" stroke="var(--t)" stroke-width="0.5" opacity="0.5" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<circle cx="300" cy="100" r="2.5" fill="var(--t)" opacity="0.3" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:0.3;font-size:16px;font-weight:400"/>
-<line x1="300" y1="100" x2="300" y2="118" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== INPUTS (left) ====== -->
+      <!-- Live URL -->
+      <rect class="box-input" x="40" y="170" width="140" height="46" />
+      <text class="label-io" x="56" y="192">Live URL</text>
+      <text class="label-io-desc" x="56" y="208">Any CMS source</text>
 
-<!-- ── FIGMA BYPASS: dashed vertical to IF top ── -->
-<line x1="540" y1="82" x2="540" y2="320" fill="none" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="4 3" marker-end="url(#arrow)" mask="url(#imagine-text-gaps-bdg1tc)" style="fill:none;stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:4px, 3px;opacity:1;font-size:16px;font-weight:400"/>
-<text x="552" y="204" opacity="0.5" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.5;font-size:12px;font-weight:400">Skips mirror</text>
+      <!-- SPA / headless -->
+      <rect class="box-input" x="40" y="240" width="140" height="46" />
+      <text class="label-io" x="56" y="262">SPA / headless</text>
+      <text class="label-io-desc" x="56" y="278">JSON in source</text>
 
-<!-- ── STAGE 1: MIRROR ── x=90 w=420 center=300 -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="90" y="118" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="300" y="138" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">01 — Mirror</text>
-  <text x="300" y="157" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Playwright renders full site offline. Assets downloaded to DAM.</text>
-</g>
+      <!-- Figma / PDF (alternate path, dashed border) -->
+      <rect class="box-input-alt" x="40" y="310" width="140" height="46" />
+      <text class="label-io" x="56" y="332">Figma / PDF</text>
+      <text class="label-io-desc" x="56" y="348">Design-to-page</text>
 
-<!-- ── MIRROR → PARSE ── -->
-<line x1="300" y1="170" x2="300" y2="208" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== INPUT → MIRROR CONVERGENCE ====== -->
+      <path class="connector" d="M 180 193 L 215 193 L 215 250" />
+      <path class="connector" d="M 180 263 L 215 263 L 215 250" />
+      <circle cx="215" cy="250" r="2.5" fill="#0a0a0a" />
+      <line class="connector" x1="215" y1="250" x2="246" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── STAGE 2: PARSE ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="90" y="208" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="300" y="228" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">02 — Parse</text>
-  <text x="300" y="247" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">HTML → Nunjucks templates + JSON content blocks.</text>
-</g>
+      <!-- ====== FIGMA/PDF BYPASS (dashed, over the top) ====== -->
+      <path class="connector-dashed" d="M 180 333 L 195 333 L 195 125 L 720 125 L 720 178" marker-end="url(#arrow-soft)" />
+      <text class="label-annotation" x="240" y="115">Direct input · skips Mirror &amp; Parse</text>
 
-<!-- ── PARSE → IF ── -->
-<line x1="300" y1="260" x2="300" y2="320" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== STAGE 01: MIRROR ====== -->
+      <rect class="box" x="250" y="218" width="130" height="64" />
+      <text class="label-stage" x="266" y="240"><tspan class="num">01 ·</tspan> Mirror</text>
+      <text class="label-desc" x="266" y="259">Renders site</text>
+      <text class="label-desc" x="266" y="273">offline. Assets</text>
+      <text class="label-desc" x="266" y="287">to DAM.</text>
 
-<!-- ── INTERCHANGE FORMAT — architectural centrepiece ── x=40 w=600 -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="40" y="320" width="600" height="84" rx="10" stroke-width="1" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="310" y="343" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Interchange format</text>
-  <text x="310" y="363" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Nunjucks templates + JSON content — CMS-agnostic by design</text>
-  <text x="310" y="381" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Both input paths converge here. All pipeline stages operate within this format.</text>
-</g>
+      <line class="connector" x1="380" y1="250" x2="410" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── IF → DETECT ── -->
-<line x1="300" y1="404" x2="300" y2="444" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== STAGE 02: PARSE ====== -->
+      <rect class="box" x="414" y="218" width="130" height="64" />
+      <text class="label-stage" x="430" y="240"><tspan class="num">02 ·</tspan> Parse</text>
+      <text class="label-desc" x="430" y="259">HTML to</text>
+      <text class="label-desc" x="430" y="273">templates +</text>
+      <text class="label-desc" x="430" y="287">JSON content.</text>
 
-<!-- ── STAGE 3: DETECT ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="90" y="444" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="300" y="464" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">03 — Detect components</text>
-  <text x="300" y="483" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Visual + markup analysis. Confidence scored per page.</text>
-</g>
+      <line class="connector" x1="544" y1="250" x2="574" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── HUMAN GATE sidecar ── x=526 w=114 -->
-<line x1="510" y1="470" x2="524" y2="470" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="3 2" marker-end="url(#arrow)" style="fill:rgb(0, 0, 0);stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:3px, 2px;opacity:1;font-size:16px;font-weight:400"/>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="526" y="444" width="114" height="52" rx="8" stroke-width="0.5" style="fill:#e2e2dc;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <rect x="530" y="435" width="6" height="6" fill="#bcfb49"/>
-  <text x="583" y="464" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Human gate</text>
-  <text x="583" y="483" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Dev confirms</text>
-</g>
-<!-- checkpoint return: down → left → joins main flow -->
-<path d="M583,496 L583,522 L300,522" fill="none" stroke="var(--s)" stroke-width="0.5" stroke-dasharray="3 2" style="fill:none;stroke:#4a4a4a;stroke-width:0.5px;stroke-dasharray:3px, 2px;opacity:1;font-size:16px;font-weight:400"/>
+      <!-- ====== INTERCHANGE (central, larger, lime accent) ====== -->
+      <rect class="interchange-bg" x="578" y="178" width="284" height="144" />
+      <rect class="interchange-bar" x="578" y="178" width="284" height="5" />
+      <text class="label-interchange" x="600" y="216">Interchange</text>
+      <text class="label-interchange-desc" x="600" y="244">Nunjucks templates</text>
+      <text class="label-interchange-desc" x="600" y="261">JSON content</text>
+      <text class="label-interchange-desc" x="600" y="278">Brand tokens applied</text>
+      <text class="label-interchange-note" x="600" y="306">All stages operate on this format.</text>
 
-<!-- ── DETECT → SWAP (main flow, checkpoint return joins at y=522) ── -->
-<line x1="300" y1="496" x2="300" y2="544" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<circle cx="300" cy="522" r="2.5" fill="var(--t)" opacity="0.3" style="fill:#7a7a7a;stroke:none;stroke-width:1px;opacity:0.3;font-size:16px;font-weight:400"/>
+      <line class="connector" x1="862" y1="250" x2="892" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── STAGE 4: SWAP + STITCH ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="90" y="544" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="300" y="564" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">04 — Swap out + stitch</text>
-  <text x="300" y="583" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Site-wide propagation. Variant deduplication across component library.</text>
-</g>
+      <!-- ====== HUMAN GATE (sidekick above Detect) ====== -->
+      <rect class="gate-bg" x="896" y="120" width="130" height="42" />
+      <text class="label-gate" x="912" y="138">Human gate</text>
+      <text class="label-gate-desc" x="912" y="154">Dev confirms</text>
+      <line class="connector-soft" x1="961" y1="162" x2="961" y2="218" />
 
-<!-- ── SWAP → TRANSCODE ── -->
-<line x1="300" y1="596" x2="300" y2="634" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== STAGE 03: DETECT ====== -->
+      <rect class="box" x="896" y="218" width="130" height="64" />
+      <text class="label-stage" x="912" y="240"><tspan class="num">03 ·</tspan> Detect</text>
+      <text class="label-desc" x="912" y="259">Visual + markup</text>
+      <text class="label-desc" x="912" y="273">analysis, scored</text>
+      <text class="label-desc" x="912" y="287">per component.</text>
 
-<!-- ── STAGE 5: TRANSCODE ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="90" y="634" width="420" height="52" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="300" y="654" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">05 — Transcode</text>
-  <text x="300" y="673" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Interchange compiled to target CMS via API or MCP server.</text>
-</g>
+      <line class="connector" x1="1026" y1="250" x2="1056" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── FAN: Transcode → 4 outputs ── shared stem then branch at y=706 -->
-<line x1="300" y1="686" x2="300" y2="706" stroke="var(--t)" stroke-width="0.5" opacity="0.4" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.4;font-size:16px;font-weight:400"/>
-<path d="M300,706 L121,706 L121,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<path d="M300,706 L267,706 L267,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<path d="M300,706 L413,706 L413,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<path d="M300,706 L559,706 L559,726" fill="none" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:none;stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== STAGE 04: SWAP ====== -->
+      <rect class="box" x="1060" y="218" width="130" height="64" />
+      <text class="label-stage" x="1076" y="240"><tspan class="num">04 ·</tspan> Swap</text>
+      <text class="label-desc" x="1076" y="259">Site-wide</text>
+      <text class="label-desc" x="1076" y="273">propagation,</text>
+      <text class="label-desc" x="1076" y="287">dedupe.</text>
 
-<!-- ── OUTPUT BOXES ── x: 56 202 348 494, w=130, y=726 h=44 -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="56" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="121" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Magnolia</text>
-</g>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="202" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="267" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Contentstack</text>
-</g>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="348" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="413" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Contentful</text>
-</g>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="494" y="726" width="130" height="44" rx="8" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="559" y="748" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">AEM + others</text>
-</g>
+      <line class="connector" x1="1190" y1="250" x2="1220" y2="250" marker-end="url(#arrow)" />
 
-<!-- ── OUTPUTS → FINISHED SITE ── -->
-<line x1="121" y1="770" x2="121" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<line x1="267" y1="770" x2="267" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<line x1="413" y1="770" x2="413" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
-<line x1="559" y1="770" x2="559" y2="800" stroke="var(--t)" stroke-width="0.5" marker-end="url(#arrow)" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:#7a7a7a;stroke-width:0.5px;opacity:0.5;font-size:16px;font-weight:400"/>
+      <!-- ====== STAGE 05: TRANSCODE ====== -->
+      <rect class="box" x="1224" y="218" width="130" height="64" />
+      <text class="label-stage" x="1240" y="240"><tspan class="num">05 ·</tspan> Transcode</text>
+      <text class="label-desc" x="1240" y="259">Compile to</text>
+      <text class="label-desc" x="1240" y="273">target CMS via</text>
+      <text class="label-desc" x="1240" y="287">API or MCP.</text>
 
-<!-- ── FINISHED SITE ── x=56 w=568 center=340 -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400">
-  <rect x="56" y="800" width="568" height="52" rx="10" stroke-width="1" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"/>
-  <text x="340" y="820" text-anchor="middle" dominant-baseline="central" style="fill:#0a0a0a;stroke:none;stroke-width:1px;opacity:1;font-size:14px;font-weight:500">Live site — fully managed</text>
-  <text x="340" y="839" text-anchor="middle" dominant-baseline="central" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:1;font-size:12px;font-weight:400">Content in CMS · Components mapped · Assets in DAM</text>
-</g>
+      <!-- ====== OUTPUT FAN ====== -->
+      <line class="connector" x1="1354" y1="250" x2="1380" y2="250" />
+      <circle cx="1380" cy="250" r="2.5" fill="#0a0a0a" />
 
-<!-- ── LEGEND ── -->
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="40" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
-<text x="58" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Pipeline stages</text>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="218" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#ebebe6;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
-<text x="236" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Interchange format + outputs</text>
-<g style="fill:rgb(0, 0, 0);stroke:none;stroke-width:1px;opacity:1;font-size:16px;font-weight:400"><rect x="450" y="868" width="12" height="12" rx="2" stroke-width="0.5" style="fill:#e2e2dc;stroke:#4a4a4a;stroke-width:0.5px;opacity:1;font-size:16px;font-weight:400"/></g>
-<text x="468" y="874" dominant-baseline="central" opacity="0.6" style="fill:#4a4a4a;stroke:none;stroke-width:1px;opacity:0.6;font-size:12px;font-weight:400">Human gate</text>
+      <path class="connector" d="M 1380 250 L 1380 175 L 1410 175" marker-end="url(#arrow)" />
+      <path class="connector" d="M 1380 250 L 1380 225 L 1410 225" marker-end="url(#arrow)" />
+      <path class="connector" d="M 1380 250 L 1380 275 L 1410 275" marker-end="url(#arrow)" />
+      <path class="connector" d="M 1380 250 L 1380 325 L 1410 325" marker-end="url(#arrow)" />
 
-</svg>
+      <!-- ====== OUTPUT BOXES ====== -->
+      <rect class="box-output" x="1414" y="160" width="140" height="30" />
+      <text class="label-io" x="1430" y="180">Magnolia</text>
+
+      <rect class="box-output" x="1414" y="210" width="140" height="30" />
+      <text class="label-io" x="1430" y="230">Contentstack</text>
+
+      <rect class="box-output" x="1414" y="260" width="140" height="30" />
+      <text class="label-io" x="1430" y="280">Contentful</text>
+
+      <rect class="box-output" x="1414" y="310" width="140" height="30" />
+      <text class="label-io" x="1430" y="330">AEM + others</text>
+
+      <!-- ====== BOTTOM LEGEND ====== -->
+      <line class="connector-soft" x1="40" y1="408" x2="1554" y2="408" />
+
+      <!-- Solid arrow legend -->
+      <line class="connector" x1="40" y1="438" x2="68" y2="438" marker-end="url(#arrow)" />
+      <text class="label-legend" x="78" y="442">Whole-site path</text>
+
+      <!-- Dashed arrow legend -->
+      <line class="connector-dashed" x1="280" y1="438" x2="308" y2="438" marker-end="url(#arrow-soft)" />
+      <text class="label-legend" x="318" y="442">Direct input</text>
+
+      <!-- Output description -->
+      <text class="label-annotation" x="540" y="442">All outputs land as a fully managed live site. Content in CMS · Components mapped · Assets in DAM.</text>
+
+    </svg>
         </div>
         <div class="state-hint">Press 'd' for detail</div>
        </div>
