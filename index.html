@@ -244,7 +244,55 @@ html, body {
 }
 .slide-claim .subline .lime-mark { color: var(--lime); }
 
-/* === Slide 03 · The Practice (IP) === */
+/* === Slide 03 · Use cases === */
+.slide-usecases {
+  background: var(--paper-canvas);
+  color: var(--ink);
+}
+.slide-usecases .eyebrow { color: var(--ink-soft); }
+.slide-usecases .usecases-headline {
+  font-family: 'Epilogue', sans-serif;
+  font-weight: 200;
+  font-size: clamp(36px, 3.6vw, 56px);
+  line-height: 1.0;
+  letter-spacing: -0.032em;
+  color: var(--ink);
+  margin-top: clamp(20px, 2.4vh, 32px);
+  max-width: 28ch;
+}
+.slide-usecases .usecases-headline em {
+  font-style: normal;
+  font-weight: 800;
+}
+.slide-usecases .usecases-subline {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(17px, 1.4vw, 22px);
+  color: var(--ink-soft);
+  margin-top: clamp(14px, 1.6vh, 22px);
+  max-width: 56ch;
+  line-height: 1.35;
+}
+.slide-usecases .usecases-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(18px, 2vh, 32px);
+  margin-bottom: clamp(40px, 5vh, 64px);
+  min-height: 0;
+  width: 100%;
+}
+.slide-usecases .usecases-svg {
+  width: 100%;
+  max-width: 1080px;
+  height: auto;
+  max-height: 100%;
+  display: block;
+}
+
+/* === Slide 04 · The Practice (IP) === */
 .slide-practice {
   background: var(--paper-canvas);
   color: var(--ink);
@@ -760,7 +808,7 @@ html, body {
   font-family: 'Epilogue', sans-serif;
   font-weight: 300;
   font-size: clamp(13px, 0.95vw, 15px);
-  color: var(--ink-mute);
+  color: var(--ink-quiet);
   line-height: 1.4;
 }
 .slide-price .line-value {
@@ -804,7 +852,7 @@ html, body {
 }
 .slide-closer .cta {
   margin-top: clamp(36px, 4vh, 56px);
-  margin-bottom: clamp(80px, 12vh, 140px);
+  margin-bottom: clamp(36px, 5vh, 64px);
   display: flex;
   align-items: baseline;
   gap: 14px;
@@ -825,6 +873,34 @@ html, body {
   font-weight: 700;
   font-size: clamp(16px, 1.5vw, 22px);
   letter-spacing: 0.02em;
+}
+.slide-closer .accreditations {
+  margin-bottom: clamp(80px, 11vh, 132px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 16px;
+  width: 100%;
+}
+.slide-closer .accreditation {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 34px;
+  border: 1px solid var(--ink-mute);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-align: center;
+  line-height: 1.1;
+  padding: 0 6px;
+  opacity: 0.7;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -874,7 +950,7 @@ html, body {
       <div></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" disabled aria-label="Previous"><span>‹</span></button>
-        <div class="counter">01 / 07</div>
+        <div class="counter">01 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -883,25 +959,113 @@ html, body {
   <!-- ====== Slide 02 · Bold Claim ====== -->
   <section class="slide slide-claim" data-slide="1">
     <div class="frame">
-      <div class="eyebrow">01 · The Claim</div>
-      <h1 class="headline">Migrated and rebranded in <em>5&nbsp;days</em>.</h1>
+      <div class="eyebrow">02 · The Claim</div>
+      <h1 class="headline">Move, rebrand, restructure. In <em>five&nbsp;days</em>.</h1>
       <p class="subline">Proof in <span class="lime-mark">90 minutes</span>.</p>
     </div>
     <div class="foot dark-foot">
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">02 / 07</div>
+        <div class="counter">02 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 03 · The Practice (IP) ====== -->
-  <section class="slide slide-practice" data-slide="2">
+  <!-- ====== Slide 03 · Use cases ====== -->
+  <section class="slide slide-usecases" data-slide="2">
+    <div class="frame">
+      <div class="eyebrow">03 · Use cases</div>
+      <h1 class="usecases-headline">Migration at the core. <em>Modular</em> around it.</h1>
+      <p class="usecases-subline">One methodology, accelerated by agents. Engagements pick the modules that fit the situation.</p>
+      <div class="usecases-stage">
+        <svg class="usecases-svg" viewBox="0 0 1080 540" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- Hub caption, top right -->
+          <g transform="translate(880, 50)">
+            <line x1="0" y1="-4" x2="22" y2="-4" stroke="#7a7a7a" stroke-width="1"/>
+            <text x="0" y="14" font-family="Karla, sans-serif" font-weight="700"
+                  font-size="10.5" letter-spacing="2.8" fill="#7a7a7a">CONNECTED HUB</text>
+            <text x="0" y="32" font-family="Karla, sans-serif" font-weight="400"
+                  font-size="10" fill="#a8a8a8">where the modules</text>
+            <text x="0" y="46" font-family="Karla, sans-serif" font-weight="400"
+                  font-size="10" fill="#a8a8a8">operate</text>
+          </g>
+
+          <!-- Ring (single hairline) -->
+          <circle cx="540" cy="270" r="170" fill="none" stroke="#0a0a0a" stroke-width="1"/>
+
+          <!-- Core: typographic only -->
+          <text x="540" y="262" text-anchor="middle" font-family="Epilogue, sans-serif"
+                font-weight="200" font-size="36" letter-spacing="-1.2" fill="#0a0a0a">Migration.</text>
+          <text x="540" y="298" text-anchor="middle" font-family="Epilogue, sans-serif"
+                font-weight="800" font-size="36" letter-spacing="-1.2" fill="#0a0a0a">Interchange.</text>
+
+          <!-- Single lime mark (the diagram's ONE deliberate accent) -->
+          <rect x="532" y="312" width="16" height="3" fill="#bcfb49"/>
+
+          <text x="540" y="332" text-anchor="middle" font-family="Karla, sans-serif"
+                font-weight="400" font-size="11" font-style="italic" fill="#7a7a7a">absorb · reduce · rebuild</text>
+
+          <!-- Module 01 — BRAND ALIGNMENT at 12 o'clock -->
+          <rect x="536" y="98" width="8" height="8" fill="#0a0a0a"/>
+          <line x1="540" y1="98" x2="540" y2="76" stroke="#0a0a0a" stroke-width="1"/>
+          <text x="540" y="60" text-anchor="middle" font-family="Karla, sans-serif"
+                font-weight="700" font-size="12" letter-spacing="2.2" fill="#0a0a0a">BRAND ALIGNMENT</text>
+          <text x="540" y="42" text-anchor="middle" font-family="Karla, sans-serif"
+                font-weight="400" font-size="11" fill="#7a7a7a">Voice, design tokens, components</text>
+
+          <!-- Module 02 — TRANSLATION at 3 o'clock -->
+          <rect x="706" y="266" width="8" height="8" fill="#0a0a0a"/>
+          <line x1="714" y1="270" x2="736" y2="270" stroke="#0a0a0a" stroke-width="1"/>
+          <text x="752" y="264" font-family="Karla, sans-serif" font-weight="700"
+                font-size="12" letter-spacing="2.2" fill="#0a0a0a">TRANSLATION</text>
+          <text x="752" y="282" font-family="Karla, sans-serif" font-weight="400"
+                font-size="11" fill="#7a7a7a">Locales, publish-ready</text>
+
+          <!-- Module 03 — CONTENT INTELLIGENCE at 6 o'clock -->
+          <rect x="536" y="436" width="8" height="8" fill="#0a0a0a"/>
+          <line x1="540" y1="444" x2="540" y2="466" stroke="#0a0a0a" stroke-width="1"/>
+          <text x="540" y="486" text-anchor="middle" font-family="Karla, sans-serif"
+                font-weight="700" font-size="12" letter-spacing="2.2" fill="#0a0a0a">CONTENT INTELLIGENCE</text>
+          <text x="540" y="504" text-anchor="middle" font-family="Karla, sans-serif"
+                font-weight="400" font-size="11" fill="#7a7a7a">Suggestions, governance</text>
+
+          <!-- Module 04 — COST OPTIMISATION at 9 o'clock -->
+          <rect x="366" y="266" width="8" height="8" fill="#0a0a0a"/>
+          <line x1="366" y1="270" x2="344" y2="270" stroke="#0a0a0a" stroke-width="1"/>
+          <text x="328" y="264" text-anchor="end" font-family="Karla, sans-serif"
+                font-weight="700" font-size="12" letter-spacing="2.2" fill="#0a0a0a">COST OPTIMISATION</text>
+          <text x="328" y="282" text-anchor="end" font-family="Karla, sans-serif"
+                font-weight="400" font-size="11" fill="#7a7a7a">Licence, run-rate</text>
+
+          <!-- Faint diagonal ticks at 45° (extensibility hint) -->
+          <g opacity="0.35">
+            <rect x="654" y="146" width="6" height="6" fill="#7a7a7a" transform="rotate(45 657 149)"/>
+            <rect x="654" y="388" width="6" height="6" fill="#7a7a7a" transform="rotate(45 657 391)"/>
+            <rect x="420" y="146" width="6" height="6" fill="#7a7a7a" transform="rotate(45 423 149)"/>
+            <rect x="420" y="388" width="6" height="6" fill="#7a7a7a" transform="rotate(45 423 391)"/>
+          </g>
+
+        </svg>
+      </div>
+    </div>
+    <div class="foot light-foot">
+      <div class="wordmark">graft<span class="dot">.</span></div>
+      <div class="nav-cluster">
+        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
+        <div class="counter">03 / 08</div>
+        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Slide 04 · The Practice (IP) ====== -->
+  <section class="slide slide-practice" data-slide="3">
     <div class="practice-hero">
       <div class="practice-text">
-        <div class="eyebrow">02 · The IP</div>
+        <div class="eyebrow">04 · The IP</div>
         <h1 class="practice-headline">
           Absorb.<br>
           Reduce.<br>
@@ -920,16 +1084,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">03 / 07</div>
+        <div class="counter">04 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 04 · The Method ====== -->
-  <section class="slide slide-method" data-slide="3">
+  <!-- ====== Slide 05 · The Method ====== -->
+  <section class="slide slide-method" data-slide="4">
     <div class="frame">
-      <div class="eyebrow">03 · The Method</div>
+      <div class="eyebrow">05 · The Method</div>
       <h1 class="headline">Any source. One <em>interchange</em>. Any CMS.</h1>
       <div class="stage">
        <div class="diagram-wrap">
@@ -1197,16 +1361,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">04 / 07</div>
+        <div class="counter">05 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 05 · The Proof ====== -->
-  <section class="slide slide-validation" data-slide="4">
+  <!-- ====== Slide 06 · The Proof ====== -->
+  <section class="slide slide-validation" data-slide="5">
     <div class="frame">
-      <div class="eyebrow">04 · The Proof</div>
+      <div class="eyebrow">06 · The Proof</div>
       <div class="number-block">
         <div class="number"><em>2,600</em> pages.<br>Production grade.</div>
         <p class="number-caption">A recent production run. Senior-led at the controls, the agent doing the scale work. Roughly <strong>90% automation</strong>. The remaining 10% is a deliberate human gate at low-confidence component decisions, not a gap.</p>
@@ -1238,16 +1402,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">05 / 07</div>
+        <div class="counter">06 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 06 · The Price ====== -->
-  <section class="slide slide-price" data-slide="5">
+  <!-- ====== Slide 07 · The Price ====== -->
+  <section class="slide slide-price" data-slide="6">
     <div class="frame">
-      <div class="eyebrow">05 · The Price</div>
+      <div class="eyebrow">07 · The Price</div>
       <div class="price-stage">
         <div class="plate">
           <div class="tile">
@@ -1314,27 +1478,37 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">06 / 07</div>
+        <div class="counter">07 / 08</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 07 · Closer ====== -->
-  <section class="slide slide-closer" data-slide="6">
+  <!-- ====== Slide 08 · Closer ====== -->
+  <section class="slide slide-closer" data-slide="7">
     <div class="frame">
-      <div class="eyebrow">06</div>
+      <div class="eyebrow">08</div>
       <h1 class="headline">Let&rsquo;s get to the <em>real&nbsp;work</em>.</h1>
       <div class="cta">
         <div class="cta-text">Pick a site.</div>
         <div class="cta-mark">90 minutes.</div>
+      </div>
+      <div class="accreditations">
+        <div class="accreditation">AWS Advanced Tier</div>
+        <div class="accreditation">AWS AdTech &amp; MarTech</div>
+        <div class="accreditation">Magnolia Partner</div>
+        <div class="accreditation">Contentful Premier</div>
+        <div class="accreditation">Contentstack Partner</div>
+        <div class="accreditation">Cloudinary Partner</div>
+        <div class="accreditation">commercetools Partner</div>
+        <div class="accreditation">ISO 27001</div>
       </div>
     </div>
     <div class="foot light-foot">
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">07 / 07</div>
+        <div class="counter">08 / 08</div>
         <button class="nav-btn next" disabled aria-label="Next"><span>›</span></button>
       </div>
     </div>
