@@ -243,6 +243,17 @@ html, body {
   line-height: 1.1;
 }
 .slide-claim .subline .lime-mark { color: var(--lime); }
+.slide-claim .subline { margin-bottom: clamp(22px, 2.6vh, 36px); }
+.slide-claim .claim-certainty {
+  font-family: 'Karla', sans-serif;
+  font-weight: 400;
+  font-size: clamp(15px, 1.25vw, 19px);
+  line-height: 1.55;
+  color: var(--ink-quiet);
+  max-width: 48ch;
+  margin-bottom: clamp(76px, 11vh, 132px);
+}
+.slide-claim .claim-certainty strong { color: #f0f0eb; font-weight: 700; }
 
 /* === Slide 03 · The Practice (IP) === */
 .slide-practice {
@@ -277,10 +288,6 @@ html, body {
 .slide-practice .practice-headline em {
   font-style: normal;
   font-weight: 800;
-}
-.slide-practice .practice-kick {
-  display: block;
-  margin-top: clamp(8px, 1vh, 14px);
 }
 .slide-practice .practice-body {
   font-family: 'Karla', sans-serif;
@@ -322,6 +329,7 @@ html, body {
 }
 
 /* === Slide 04 · Method === */
+.slide-method .frame { min-height: 0; }
 .slide-method {
   background: var(--paper-canvas);
   color: var(--ink);
@@ -346,189 +354,73 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: clamp(18px, 2vh, 32px);
-  margin-bottom: 60px;
+  margin-top: clamp(14px, 1.6vh, 26px);
+  margin-bottom: clamp(28px, 4vh, 48px);
   min-height: 0;
   width: 100%;
 }
-.method-svg {
+/* Animated migration flow */
+.method-flow-svg {
   width: 100%;
-  max-width: 1320px;
+  max-width: 1440px;
   height: 100%;
-  max-height: 100%;
-  display: block;
-}
-.method-svg .stroke { stroke: var(--ink); stroke-width: 1.2; fill: none; }
-.method-svg .stroke-thin { stroke: var(--ink-mute); stroke-width: 0.9; fill: none; }
-.method-svg .center-bg { fill: var(--paper-panel); stroke: var(--ink); stroke-width: 1.4; }
-.method-svg .source-bg { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1.2; }
-.method-svg .target-bg { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1.2; }
-.method-svg .new-site-bg { fill: #fafaf7; stroke: var(--ink); stroke-width: 1.4; }
-.method-svg .header-grey { fill: #c8c8c2; }
-.method-svg .header-dark { fill: var(--ink); }
-.method-svg .row-grey { fill: #c8c8c2; opacity: 0.5; }
-.method-svg .hero-fill { fill: #d4a574; }
-.method-svg .hero-line { stroke: #b88a5e; stroke-width: 0.8; fill: none; }
-.method-svg .placeholder { fill: var(--paper-panel); stroke: var(--ink-mute); stroke-width: 0.7; }
-.method-svg .lime-bar { fill: var(--lime); }
-.method-svg .brand-dot { fill: #b88a5e; }
-.method-svg .label-major {
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  fill: var(--ink);
-  letter-spacing: -0.005em;
-}
-.method-svg .label-minor {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  fill: var(--ink-mute);
-}
-.method-svg .label-caption {
-  font-family: 'Karla', sans-serif;
-  font-weight: 400;
-  font-size: 11px;
-  fill: var(--ink-soft);
-}
-.method-svg .label-deployed {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  fill: var(--ink-mute);
-}
-.method-svg .label-deployed-list {
-  font-family: 'Karla', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  fill: var(--ink);
-}
-.method-svg .strip-label {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  fill: var(--ink);
-}
-.method-svg .strip-text {
-  font-family: 'Karla', sans-serif;
-  font-weight: 400;
-  font-size: 9.5px;
-  fill: var(--ink);
-}
-
-.method-svg .anim { opacity: 0; }
-.slide-method.active .anim-source { animation: fadeRise 700ms var(--ease) 300ms forwards; }
-.slide-method.active .anim-arrow1 { animation: fadeIn 600ms var(--ease) 1100ms forwards; }
-.slide-method.active .anim-center { animation: fadeRise 700ms var(--ease) 1700ms forwards; }
-.slide-method.active .anim-lime { animation: fadeIn 700ms var(--ease) 2700ms forwards; }
-.slide-method.active .anim-arrow2 { animation: fadeIn 600ms var(--ease) 3300ms forwards; }
-.slide-method.active .anim-new-site { animation: fadeRise 800ms var(--ease) 3900ms forwards; }
-.slide-method.active .anim-deployed { animation: fadeIn 700ms var(--ease) 4900ms forwards; }
-
-@keyframes fadeRise {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-/* Method · simple/complex toggle */
-.slide-method .stage { position: relative; }
-.slide-method .diagram-wrap {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-.slide-method .state {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 300ms ease;
-  pointer-events: none;
-}
-.slide-method .state.active { opacity: 1; pointer-events: auto; }
-.slide-method .state-hint {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  opacity: 0.55;
-  pointer-events: none;
-  z-index: 3;
-  user-select: none;
-}
-.method-complex-svg {
-  width: 100%;
-  max-width: 1520px;
-  height: auto;
   max-height: 100%;
   display: block;
   font-family: 'Karla', system-ui, sans-serif;
 }
-.method-complex-svg text { font-family: 'Karla', system-ui, sans-serif; }
-.method-complex-svg .box,
-.method-complex-svg .box-input,
-.method-complex-svg .box-output { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1; }
-.method-complex-svg .box-input-alt { fill: var(--paper-page); stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 4 3; }
-.method-complex-svg .interchange-bg { fill: var(--paper-panel); stroke: var(--ink); stroke-width: 1.4; }
-.method-complex-svg .interchange-bar { fill: var(--lime); }
-.method-complex-svg .gate-bg { fill: var(--paper-canvas); stroke: var(--ink); stroke-width: 1.2; }
-.method-complex-svg .connector { stroke: var(--ink); stroke-width: 1.1; fill: none; stroke-linecap: square; stroke-linejoin: miter; }
-.method-complex-svg .connector-soft { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
-.method-complex-svg .connector-dashed { stroke: var(--ink-soft); stroke-width: 1; fill: none; stroke-dasharray: 4 3; stroke-linejoin: miter; }
-.method-complex-svg .arrowhead { fill: var(--ink); }
-.method-complex-svg .arrowhead-soft { fill: var(--ink-soft); }
-.method-complex-svg .label-section {
-  font-weight: 700; font-size: 9.5px; letter-spacing: 0.26em;
-  text-transform: uppercase; fill: var(--ink-mute);
-}
-.method-complex-svg .label-stage {
-  font-weight: 700; font-size: 10.5px; letter-spacing: 0.20em;
-  text-transform: uppercase; fill: var(--ink);
-}
-.method-complex-svg .label-stage .num { fill: var(--ink-quiet); }
-.method-complex-svg .label-desc { font-weight: 400; font-size: 10px; fill: var(--ink-soft); }
-.method-complex-svg .label-io { font-weight: 500; font-size: 11.5px; fill: var(--ink); }
-.method-complex-svg .label-io-desc { font-weight: 400; font-size: 9.5px; fill: var(--ink-mute); }
-.method-complex-svg .label-interchange {
-  font-weight: 700; font-size: 14.5px; letter-spacing: 0.24em;
-  text-transform: uppercase; fill: var(--ink);
-}
-.method-complex-svg .label-interchange-desc { font-weight: 400; font-size: 11.5px; fill: var(--ink-body); }
-.method-complex-svg .label-interchange-note { font-weight: 400; font-size: 10px; font-style: italic; fill: var(--ink-mute); }
-.method-complex-svg .label-gate {
-  font-weight: 700; font-size: 9.5px; letter-spacing: 0.22em;
-  text-transform: uppercase; fill: var(--ink);
-}
-.method-complex-svg .label-gate-desc { font-weight: 400; font-size: 9.5px; fill: var(--ink-soft); }
-.method-complex-svg .label-annotation { font-weight: 400; font-size: 10px; font-style: italic; fill: var(--ink-mute); }
-.method-complex-svg .label-legend {
-  font-weight: 700; font-size: 9.5px; letter-spacing: 0.22em;
-  text-transform: uppercase; fill: var(--ink-mute);
-}
-/* After the first toggle, force simple state to its final keyframes (no re-animation) */
-.slide-method.animation-done .anim {
-  opacity: 1 !important;
-  transform: none !important;
-  animation: none !important;
-}
+.method-flow-svg text { font-family: 'Karla', system-ui, sans-serif; }
+
+/* Base shapes — always visible, so they form the correct static frame */
+.method-flow-svg .box { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1; }
+.method-flow-svg .box-alt { fill: var(--paper-page); stroke: var(--ink-soft); stroke-width: 1; stroke-dasharray: 4 3; }
+.method-flow-svg .box-target { fill: var(--paper-page); stroke: var(--ink); stroke-width: 1; }
+.method-flow-svg .box-target-lead { fill: #fafaf7; stroke: var(--ink); stroke-width: 1.6; }
+.method-flow-svg .hub-bg { fill: var(--paper-panel); stroke: var(--ink); stroke-width: 1.4; }
+.method-flow-svg .hub-bar { fill: var(--lime); }
+.method-flow-svg .card-bg { fill: var(--paper-canvas); stroke: var(--ink); stroke-width: 1.1; }
+.method-flow-svg .card-tab { fill: var(--lime); }
+.method-flow-svg .lead-bar { fill: var(--lime); }
+.method-flow-svg .connector { stroke: var(--ink); stroke-width: 1.1; fill: none; stroke-linecap: square; stroke-linejoin: miter; }
+.method-flow-svg .connector-soft { stroke: var(--ink-soft); stroke-width: 1; fill: none; }
+.method-flow-svg .arrowhead { fill: var(--ink); }
+.method-flow-svg .node { fill: var(--ink); }
+
+/* Labels */
+.method-flow-svg .label-section { font-weight: 700; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; fill: var(--ink-mute); }
+.method-flow-svg .label-stage { font-weight: 700; font-size: 10.5px; letter-spacing: 0.11em; text-transform: uppercase; fill: var(--ink); }
+.method-flow-svg .label-stage .num { fill: var(--ink-quiet); }
+.method-flow-svg .label-desc { font-weight: 400; font-size: 10px; fill: var(--ink-soft); }
+.method-flow-svg .label-io { font-weight: 500; font-size: 12px; fill: var(--ink); }
+.method-flow-svg .label-io-desc { font-weight: 400; font-size: 9.5px; fill: var(--ink-mute); }
+.method-flow-svg .label-hub { font-weight: 700; font-size: 15px; letter-spacing: 0.22em; text-transform: uppercase; fill: var(--ink); }
+.method-flow-svg .label-hub-desc { font-weight: 400; font-size: 11.5px; fill: var(--ink-body); }
+.method-flow-svg .label-hub-note { font-weight: 400; font-size: 10px; font-style: italic; fill: var(--ink-mute); }
+.method-flow-svg .card-kicker { font-weight: 700; font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase; fill: var(--ink); }
+.method-flow-svg .card-title { font-weight: 700; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; fill: var(--ink); }
+.method-flow-svg .card-desc { font-weight: 400; font-size: 10px; fill: var(--ink-soft); }
+.method-flow-svg .label-foot { font-weight: 400; font-size: 11px; fill: var(--ink-soft); }
+
+/* Lime flow marching along the connectors */
+.method-flow-svg .flow { stroke: var(--lime); stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-dasharray: 5 11; opacity: 0.9; }
+.slide-method.active .method-flow-svg .flow { animation: methodMarch 0.85s linear infinite; }
+@keyframes methodMarch { to { stroke-dashoffset: -16; } }
+
+/* Stages light in sequence: Mirror, Parse, Detect, Gate, Transcode */
+.method-flow-svg .stage-hl { fill: none; stroke: var(--lime); stroke-width: 2.6; opacity: 0; }
+.slide-method.active .method-flow-svg .stage-hl { animation: methodStage 5s linear infinite; }
+.slide-method.active .method-flow-svg .s1 { animation-delay: 0s; }
+.slide-method.active .method-flow-svg .s2 { animation-delay: 1s; }
+.slide-method.active .method-flow-svg .s3 { animation-delay: 2s; }
+.slide-method.active .method-flow-svg .s4 { animation-delay: 3s; }
+.slide-method.active .method-flow-svg .s5 { animation-delay: 4s; }
+@keyframes methodStage { 0% { opacity: 0; } 3% { opacity: 1; } 16% { opacity: 1; } 22%, 100% { opacity: 0; } }
+
+/* Interchange pulses as content arrives */
+.method-flow-svg .hub-glow { fill: none; stroke: var(--lime); stroke-width: 2; opacity: 0; }
+.slide-method.active .method-flow-svg .hub-glow { animation: methodHub 5s ease-in-out infinite; animation-delay: 1.4s; }
+@keyframes methodHub { 0%, 100% { opacity: 0; } 8% { opacity: 0.75; } 32% { opacity: 0; } }
+
+.slide-method .stage { position: relative; }
 
 /* === Slide 05 · Validation === */
 .slide-validation {
@@ -619,165 +511,6 @@ html, body {
   line-height: 1.4;
 }
 
-/* === Slide 06 · Price === */
-.slide-price {
-  background: linear-gradient(135deg, #050510 0%, #131320 55%, #1c1c2a 100%);
-  color: #f0f0eb;
-}
-.slide-price .eyebrow { color: var(--lime); }
-.slide-price .price-stage {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  margin-top: clamp(24px, 2.6vh, 40px);
-  margin-bottom: clamp(72px, 8vh, 104px);
-  min-height: 0;
-  gap: clamp(20px, 2.2vh, 32px);
-}
-.slide-price .plate {
-  position: relative;
-  flex: 1;
-  background-image: repeating-linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.06) 0px,
-    rgba(255, 255, 255, 0.06) 1px,
-    transparent 1px,
-    transparent 14px
-  );
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  padding: clamp(28px, 3.4vw, 52px);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-height: 0;
-}
-
-/* Receipt-style tile */
-.slide-price .tile {
-  background: #f5f5ef;
-  color: var(--ink);
-  padding: clamp(22px, 2.2vw, 36px) clamp(28px, 2.8vw, 44px) clamp(20px, 2vw, 32px);
-  width: min(560px, 54%);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-  position: relative;
-  font-family: 'Karla', sans-serif;
-}
-.slide-price .tile-eyebrow {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  margin-bottom: clamp(12px, 1.4vh, 18px);
-  padding-bottom: clamp(10px, 1.2vh, 16px);
-  border-bottom: 1px solid var(--line);
-}
-.receipt-lines {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(6px, 0.7vh, 9px);
-  margin-bottom: clamp(10px, 1.2vh, 16px);
-}
-.receipt-line {
-  display: flex;
-  align-items: baseline;
-  font-family: 'Karla', sans-serif;
-  font-weight: 400;
-  font-size: clamp(13px, 1.05vw, 15.5px);
-  color: var(--ink-body);
-  line-height: 1.3;
-}
-.receipt-line .item { white-space: nowrap; }
-.receipt-line .leader {
-  flex: 1;
-  border-bottom: 1px dotted #b8b8b3;
-  margin: 0 8px;
-  position: relative;
-  top: -3px;
-  min-width: 18px;
-}
-.receipt-line .value {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: clamp(12px, 0.95vw, 14px);
-  color: var(--ink-soft);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-.receipt-line.credits .value { color: var(--ink); }
-.receipt-line.credits .ast { color: var(--lime); font-weight: 700; margin-right: 4px; background: var(--ink); padding: 1px 5px 0; font-size: 11px; }
-.receipt-total {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-top: clamp(14px, 1.6vh, 20px);
-  border-top: 1.5px solid var(--ink);
-  margin-top: clamp(4px, 0.5vh, 8px);
-}
-.receipt-total .total-label {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.receipt-total .total-value {
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 800;
-  font-size: clamp(34px, 3.4vw, 50px);
-  letter-spacing: -0.03em;
-  color: var(--ink);
-  line-height: 1;
-}
-.receipt-footnote {
-  font-family: 'Karla', sans-serif;
-  font-weight: 400;
-  font-size: 11.5px;
-  color: var(--ink-mute);
-  margin-top: clamp(10px, 1.2vh, 16px);
-  line-height: 1.5;
-}
-.receipt-footnote .ast { color: var(--lime); font-weight: 700; background: var(--ink); padding: 1px 5px 0; font-size: 10.5px; margin-right: 4px; }
-
-.slide-price .lines-band {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(24px, 3vw, 56px);
-  padding: 0 clamp(8px, 1vw, 16px);
-}
-.slide-price .line-item { display: flex; flex-direction: column; gap: 6px; }
-.slide-price .line-label {
-  font-family: 'Karla', sans-serif;
-  font-weight: 700;
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-}
-.slide-price .line-desc {
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 300;
-  font-size: clamp(13px, 0.95vw, 15px);
-  color: var(--ink-mute);
-  line-height: 1.4;
-}
-.slide-price .line-value {
-  font-family: 'Epilogue', sans-serif;
-  font-weight: 200;
-  font-size: clamp(20px, 1.7vw, 28px);
-  color: #f5f5ef;
-  letter-spacing: -0.025em;
-  margin-top: 6px;
-}
-.slide-price .line-value .unit {
-  font-size: 0.5em;
-  color: var(--ink-mute);
-  font-weight: 300;
-  letter-spacing: 0;
-}
-
 /* === Slide 07 · Closer === */
 .slide-closer {
   background:
@@ -829,10 +562,14 @@ html, body {
 
 @media (prefers-reduced-motion: reduce) {
   .slide { transition: opacity 200ms linear; }
-  .slide-method.active .anim {
-    animation: fadeIn 250ms linear forwards !important;
-    animation-delay: 0ms !important;
+  .slide-method.active .method-flow-svg .flow,
+  .slide-method.active .method-flow-svg .stage-hl,
+  .slide-method.active .method-flow-svg .hub-glow {
+    animation: none !important;
   }
+  .method-flow-svg .flow,
+  .method-flow-svg .stage-hl,
+  .method-flow-svg .hub-glow { opacity: 0 !important; }
 }
 </style>
 </head>
@@ -866,7 +603,7 @@ html, body {
       </div>
       <div class="cover-main">
         <h1 class="cover-title">graft<span class="lime-dot">.</span></h1>
-        <p class="cover-sub">The migration agent</p>
+        <p class="cover-sub">Senior-led migration, delivered with <span class="accent">certainty</span></p>
       </div>
       <div></div>
     </div>
@@ -874,7 +611,7 @@ html, body {
       <div></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" disabled aria-label="Previous"><span>‹</span></button>
-        <div class="counter">01 / 07</div>
+        <div class="counter">01 / 06</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -886,12 +623,13 @@ html, body {
       <div class="eyebrow">01 · The Claim</div>
       <h1 class="headline">Migrated and rebranded in <em>5&nbsp;days</em>.</h1>
       <p class="subline">Proof in <span class="lime-mark">90 minutes</span>.</p>
+      <p class="claim-certainty"><strong>Fixed fee. Fixed date.</strong> Senior engineers at the controls, the agent doing the scale work behind them.</p>
     </div>
     <div class="foot dark-foot">
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">02 / 07</div>
+        <div class="counter">02 / 06</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -906,7 +644,6 @@ html, body {
           Absorb.<br>
           Reduce.<br>
           Rebuild.
-          <span class="practice-kick">Now <em>agentic</em>.</span>
         </h1>
         <p class="practice-body">Every site reduces to one universal form. We call it <strong>the interchange</strong>. From there, any CMS, any brand applied.</p>
       </div>
@@ -920,7 +657,7 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">03 / 07</div>
+        <div class="counter">03 / 06</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -932,272 +669,163 @@ html, body {
       <div class="eyebrow">03 · The Method</div>
       <h1 class="headline">Any source. One <em>interchange</em>. Any CMS.</h1>
       <div class="stage">
-       <div class="diagram-wrap">
-        <div class="state simple-state active" data-state="simple">
-        <svg class="method-svg" viewBox="0 0 1320 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-          <!-- ====== SOURCE SITE (left) ====== -->
-          <g class="anim anim-source">
-            <text class="label-minor" x="40" y="60">Your site, today</text>
-            <rect class="source-bg" x="40" y="80" width="300" height="380" />
-            <!-- header bar with dots -->
-            <rect class="header-grey" x="40" y="80" width="300" height="36" />
-            <circle cx="58" cy="98" r="3.5" fill="#f5f5ef" />
-            <circle cx="70" cy="98" r="3.5" fill="#f5f5ef" />
-            <circle cx="82" cy="98" r="3.5" fill="#f5f5ef" />
-            <!-- main content rows -->
-            <rect class="row-grey" x="60" y="138" width="180" height="8" />
-            <rect class="row-grey" x="60" y="156" width="240" height="6" />
-            <rect class="row-grey" x="60" y="170" width="200" height="6" />
-            <rect class="row-grey" x="60" y="184" width="140" height="6" />
-            <!-- three small cards -->
-            <rect class="placeholder" x="60" y="216" width="80" height="60" />
-            <rect class="placeholder" x="150" y="216" width="80" height="60" />
-            <rect class="placeholder" x="240" y="216" width="80" height="60" />
-            <!-- content rows -->
-            <rect class="row-grey" x="60" y="296" width="260" height="6" />
-            <rect class="row-grey" x="60" y="310" width="220" height="6" />
-            <rect class="row-grey" x="60" y="324" width="240" height="6" />
-            <!-- footer row -->
-            <rect class="row-grey" x="60" y="430" width="120" height="5" opacity="0.4" />
-            <rect class="row-grey" x="200" y="430" width="120" height="5" opacity="0.4" />
-            <text class="label-caption" x="40" y="488">2,600 pages · live domain</text>
+        <svg class="method-flow-svg" viewBox="0 0 1440 516" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="mflow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" class="arrowhead" />
+            </marker>
+          </defs>
+
+          <!-- ====== SECTION LABELS ====== -->
+          <text class="label-section" x="30" y="44">Sources in</text>
+          <text class="label-section" x="540" y="44">One interchange</text>
+          <text class="label-section" x="1276" y="44">Targets out</text>
+
+          <!-- ====== SOURCES (left) ====== -->
+          <rect class="box" x="30" y="150" width="146" height="46" />
+          <text class="label-io" x="46" y="173">Live URL</text>
+          <text class="label-io-desc" x="46" y="188">Any CMS source</text>
+
+          <rect class="box" x="30" y="222" width="146" height="46" />
+          <text class="label-io" x="46" y="245">SPA / headless</text>
+          <text class="label-io-desc" x="46" y="260">JSON in source</text>
+
+          <rect class="box-alt" x="30" y="294" width="146" height="46" />
+          <text class="label-io" x="46" y="317">Figma / PDF</text>
+          <text class="label-io-desc" x="46" y="332">Design to page</text>
+
+          <!-- convergence into the pipeline -->
+          <path class="connector" d="M176 173 L210 173" />
+          <path class="connector" d="M176 245 L210 245" />
+          <path class="connector" d="M176 317 L210 317" />
+          <path class="connector" d="M210 173 L210 317" />
+          <circle class="node" cx="210" cy="250" r="2.6" />
+          <line class="connector" x1="210" y1="250" x2="242" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- ====== PIPELINE STAGES + INTERCHANGE HUB ====== -->
+          <!-- 01 Mirror -->
+          <rect class="box" x="246" y="218" width="120" height="64" />
+          <text class="label-stage" x="262" y="242"><tspan class="num">01 ·</tspan> Mirror</text>
+          <text class="label-desc" x="262" y="261">Renders every</text>
+          <text class="label-desc" x="262" y="275">page offline.</text>
+          <line class="connector" x1="366" y1="250" x2="388" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- 02 Parse -->
+          <rect class="box" x="392" y="218" width="120" height="64" />
+          <text class="label-stage" x="408" y="242"><tspan class="num">02 ·</tspan> Parse</text>
+          <text class="label-desc" x="408" y="261">HTML to</text>
+          <text class="label-desc" x="408" y="275">templates, JSON.</text>
+          <line class="connector" x1="512" y1="250" x2="536" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- Interchange hub (centre) -->
+          <rect class="hub-bg" x="540" y="178" width="240" height="144" />
+          <rect class="hub-bar" x="540" y="178" width="240" height="5" />
+          <text class="label-hub" x="562" y="214">Interchange</text>
+          <text class="label-hub-desc" x="562" y="240">Nunjucks templates</text>
+          <text class="label-hub-desc" x="562" y="257">JSON content</text>
+          <text class="label-hub-desc" x="562" y="274">Brand tokens applied</text>
+          <text class="label-hub-note" x="562" y="302">CMS-agnostic. Every stage works here.</text>
+          <line class="connector" x1="780" y1="250" x2="804" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- 03 Detect -->
+          <rect class="box" x="808" y="218" width="120" height="64" />
+          <text class="label-stage" x="824" y="242"><tspan class="num">03 ·</tspan> Detect</text>
+          <text class="label-desc" x="824" y="261">Visual + markup,</text>
+          <text class="label-desc" x="824" y="275">scored per part.</text>
+          <line class="connector" x1="928" y1="250" x2="950" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- 04 Gate -->
+          <rect class="box" x="954" y="218" width="120" height="64" />
+          <text class="label-stage" x="970" y="242"><tspan class="num">04 ·</tspan> Gate</text>
+          <text class="label-desc" x="970" y="261">Senior dev</text>
+          <text class="label-desc" x="970" y="275">confirms.</text>
+          <line class="connector" x1="1074" y1="250" x2="1096" y2="250" marker-end="url(#mflow-arrow)" />
+
+          <!-- 05 Transcode -->
+          <rect class="box" x="1100" y="218" width="120" height="64" />
+          <text class="label-stage" x="1116" y="242"><tspan class="num">05 ·</tspan> Transcode</text>
+          <text class="label-desc" x="1116" y="261">Compile to</text>
+          <text class="label-desc" x="1116" y="275">target CMS.</text>
+
+          <!-- output fan -->
+          <line class="connector" x1="1220" y1="250" x2="1248" y2="250" />
+          <circle class="node" cx="1248" cy="250" r="2.6" />
+          <path class="connector" d="M1248 250 L1248 173 L1276 173" marker-end="url(#mflow-arrow)" />
+          <path class="connector" d="M1248 250 L1248 225 L1276 225" marker-end="url(#mflow-arrow)" />
+          <path class="connector" d="M1248 250 L1248 273 L1276 273" marker-end="url(#mflow-arrow)" />
+          <path class="connector" d="M1248 250 L1248 321 L1276 321" marker-end="url(#mflow-arrow)" />
+
+          <!-- ====== TARGETS (right), Magnolia first ====== -->
+          <rect class="box-target-lead" x="1276" y="150" width="148" height="46" />
+          <rect class="lead-bar" x="1276" y="150" width="4" height="46" />
+          <text class="label-io" x="1294" y="170">Magnolia</text>
+          <text class="label-io-desc" x="1294" y="186">Specialism</text>
+
+          <rect class="box-target" x="1276" y="206" width="148" height="38" />
+          <text class="label-io" x="1294" y="229">Contentful</text>
+
+          <rect class="box-target" x="1276" y="254" width="148" height="38" />
+          <text class="label-io" x="1294" y="277">Contentstack</text>
+
+          <rect class="box-target" x="1276" y="302" width="148" height="38" />
+          <text class="label-io" x="1294" y="325">AEM, plus more</text>
+
+          <!-- ====== CERTAINTY CARD · GATE (above) ====== -->
+          <rect class="card-bg" x="896" y="100" width="272" height="72" />
+          <rect class="card-tab" x="896" y="100" width="78" height="16" />
+          <text class="card-kicker" x="904" y="112">Certainty</text>
+          <text class="card-title" x="904" y="136">Human gate</text>
+          <text class="card-desc" x="904" y="152">Senior engineers confirm low-confidence</text>
+          <text class="card-desc" x="904" y="165">component decisions, by design.</text>
+          <line class="connector-soft" x1="1014" y1="172" x2="1014" y2="218" />
+
+          <!-- ====== CERTAINTY CARD · MIRROR (below) ====== -->
+          <rect class="card-bg" x="210" y="372" width="332" height="72" />
+          <rect class="card-tab" x="210" y="372" width="78" height="16" />
+          <text class="card-kicker" x="218" y="384">Certainty</text>
+          <text class="card-title" x="218" y="408">Mirror</text>
+          <text class="card-desc" x="218" y="424">Captures every page and checks it against</text>
+          <text class="card-desc" x="218" y="437">the original before anything switches.</text>
+          <line class="connector-soft" x1="306" y1="282" x2="306" y2="372" />
+
+          <!-- ====== FOOT NOTE ====== -->
+          <line class="connector-soft" x1="600" y1="470" x2="1424" y2="470" />
+          <text class="label-foot" x="600" y="492">Senior-led delivery. The agent does the scale work behind every stage.</text>
+
+          <!-- ====== ANIMATED FLOW (lime, marching) ====== -->
+          <g>
+            <path class="flow" d="M176 173 L210 173 L210 250 L242 250" />
+            <path class="flow" d="M176 245 L210 250 L242 250" />
+            <path class="flow" d="M176 317 L210 317 L210 250 L242 250" />
+            <path class="flow" d="M366 250 L388 250" />
+            <path class="flow" d="M512 250 L536 250" />
+            <path class="flow" d="M780 250 L804 250" />
+            <path class="flow" d="M928 250 L950 250" />
+            <path class="flow" d="M1074 250 L1096 250" />
+            <path class="flow" d="M1220 250 L1248 250" />
+            <path class="flow" d="M1248 250 L1248 173 L1276 173" />
+            <path class="flow" d="M1248 250 L1248 225 L1276 225" />
+            <path class="flow" d="M1248 250 L1248 273 L1276 273" />
+            <path class="flow" d="M1248 250 L1248 321 L1276 321" />
           </g>
 
-          <!-- ARROW 1 -->
-          <g class="anim anim-arrow1">
-            <line class="stroke" x1="354" y1="270" x2="438" y2="270" />
-            <polygon points="438,270 429,265 429,275" fill="#0a0a0a" />
-          </g>
+          <!-- ====== STAGE HIGHLIGHTS (sequential) ====== -->
+          <rect class="stage-hl s1" x="244" y="216" width="124" height="68" />
+          <rect class="stage-hl s2" x="390" y="216" width="124" height="68" />
+          <rect class="stage-hl s3" x="806" y="216" width="124" height="68" />
+          <rect class="stage-hl s4" x="952" y="216" width="124" height="68" />
+          <rect class="stage-hl s5" x="1098" y="216" width="124" height="68" />
 
-          <!-- ====== INTERCHANGE (center) ====== -->
-          <g class="anim anim-center">
-            <text class="label-minor" x="450" y="60">Interchange format</text>
-            <rect class="center-bg" x="450" y="80" width="340" height="380" />
-            <rect x="478" y="128" width="284" height="136" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.2" />
-            <text class="label-major" x="498" y="158">Templates</text>
-            <text class="label-caption" x="498" y="182">Nunjucks · presentation layer</text>
-            <text class="label-caption" x="498" y="200">CMS-agnostic, brand-applied</text>
-            <text class="label-caption" x="498" y="218">Maps to SPA / headless / headed</text>
-            <rect x="478" y="282" width="284" height="136" fill="#fafaf7" stroke="#0a0a0a" stroke-width="1.2" />
-            <text class="label-major" x="498" y="314">Content</text>
-            <text class="label-caption" x="498" y="338">JSON · structured records</text>
-            <text class="label-caption" x="498" y="356">Translation-ready</text>
-            <text class="label-caption" x="498" y="374">Direct into headless CMS</text>
-            <text class="label-caption" x="450" y="488">where the rebrand happens</text>
-          </g>
-
-          <!-- BRAND STRIP (replaces lime accent bar) -->
-          <g class="anim anim-lime">
-            <rect class="lime-bar" x="450" y="80" width="340" height="34" />
-            <text class="strip-label" x="464" y="102">Brand assets</text>
-            <rect x="620" y="89" width="16" height="16" fill="#d4865a" />
-            <rect x="639" y="89" width="16" height="16" fill="#a85a2e" />
-            <rect x="658" y="89" width="16" height="16" fill="#2a2018" />
-            <rect x="677" y="89" width="16" height="16" fill="#e8d6c4" />
-            <text class="strip-text" x="703" y="102">Tone · Tokens</text>
-          </g>
-
-          <!-- ARROW 2 -->
-          <g class="anim anim-arrow2">
-            <line class="stroke" x1="804" y1="270" x2="888" y2="270" />
-            <polygon points="888,270 879,265 879,275" fill="#0a0a0a" />
-          </g>
-
-          <!-- ====== NEW SITE (right) ====== -->
-          <g class="anim anim-new-site">
-            <text class="label-minor" x="900" y="60">Your site, rebranded</text>
-            <rect class="new-site-bg" x="900" y="80" width="380" height="380" />
-            <!-- dark header bar with brand accent -->
-            <rect class="header-dark" x="900" y="80" width="380" height="44" />
-            <circle class="brand-dot" cx="922" cy="102" r="6" />
-            <rect x="940" y="98" width="60" height="3" fill="#f5f5ef" opacity="0.8" />
-            <rect x="1180" y="98" width="40" height="3" fill="#f5f5ef" opacity="0.5" />
-            <rect x="1230" y="98" width="40" height="3" fill="#f5f5ef" opacity="0.5" />
-            <!-- hero with warm fill -->
-            <rect class="hero-fill" x="920" y="144" width="340" height="110" />
-            <rect x="940" y="178" width="120" height="10" fill="#0a0a0a" opacity="0.85" />
-            <rect x="940" y="196" width="180" height="6" fill="#0a0a0a" opacity="0.5" />
-            <rect x="940" y="208" width="160" height="6" fill="#0a0a0a" opacity="0.5" />
-            <rect x="940" y="226" width="64" height="14" fill="#0a0a0a" />
-            <!-- two-column content -->
-            <rect x="920" y="274" width="160" height="6" fill="#0a0a0a" opacity="0.7" />
-            <rect x="920" y="288" width="160" height="4" fill="#0a0a0a" opacity="0.35" />
-            <rect x="920" y="298" width="140" height="4" fill="#0a0a0a" opacity="0.35" />
-            <rect x="920" y="308" width="155" height="4" fill="#0a0a0a" opacity="0.35" />
-            <rect x="1100" y="274" width="160" height="6" fill="#0a0a0a" opacity="0.7" />
-            <rect x="1100" y="288" width="160" height="4" fill="#0a0a0a" opacity="0.35" />
-            <rect x="1100" y="298" width="148" height="4" fill="#0a0a0a" opacity="0.35" />
-            <rect x="1100" y="308" width="155" height="4" fill="#0a0a0a" opacity="0.35" />
-            <!-- image grid -->
-            <rect class="placeholder" x="920" y="336" width="106" height="68" />
-            <rect class="placeholder" x="1037" y="336" width="106" height="68" />
-            <rect class="placeholder" x="1154" y="336" width="106" height="68" />
-            <!-- footer band -->
-            <rect x="900" y="430" width="380" height="30" fill="#1f1f1f" />
-            <rect x="920" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
-            <rect x="990" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
-            <rect x="1060" y="442" width="60" height="3" fill="#f5f5ef" opacity="0.6" />
-            <text class="label-caption" x="900" y="488">2,600 pages · new brand · live on any CMS</text>
-          </g>
-
-          <!-- DEPLOYED TO caption -->
-          <g class="anim anim-deployed">
-            <line class="stroke-thin" x1="450" y1="510" x2="1280" y2="510" />
-            <text class="label-deployed" x="450" y="528">Deployed to</text>
-            <text class="label-deployed-list" x="600" y="528">Magnolia  ·  Contentful  ·  Contentstack  ·  AEM</text>
-          </g>
+          <!-- ====== INTERCHANGE RECEIVE PULSE ====== -->
+          <rect class="hub-glow" x="536" y="174" width="248" height="152" />
         </svg>
-        </div>
-        <div class="state complex-state" data-state="complex">
-<svg class="method-complex-svg" viewBox="0 0 1600 500" xmlns="http://www.w3.org/2000/svg">
-
-      <defs>
-        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" class="arrowhead"/>
-        </marker>
-        <marker id="arrow-soft" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-          <path d="M0 0 L10 5 L0 10 z" class="arrowhead-soft"/>
-        </marker>
-      </defs>
-
-      <!-- ====== TOP SECTION LABELS ====== -->
-      <text class="label-section" x="40" y="50">Inputs</text>
-      <text class="label-section" x="570" y="50">The shared format</text>
-      <text class="label-section" x="1410" y="50">CMS outputs</text>
-
-      <!-- ====== INPUTS (left) ====== -->
-      <!-- Live URL -->
-      <rect class="box-input" x="40" y="170" width="140" height="46" />
-      <text class="label-io" x="56" y="192">Live URL</text>
-      <text class="label-io-desc" x="56" y="208">Any CMS source</text>
-
-      <!-- SPA / headless -->
-      <rect class="box-input" x="40" y="240" width="140" height="46" />
-      <text class="label-io" x="56" y="262">SPA / headless</text>
-      <text class="label-io-desc" x="56" y="278">JSON in source</text>
-
-      <!-- Figma / PDF (alternate path, dashed border) -->
-      <rect class="box-input-alt" x="40" y="310" width="140" height="46" />
-      <text class="label-io" x="56" y="332">Figma / PDF</text>
-      <text class="label-io-desc" x="56" y="348">Design-to-page</text>
-
-      <!-- ====== INPUT → MIRROR CONVERGENCE ====== -->
-      <path class="connector" d="M 180 193 L 215 193 L 215 250" />
-      <path class="connector" d="M 180 263 L 215 263 L 215 250" />
-      <circle cx="215" cy="250" r="2.5" fill="#0a0a0a" />
-      <line class="connector" x1="215" y1="250" x2="246" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== FIGMA/PDF BYPASS (dashed, over the top) ====== -->
-      <path class="connector-dashed" d="M 180 333 L 195 333 L 195 125 L 720 125 L 720 178" marker-end="url(#arrow-soft)" />
-      <text class="label-annotation" x="240" y="115">Direct input · skips Mirror &amp; Parse</text>
-
-      <!-- ====== STAGE 01: MIRROR ====== -->
-      <rect class="box" x="250" y="218" width="130" height="64" />
-      <text class="label-stage" x="266" y="240"><tspan class="num">01 ·</tspan> Mirror</text>
-      <text class="label-desc" x="266" y="259">Renders site</text>
-      <text class="label-desc" x="266" y="273">offline. Assets</text>
-      <text class="label-desc" x="266" y="287">to DAM.</text>
-
-      <line class="connector" x1="380" y1="250" x2="410" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== STAGE 02: PARSE ====== -->
-      <rect class="box" x="414" y="218" width="130" height="64" />
-      <text class="label-stage" x="430" y="240"><tspan class="num">02 ·</tspan> Parse</text>
-      <text class="label-desc" x="430" y="259">HTML to</text>
-      <text class="label-desc" x="430" y="273">templates +</text>
-      <text class="label-desc" x="430" y="287">JSON content.</text>
-
-      <line class="connector" x1="544" y1="250" x2="574" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== INTERCHANGE (central, larger, lime accent) ====== -->
-      <rect class="interchange-bg" x="578" y="178" width="284" height="144" />
-      <rect class="interchange-bar" x="578" y="178" width="284" height="5" />
-      <text class="label-interchange" x="600" y="216">Interchange</text>
-      <text class="label-interchange-desc" x="600" y="244">Nunjucks templates</text>
-      <text class="label-interchange-desc" x="600" y="261">JSON content</text>
-      <text class="label-interchange-desc" x="600" y="278">Brand tokens applied</text>
-      <text class="label-interchange-note" x="600" y="306">All stages operate on this format.</text>
-
-      <line class="connector" x1="862" y1="250" x2="892" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== HUMAN GATE (sidekick above Detect) ====== -->
-      <rect class="gate-bg" x="896" y="120" width="130" height="42" />
-      <text class="label-gate" x="912" y="138">Human gate</text>
-      <text class="label-gate-desc" x="912" y="154">Dev confirms</text>
-      <line class="connector-soft" x1="961" y1="162" x2="961" y2="218" />
-
-      <!-- ====== STAGE 03: DETECT ====== -->
-      <rect class="box" x="896" y="218" width="130" height="64" />
-      <text class="label-stage" x="912" y="240"><tspan class="num">03 ·</tspan> Detect</text>
-      <text class="label-desc" x="912" y="259">Visual + markup</text>
-      <text class="label-desc" x="912" y="273">analysis, scored</text>
-      <text class="label-desc" x="912" y="287">per component.</text>
-
-      <line class="connector" x1="1026" y1="250" x2="1056" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== STAGE 04: SWAP ====== -->
-      <rect class="box" x="1060" y="218" width="130" height="64" />
-      <text class="label-stage" x="1076" y="240"><tspan class="num">04 ·</tspan> Swap</text>
-      <text class="label-desc" x="1076" y="259">Site-wide</text>
-      <text class="label-desc" x="1076" y="273">propagation,</text>
-      <text class="label-desc" x="1076" y="287">dedupe.</text>
-
-      <line class="connector" x1="1190" y1="250" x2="1220" y2="250" marker-end="url(#arrow)" />
-
-      <!-- ====== STAGE 05: TRANSCODE ====== -->
-      <rect class="box" x="1224" y="218" width="130" height="64" />
-      <text class="label-stage" x="1240" y="240"><tspan class="num">05 ·</tspan> Transcode</text>
-      <text class="label-desc" x="1240" y="259">Compile to</text>
-      <text class="label-desc" x="1240" y="273">target CMS via</text>
-      <text class="label-desc" x="1240" y="287">API or MCP.</text>
-
-      <!-- ====== OUTPUT FAN ====== -->
-      <line class="connector" x1="1354" y1="250" x2="1380" y2="250" />
-      <circle cx="1380" cy="250" r="2.5" fill="#0a0a0a" />
-
-      <path class="connector" d="M 1380 250 L 1380 175 L 1410 175" marker-end="url(#arrow)" />
-      <path class="connector" d="M 1380 250 L 1380 225 L 1410 225" marker-end="url(#arrow)" />
-      <path class="connector" d="M 1380 250 L 1380 275 L 1410 275" marker-end="url(#arrow)" />
-      <path class="connector" d="M 1380 250 L 1380 325 L 1410 325" marker-end="url(#arrow)" />
-
-      <!-- ====== OUTPUT BOXES ====== -->
-      <rect class="box-output" x="1414" y="160" width="140" height="30" />
-      <text class="label-io" x="1430" y="180">Magnolia</text>
-
-      <rect class="box-output" x="1414" y="210" width="140" height="30" />
-      <text class="label-io" x="1430" y="230">Contentstack</text>
-
-      <rect class="box-output" x="1414" y="260" width="140" height="30" />
-      <text class="label-io" x="1430" y="280">Contentful</text>
-
-      <rect class="box-output" x="1414" y="310" width="140" height="30" />
-      <text class="label-io" x="1430" y="330">AEM + others</text>
-
-      <!-- ====== BOTTOM LEGEND ====== -->
-      <line class="connector-soft" x1="40" y1="408" x2="1554" y2="408" />
-
-      <!-- Solid arrow legend -->
-      <line class="connector" x1="40" y1="438" x2="68" y2="438" marker-end="url(#arrow)" />
-      <text class="label-legend" x="78" y="442">Whole-site path</text>
-
-      <!-- Dashed arrow legend -->
-      <line class="connector-dashed" x1="280" y1="438" x2="308" y2="438" marker-end="url(#arrow-soft)" />
-      <text class="label-legend" x="318" y="442">Direct input</text>
-
-      <!-- Output description -->
-      <text class="label-annotation" x="540" y="442">All outputs land as a fully managed live site. Content in CMS · Components mapped · Assets in DAM.</text>
-
-    </svg>
-        </div>
-        <div class="state-hint">Press 'd' for detail</div>
-       </div>
       </div>
     </div>
     <div class="foot light-foot">
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">04 / 07</div>
+        <div class="counter">04 / 06</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -1238,92 +866,16 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">05 / 07</div>
+        <div class="counter">05 / 06</div>
         <button class="nav-btn next" aria-label="Next"><span>›</span></button>
       </div>
     </div>
   </section>
 
-  <!-- ====== Slide 06 · The Price ====== -->
-  <section class="slide slide-price" data-slide="5">
+  <!-- ====== Slide 06 · Closer ====== -->
+  <section class="slide slide-closer" data-slide="5">
     <div class="frame">
-      <div class="eyebrow">05 · The Price</div>
-      <div class="price-stage">
-        <div class="plate">
-          <div class="tile">
-            <div class="tile-eyebrow">Fixed fee · 5-day migration · what you get</div>
-            <div class="receipt-lines">
-              <div class="receipt-line">
-                <span class="item">Site spider, render, asset download</span>
-                <span class="leader"></span>
-                <span class="value">included</span>
-              </div>
-              <div class="receipt-line">
-                <span class="item">AI component detection &amp; mapping</span>
-                <span class="leader"></span>
-                <span class="value">included</span>
-              </div>
-              <div class="receipt-line">
-                <span class="item">Interchange compilation</span>
-                <span class="leader"></span>
-                <span class="value">included</span>
-              </div>
-              <div class="receipt-line">
-                <span class="item">Brand &amp; tone application</span>
-                <span class="leader"></span>
-                <span class="value">included</span>
-              </div>
-              <div class="receipt-line">
-                <span class="item">CMS transcoding to your platform</span>
-                <span class="leader"></span>
-                <span class="value">included</span>
-              </div>
-              <div class="receipt-line credits">
-                <span class="item"><span class="ast">*</span>Agent credits</span>
-                <span class="leader"></span>
-                <span class="value">~£750</span>
-              </div>
-            </div>
-            <div class="receipt-total">
-              <span class="total-label">Total</span>
-              <span class="total-value">£15,000</span>
-            </div>
-            <div class="receipt-footnote"><span class="ast">*</span>Typical site usage. Varies with content volume; passed through at cost.</div>
-          </div>
-        </div>
-        <div class="lines-band">
-          <div class="line-item">
-            <div class="line-label">Optional · Stabilisation</div>
-            <div class="line-desc">30-day post-go-live stabilisation. Senior engineers on warm bench.</div>
-            <div class="line-value">£4,500</div>
-          </div>
-          <div class="line-item">
-            <div class="line-label">Optional · Multi-target</div>
-            <div class="line-desc">Each additional CMS target compiled from the same interchange run.</div>
-            <div class="line-value">£6,000<span class="unit"> / target</span></div>
-          </div>
-          <div class="line-item">
-            <div class="line-label">Optional · Translation</div>
-            <div class="line-desc">Additional language output, translated at the interchange stage.</div>
-            <div class="line-value">£4,500<span class="unit"> / language</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="foot dark-foot">
-      <div class="wordmark">graft<span class="dot">.</span></div>
-      <div class="nav-cluster">
-        <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">06 / 07</div>
-        <button class="nav-btn next" aria-label="Next"><span>›</span></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====== Slide 07 · Closer ====== -->
-  <section class="slide slide-closer" data-slide="6">
-    <div class="frame">
-      <div class="eyebrow">06</div>
+      <div class="eyebrow">05</div>
       <h1 class="headline">Let&rsquo;s get to the <em>real&nbsp;work</em>.</h1>
       <div class="cta">
         <div class="cta-text">Pick a site.</div>
@@ -1334,7 +886,7 @@ html, body {
       <div class="wordmark">graft<span class="dot">.</span></div>
       <div class="nav-cluster">
         <button class="nav-btn prev" aria-label="Previous"><span>‹</span></button>
-        <div class="counter">07 / 07</div>
+        <div class="counter">06 / 06</div>
         <button class="nav-btn next" disabled aria-label="Next"><span>›</span></button>
       </div>
     </div>
@@ -1345,10 +897,8 @@ html, body {
 <script>
 (function() {
   const slides = document.querySelectorAll('.slide');
-  const methodSlide = document.querySelector('.slide-method');
   const practiceSlide = document.querySelector('.slide-practice');
   let current = 0;
-  let methodComplex = false;
 
   function restartPracticeDemo() {
     if (!practiceSlide) return;
@@ -1359,31 +909,11 @@ html, body {
     iframe.src = base + '?t=' + Date.now();
   }
 
-  function applyMethodState() {
-    if (!methodSlide) return;
-    methodSlide.querySelectorAll('.state').forEach(s => {
-      s.classList.toggle('active', s.dataset.state === (methodComplex ? 'complex' : 'simple'));
-    });
-    const hint = methodSlide.querySelector('.state-hint');
-    if (hint) hint.textContent = methodComplex ? "Press 'd' for simple view" : "Press 'd' for detail";
-  }
-  function toggleMethod() {
-    methodComplex = !methodComplex;
-    if (methodSlide) methodSlide.classList.add('animation-done');
-    applyMethodState();
-  }
-  function resetMethod() {
-    methodComplex = false;
-    if (methodSlide) methodSlide.classList.remove('animation-done');
-    applyMethodState();
-  }
-
   function show(idx) {
     if (idx < 0 || idx >= slides.length) return;
     slides[current].classList.remove('active');
     current = idx;
     slides[current].classList.add('active');
-    resetMethod();
     if (slides[current] === practiceSlide) restartPracticeDemo();
   }
 
@@ -1407,17 +937,6 @@ html, body {
     next();
   });
 
-  if (methodSlide) {
-    const diagramWrap = methodSlide.querySelector('.diagram-wrap');
-    if (diagramWrap) {
-      diagramWrap.addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleMethod();
-      });
-    }
-    applyMethodState();
-  }
-
   document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
       e.preventDefault(); next();
@@ -1427,11 +946,6 @@ html, body {
       e.preventDefault(); show(0);
     } else if (e.key === 'End') {
       e.preventDefault(); show(slides.length - 1);
-    } else if (e.key === 'd' || e.key === 'D') {
-      if (methodSlide && methodSlide.classList.contains('active')) {
-        e.preventDefault();
-        toggleMethod();
-      }
     } else if (/^[1-9]$/.test(e.key)) {
       const target = parseInt(e.key, 10) - 1;
       if (target < slides.length) show(target);
